@@ -49,7 +49,7 @@ class obstacle : public item{
 		int e_cost;
 }
 //Derived treasure chest class
-/class treasure_chest : public item{
+class treasure_chest : public item{
 	public:
 		void display_info();
 		int add_whiffles(int w_added);
