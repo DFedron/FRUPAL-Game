@@ -20,7 +20,10 @@ void Terrain::input_terrain(int c_value,int e_cost)
 }
 void Terrain::print_terrain()
 {
+start_color();  
+   attron(color_value);
       printw(" ");
+   attroff(color_value);
 }
 int Terrain::get_energy_cost()
 {
