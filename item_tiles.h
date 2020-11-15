@@ -4,10 +4,12 @@
  Group #7
  Version: 0.1
  */
-#ifndef
-#define
 
-#include <ncurses>
+
+//#ifndef
+//#define
+
+#include <ncurses.h>
 
 //Abstract Item base class
 class item{
@@ -17,7 +19,8 @@ class item{
 
 		void display_info();
 		virtual void remove() = 0;
-}
+};
+
 //Derived clue class
 class clue : public item{
 	public:
@@ -27,7 +30,8 @@ class clue : public item{
         void random_clue(); //display some random clue
 	private:
 	    bool true_false; //determine if the clue is true or false? 	
-}
+};
+
 //Derived tool class
 class tool : public item{
 	public:
@@ -39,7 +43,8 @@ class tool : public item{
 		int remove_whiffles(int w_rmv);
 	private:
 		int tool_cost;
-}
+};
+
 //Derived food class
 class food : public item{
 	public:
@@ -53,7 +58,8 @@ class food : public item{
 	private:
 		int food_cost;
 		int energy_value;
-}
+};
+
 //Derived obstacle class
 class obstacle : public item{
 	public:
@@ -65,7 +71,8 @@ class obstacle : public item{
 
 	private:
 		int e_cost;
-}
+};
+
 //Derived treasure chest class
 class treasure_chest : public item{
 	public:
@@ -77,7 +84,8 @@ class treasure_chest : public item{
 
 	private:
 		int w_value;
-}
+};
+
 //Derived ship class
 class ship : public item{
 	public:
@@ -89,7 +97,8 @@ class ship : public item{
 
 	private:
 		int w_cost;
-}
+};
+
 //Derived binocular class
 class binoculars : public item{
 	public:
@@ -98,6 +107,6 @@ class binoculars : public item{
 
 		void display_info();
 		int add_vision();
-}
+};
 
-#endif
+//#endif

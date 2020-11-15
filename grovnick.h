@@ -1,10 +1,9 @@
 // grovnick.h
-   
 
 #include <string>
 using namespace std;
 
-class Grovnick{
+class Grovnick {
     public:
         Grovnick();
         void input_terrain(int c_value, int e_cost);

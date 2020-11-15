@@ -7,17 +7,11 @@
 #include "item_tiles.h"
 
 //place all constructors/destructors on top
-//or place them in their respective sections?
+//or place them in their respective sections/classes?
 
 //Item base class
-void item::display_info(){
-	//Stub
-	return;
-}
+
 //Clue class
-void clue::random_clue(){
-    return;
-}
 
 //Tool class
 
