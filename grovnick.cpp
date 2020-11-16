@@ -35,3 +35,11 @@ int Grovnick::get_terrain_color_value()
 {
    return color_value; 
 }
+
+/*
+
+void Grovnick::input_item(Item item){}
+bool Grovnick::has_item(){}
+Item & get_item(){}
+
+*/

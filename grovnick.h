@@ -1,6 +1,5 @@
 // grovnick.h
    
-
 #include <string>
 using namespace std;
 
@@ -18,5 +17,9 @@ class Grovnick{
         int get_terrain_energy_cost();
         void print();
         int get_terrain_color_value();
-};
 
+//      void input_item(Item item);
+//      bool has_item();
+//      Item & get_item();
+
+};
