@@ -43,6 +43,7 @@ refresh();
     map.load_map();
     map.print_map(); 
 
+//CREATES '#' BORDER
     move(0,ncols);
     vline(border,LINES);
           
@@ -74,12 +75,13 @@ refresh();
     mvprintw(txt_y,txt_x, " Energy: 68"); 
     wrefresh(menu);
 
+    
     move(nlines/2,ncols/2);
     refresh();
 
-   map.edit_map(nlines,ncols,viewport);
-   map.save_map();
+    map.edit_map(nlines,ncols,viewport);
+    map.save_map();
 
-   endwin();
-   return 0;
+    endwin();
+    return 0;
 }
