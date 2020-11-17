@@ -1,16 +1,18 @@
 CXX = g++
 CXXFLAGS = -g -Wall -Werror
-TARGET = Frupal
-OBJS = main.o grovnick.o item_tiles.o
-
+TARGET = frupal
+OBJS = main.o grovnick.o item_tiles.o map.o
+LIBS = -lncurses
 $(TARGET): $(OBJS)
-		$(CXX) $(OBJS) -o Frupal $(CXXFLAGS) -lncurses
+		$(CXX) $(OBJS) -o $(TARGET) $(CXXFLAGS) $(LIBS)
 
-main.o: main.cpp item_tiles.h
+main.o: main.cpp
 
-grovnick.o: grovnick.h grovnick.cpp
+grovnick.o: grovnick.cpp
 
-item_tiles.o: item_tiles.h item_tiles.cpp
+item_tiles.o: item_tiles.cpp
+
+map.o: map.cpp
 
 clean:
 		rm *.o $(TARGET)

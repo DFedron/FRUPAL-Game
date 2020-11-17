@@ -16,8 +16,6 @@ class Grovnick {
         int color_value;
         int energy_cost;
 //      Item item; 
-};
-
 
 //      void input_item(Item item);
 //      bool has_item();
