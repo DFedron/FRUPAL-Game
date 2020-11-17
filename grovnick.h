@@ -1,6 +1,7 @@
 // grovnick.h
 
 #include <string>
+
 using namespace std;
 
 class Grovnick {
@@ -17,3 +18,9 @@ class Grovnick {
 //      Item item; 
 };
 
+
+//      void input_item(Item item);
+//      bool has_item();
+//      Item & get_item();
+
+};
