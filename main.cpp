@@ -27,8 +27,8 @@ int main(int argc, char ** argv)
     int ncols = 40;
     char border = '#'; 
 
-    WINDOW * viewport= newwin( y0, x0, nlines ,ncols);  
-    WINDOW * menu= newwin( y0, ncols,LINES,COLS-( ncols)); 
+    WINDOW * viewport= newwin( nlines, ncols, y0, x0 );  
+    WINDOW * menu= newwin( LINES, COLS-( ncols), y0, ncols); 
 
 refresh();
     start_color();
