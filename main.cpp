@@ -55,8 +55,9 @@ int main(int argc, char ** argv)
 
 // implementation is down on the bottom    
   hero = new Hero(stdscr, viewport, in_game);
+ 
+  refresh();
   hero->update_display();
-
   while ((ch = getch()) != 'q' && ch != 'Q')
   {
     switch (ch)

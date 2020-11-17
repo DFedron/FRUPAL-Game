@@ -23,8 +23,8 @@ Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm) {
   gamemenu = gm;
   viewport = vp;
 
-  map = new Map();
-  map->load_map();
+  map = new Map(viewport, gamemenu);
+  //map->load_map();
 
   tool_belt = NULL;
   curr_item = NULL;
@@ -35,12 +35,32 @@ Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm) {
 void Hero::update_display() {
   // TODO add in a scrolling mechanism, will change
   //  (print_map(y, x) & update_hero(y, x)
-  map->print_map();
+  map->update_display();
 
   update_hero();
+  update_gamemenu();
 
   wrefresh(viewport);
+  wrefresh(gamemenu);
   refresh();
+}
+
+void Hero::update_gamemenu() {
+
+  int rows, cols;
+  getmaxyx(gamemenu, rows, cols);
+
+  werase(gamemenu);
+  wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#', 0);
+  
+  // XXX remove these 3 lines, all testing stuff
+  mvwprintw(gamemenu, rows - 6, 2, "This is for testing:");
+  mvwprintw(gamemenu, rows - 5, 2, "x-position: %d", xpos);
+  mvwprintw(gamemenu, rows - 4, 2, "y-position: %d", ypos);
+
+  mvwprintw(gamemenu, 1, 1, "Menu:");
+  mvwprintw(gamemenu, rows - 3, 2, "Energy: %d", energy);
+  mvwprintw(gamemenu, rows - 2, 2, "Whiffles: %d", whiffles);
 }
 
 void Hero::update_hero() {
@@ -63,7 +83,7 @@ void Hero::move_up() {
 
 void Hero::move_down() {
   ++ypos;
-  if(ypos >= 40)
+  if(ypos >= KSIZE)
   {
     --ypos;
     --energy;
@@ -83,7 +103,7 @@ void Hero::move_left() {
 
 void Hero::move_right() {
   ++xpos;
-  if(xpos >= 40) // 40 for map...
+  if(xpos >= KSIZE) // 40 for map...
   {
     --xpos;
     --energy;

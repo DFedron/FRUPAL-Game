@@ -41,4 +41,5 @@ class Hero {
     WINDOW * stdwindow;
 
     void update_hero();
+    void update_gamemenu();
 };
