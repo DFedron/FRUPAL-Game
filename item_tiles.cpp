@@ -6,11 +6,11 @@
  */
 #include "item_tiles.h"
 
+//place all constructors/destructors on top
+//or place them in their respective sections/classes?
+
 //Item base class
-void item::display_info(){
-	//Stub
-	return;
-}
+
 //Clue class
 
 //Tool class
