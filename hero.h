@@ -13,8 +13,9 @@ class Hero {
 
   public:
     
+    Hero() =delete;
     Hero(WINDOW * std, WINDOW * vp, WINDOW * gm);
-//    Hero(WINDOW * stdscr, char * filename);
+//    Hero(WINDOW * std, WINDOW * vp, WINDOW * gm, char * filename);
 
     void update_display();
 
@@ -40,6 +41,8 @@ class Hero {
     WINDOW * gamemenu;
     WINDOW * stdwindow;
 
-    void update_hero();
+    void update_hero(int starty, int startx);
     void update_gamemenu();
+    void scroll_function(int& starty, int& startx);
+  
 };

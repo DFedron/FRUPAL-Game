@@ -13,6 +13,7 @@
 
 Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm) {
 
+  
   xpos = 15;
   ypos = 15;
   whiffles = 1000;
@@ -24,25 +25,66 @@ Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm) {
   viewport = vp;
 
   map = new Map(viewport, gamemenu);
-  //map->load_map();
 
   tool_belt = NULL;
   curr_item = NULL;
+}
 
-  init_pair(5,COLOR_WHITE,COLOR_CYAN); //Royal Diamond
+//Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm, char * filename) {
+//
+//}
+
+void Hero::scroll_function(int& starty, int& startx) {
+
+  int centerx, endx, centery, endy, rows, cols;
+
+  // THIS IS THE START OF A COMPLICATED SCROLLING FUNCTION
+  // it's not that complicated but worth taking a look
+  getmaxyx(viewport, rows, cols);
+  centery = rows / 2;
+  centerx = cols / 2;
+
+  startx = xpos - centerx;
+  endx = xpos + centerx;
+
+  if(cols >= KSIZE)
+    startx = 0;
+  else if(startx < 0)
+    startx = 0;
+  else if(endx > KSIZE)
+    startx = KSIZE - cols;
+
+  starty = ypos - centery;
+  endy = ypos + centery;
+
+  if(rows >= KSIZE)
+    starty = 0;
+  else if(starty < 0)
+    starty = 0;
+  else if(endy > KSIZE) {
+    starty = KSIZE - rows;
+  }
+  // END OF SCROLLING MECHANISM
 }
 
 void Hero::update_display() {
-  // TODO add in a scrolling mechanism, will change
-  //  (print_map(y, x) & update_hero(y, x)
-  map->update_display();
 
-  update_hero();
+  int starty, startx; // will be modified in scroll_function
+
+  werase(viewport);
+  // changes starty, startx to center hero/map
+  scroll_function(starty, startx);
+
+  map->look_around(ypos, xpos, binoculars);
+
+  map->update_display(starty, startx);
+  update_hero(starty, startx);
+
   update_gamemenu();
 
   wrefresh(viewport);
   wrefresh(gamemenu);
-  refresh();
+//  refresh();
 }
 
 void Hero::update_gamemenu() {
@@ -63,10 +105,10 @@ void Hero::update_gamemenu() {
   mvwprintw(gamemenu, rows - 2, 2, "Whiffles: %d", whiffles);
 }
 
-void Hero::update_hero() {
+void Hero::update_hero(int starty, int startx) {
 
   wattron(viewport, COLOR_PAIR(6));
-  mvwaddch(viewport, ypos, xpos, '@');
+  mvwaddch(viewport, ypos - starty, xpos - startx, '@');
   wattroff(viewport, COLOR_PAIR(6));
 
 }

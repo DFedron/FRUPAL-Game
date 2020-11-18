@@ -15,36 +15,42 @@ Map::Map(WINDOW * vp, WINDOW * gm) {
   for(int i = 0; i < KSIZE; ++i)
     for(int j = 0; j < KSIZE; ++j) {
       frupal[i][j].square = MEADOW;
-      frupal[i][j].viewed = true; // true for testing, false later
-      frupal[i][j].feature = NULL;
+      frupal[i][j].viewed = false; // true total map, false for view
+      frupal[i][j].feature = NULL; 
     }
-
-  init_pair(1,COLOR_BLACK,COLOR_GREEN); //meadow
-  init_pair(2,COLOR_BLACK,COLOR_MAGENTA); //swamp
-  init_pair(3,COLOR_BLACK,COLOR_BLUE); //water
-  init_pair(4,COLOR_BLACK,COLOR_WHITE);  //walls
-  init_pair(5,COLOR_WHITE,COLOR_CYAN); //Royal Diamond
 }
 
-void Map::update_display() {
+void Map::look_around(int ypos, int xpos, bool binoculars) {
+
+  int sight = 1;
+  sight += binoculars;
+
+  for(int i = ypos - sight; i <= ypos + sight; ++i)
+    for(int j = xpos - sight; j <= xpos + sight; ++j) 
+      if(i >= 0 && j >= 0 && i < KSIZE && j < KSIZE)
+        frupal[i][j].viewed = true;
+}
+
+void Map::update_display(int starty, int startx) {
 
   int i, j, color, rows, cols;
   getmaxyx(viewport, rows, cols);
 
-  for(i = 0; i < rows && i < KSIZE; ++i)
-    for(j = 0; i < cols && j < KSIZE; ++j) {
+  for(i = starty; i < starty + rows && i < KSIZE; ++i)
+    for(j = startx; j < startx + cols && j < KSIZE; ++j) {
       // this converts enum type to int match to color pair
       if(frupal[i][j].viewed)
-        color = frupal[i][j].square;
+        color = frupal[i][j].square; // converts enum to #, matched in main
       else
-        color = UNSEEN;
+        color = UNSEEN; // UNSEEN = 5 matches init_pair in main
 
       wattron(viewport, COLOR_PAIR(color));
       if(frupal[i][j].feature) {
         // TODO add in something to print out feature tiles
+        // don't forget to adjust with the scroll: starty, startx
       }
       else {
-        mvwaddch(viewport, i, j, ' ');
+        mvwaddch(viewport, i - starty, j - startx, ' ');
       }
       wattroff(viewport, COLOR_PAIR(color));
 
