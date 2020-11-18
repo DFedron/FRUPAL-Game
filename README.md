@@ -25,4 +25,5 @@
   2. SWAMP is 2
   3. WATER is 3
   4. WALL is 4
+  
  It initially sets everything to MEADOW, before loading in inputfiles.
