@@ -5,7 +5,11 @@
 */
 
 #include <ncurses.h>
+#include <string>
+#include <fstream>
 #include "map.h"
+
+using namespace std;
 
 Map::Map(WINDOW * vp, WINDOW * gm) {
 
@@ -20,6 +24,67 @@ Map::Map(WINDOW * vp, WINDOW * gm) {
     }
 }
 
+Map::Map(WINDOW * vp, WINDOW * gm, char * inputfile) {
+
+  viewport = vp;
+  gamemenu = gm;
+
+  for(int i = 0; i < KSIZE; ++i)
+    for(int j = 0; j < KSIZE; ++j) {
+      frupal[i][j].square = MEADOW;
+      frupal[i][j].viewed = false; // true total map, false for view
+      frupal[i][j].feature = NULL; 
+    }
+
+    // TODO HERE implement Chiharu's infile
+
+  ifstream infile;
+  infile.open(inputfile);
+  if(!infile) {
+    printw("Cannot open file.");
+    exit(1);
+  }
+
+  int i = 0;
+  string terrain_list[NUMTERRAIN];
+
+  while(!infile.eof()) {
+    infile >> terrain_list[i];
+    infile.ignore(100, '\n');
+    ++i;
+  }
+  infile.close();
+
+  for(i = 0; i < NUMTERRAIN; ++i)
+    load_terrain(terrain_list[i]);
+}
+
+void Map::load_terrain(string file) {
+
+  int i, j, temp_terrain;
+
+  ifstream infile;
+  infile.open(file);
+
+  if(!infile) {
+    printw("Cannot open file.");
+    exit(1);
+  }
+
+  // sample input: terrain#, yval, xval
+  while(!infile.eof()) {
+    infile >> temp_terrain;
+    infile.get();
+    infile >> i; 
+    infile.get();
+    infile >> j;
+    infile.ignore(100, '\n');
+
+    frupal[i][j].square = static_cast<terrain>(temp_terrain);
+  }
+  infile.close();
+}
+// takes in hero's pos & binoculars, adjust map accordingly
 void Map::look_around(int ypos, int xpos, bool binoculars) {
 
   int sight = 1;
@@ -27,7 +92,7 @@ void Map::look_around(int ypos, int xpos, bool binoculars) {
 
   for(int i = ypos - sight; i <= ypos + sight; ++i)
     for(int j = xpos - sight; j <= xpos + sight; ++j) 
-      if(i >= 0 && j >= 0 && i < KSIZE && j < KSIZE)
+      if(i >= 0 && j >= 0 && i < KSIZE && j < KSIZE) // check if on map
         frupal[i][j].viewed = true;
 }
 

@@ -24,7 +24,8 @@ Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm) {
   gamemenu = gm;
   viewport = vp;
 
-  map = new Map(viewport, gamemenu);
+  char loadfile[] = "inputfile/terrain.txt";
+  map = new Map(viewport, gamemenu, loadfile);
 
   tool_belt = NULL;
   curr_item = NULL;
