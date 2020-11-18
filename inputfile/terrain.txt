@@ -1,5 +1,0 @@
-inputfile/swamp.txt
-inputfile/water.txt
-inputfile/wall.txt
-
-
