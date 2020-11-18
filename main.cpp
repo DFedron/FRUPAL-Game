@@ -42,7 +42,7 @@ int main(int argc, char ** argv)
 //}
 
   viewport = newwin(vpheight, vpwidth, 0, 0);
-  in_game = newwin(igheight, igwidth, 0, vpwidth + 1);
+  in_game = newwin(igheight, igwidth, 0, vpwidth);
   wborder(in_game, '#', 0, ' ', ' ', '#', 0, '#', 0); // should put just on left side
 
   start_color();

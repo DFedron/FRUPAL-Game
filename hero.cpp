@@ -72,42 +72,54 @@ void Hero::update_hero() {
 }
 
 void Hero::move_up() {
+  int cost;
   --ypos;
-  if(ypos < 0)
-  {
+  if((cost = map->energy_cost(ypos, xpos)) == -1) {
     ++ypos;
     --energy;
   }
+  else
+    energy -= cost;
+
   update_display();
 }
 
 void Hero::move_down() {
+  int cost;
   ++ypos;
-  if(ypos >= KSIZE)
-  {
+  if((cost = map->energy_cost(ypos, xpos)) == -1) {
     --ypos;
     --energy;
   }
+  else
+    energy -= cost;
+
   update_display();
 }
 
 void Hero::move_left() {
+  int cost;
   --xpos;
-  if(xpos < 0)
-  {
+  if((cost = map->energy_cost(ypos, xpos)) == -1) {
     ++xpos;
     --energy;
   }
+  else
+    energy -= cost;
+
   update_display();
 }
 
 void Hero::move_right() {
+  int cost;
   ++xpos;
-  if(xpos >= KSIZE) // 40 for map...
-  {
+  if((cost = map->energy_cost(ypos, xpos)) == -1) {
     --xpos;
     --energy;
   }
+  else
+    energy -= cost;
+
   update_display();
 }
 

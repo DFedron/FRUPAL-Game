@@ -24,7 +24,8 @@ class Map {
 
   Map(WINDOW * vp, WINDOW * gm);
 
-  void update_display();
+  void update_display(); // updates viewport
+  int energy_cost(int y, int x); // ret -1 if off map, wall, water, 2-swamp, 1-meadow
 
 
   private:

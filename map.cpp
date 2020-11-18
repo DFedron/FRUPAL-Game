@@ -51,3 +51,21 @@ void Map::update_display() {
     }
 
 }
+
+// ret -1 if off map, wall, water, 2-swamp, 1-meadow
+int Map::energy_cost(int y, int x) {
+  
+  // first checks if off grid, then checks gronick enum type
+  if(y < 0 || x < 0 || y >= KSIZE || x >= KSIZE ||
+    frupal[y][x].square == WALL || frupal[y][x].square == WATER)
+    return -1;
+  else if(frupal[y][x].square == MEADOW)
+    return 1;
+  else if(frupal[y][x].square == SWAMP)
+    return 2;
+
+  return 0; // this should never happen though.
+}
+
+
+
