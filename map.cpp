@@ -45,7 +45,7 @@ void Map::load_map(){
 
      for(int i = 0;i< terrain_num; i++) {
        int energy_cost = 1;
-       if(terrain_list[i] == "water.txt" )
+       if(terrain_list[i] == "swamp.txt" )
            energy_cost = 2; 
         load_terrain(terrain_list[i],color_value_list[i],energy_cost);
      }
