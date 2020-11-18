@@ -17,7 +17,7 @@
  6. meadows everywhere else, but feel free to walk about
  
 ## Version:
- This branch version has tiles colored black until you discover them.  It has implementation of a load file that is somewhat reproducable to create a 128x128 map.  It has hero produced on a dynamic viewport over a terrain input from input files.  It has a scroll mechanism.  You do not die currently, energy just goes to negative numbers.  It does not have a grovnick class.  With this implementation is just a struct.
+ This branch version has tiles colored black until you discover them.  It has implementation of a load file that is somewhat reproducable to create a 128x128 map.  It has hero produced on a dynamic viewport over a terrain input from input files.  It has a scroll mechanism.  All color is correctly displayed.  SWAMPS cost 2 energy, MEADOWS 1, WALLS and WATER cost 1 and send you back to your old position, as does trying to walk off the map.  You do not die currently, energy just goes to negative numbers.  Have testing x, y coordinates of hero by whiffles and energy.  It does not have a grovnick class.  With this implementation is just a struct.
 
 ## Load files:
  The load mechanism is built off of Chiharu's load mechanism. It is modified however to be able to create instance of terrain structures.  Any new file created needs to be linked inside of `terrain.txt` .  The input structure is `int terrain;int y coord; int x coord`. y and x start from the top and left, respective to the map and controls.  After that you can type notes on the rest of the line to describe what you are making.
