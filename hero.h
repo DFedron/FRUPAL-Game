@@ -13,8 +13,8 @@ class Hero {
 
   public:
     
-    Hero() =delete;
-    Hero(WINDOW * vp, WINDOW * gm);
+    Hero() =delete; // don't need a default constructor
+    Hero(WINDOW * vp, WINDOW * gm); // constructor
     // TODO create this constructor down here for alternate maps
 //    Hero(WINDOW * vp, WINDOW * gm, char * filename);
 

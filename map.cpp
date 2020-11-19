@@ -11,6 +11,14 @@
 
 using namespace std;
 
+////////////////////////////////////////////////////////////////////////////////
+/*
+    Our default constructors.  Normal default constructor deleted. The first
+    Map constructor doesn't get used except for testing.
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+// used for testing just sets entire map to unviewed itemless meadow
 Map::Map(WINDOW * vp, WINDOW * gm) {
 
   viewport = vp;
@@ -24,11 +32,13 @@ Map::Map(WINDOW * vp, WINDOW * gm) {
     }
 }
 
+// Our default constructor
 Map::Map(WINDOW * vp, WINDOW * gm, char * inputfile) {
 
-  viewport = vp;
-  gamemenu = gm;
+  viewport = vp; // sets viewport for easy access
+  gamemenu = gm; // sets gamemenu for easy access
 
+  // initally sets to unviewed, itemless MEADOW
   for(int i = 0; i < KSIZE; ++i)
     for(int j = 0; j < KSIZE; ++j) {
       frupal[i][j].square = MEADOW;
@@ -36,10 +46,22 @@ Map::Map(WINDOW * vp, WINDOW * gm, char * inputfile) {
       frupal[i][j].feature = NULL; 
     }
 
-    // TODO HERE implement Chiharu's infile
+  load_map(inputfile);
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/*
+    Loading functions, first function loads file based on string.  loads that
+    into a string array.  That array is filled with other files with drawings
+    for the map.  Those files are loaded in in the load_terrain function.
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+void Map::load_map(string file) {
 
   ifstream infile;
-  infile.open(inputfile);
+  infile.open(file);
   if(!infile) {
     printw("Cannot open file.");
     exit(1);
@@ -57,6 +79,7 @@ Map::Map(WINDOW * vp, WINDOW * gm, char * inputfile) {
 
   for(i = 0; i < NUMTERRAIN; ++i)
     load_terrain(terrain_list[i]);
+
 }
 
 void Map::load_terrain(string file) {
@@ -66,35 +89,33 @@ void Map::load_terrain(string file) {
   ifstream infile;
   infile.open(file);
 
-  if(!infile) {
+  if(!infile) { // error handling
     printw("Cannot open file.");
     exit(1);
   }
 
   // sample input: terrain#, yval, xval
   while(!infile.eof()) {
-    infile >> temp_terrain;
+    infile >> temp_terrain; // loads in first num = enum type
     infile.get();
-    infile >> i; 
+    infile >> i;  // gets the yvalue of grovnick
     infile.get();
-    infile >> j;
+    infile >> j;  // gets the xvalue of grovnick
     infile.ignore(100, '\n');
-
+      // this converts the number to the matching enum terrain type
     frupal[i][j].square = static_cast<terrain>(temp_terrain);
   }
   infile.close();
 }
-// takes in hero's pos & binoculars, adjust map accordingly
-void Map::look_around(int ypos, int xpos, bool binoculars) {
 
-  int sight = 1;
-  sight += binoculars;
-
-  for(int i = ypos - sight; i <= ypos + sight; ++i)
-    for(int j = xpos - sight; j <= xpos + sight; ++j) 
-      if(i >= 0 && j >= 0 && i < KSIZE && j < KSIZE) // check if on map
-        frupal[i][j].viewed = true;
-}
+////////////////////////////////////////////////////////////////////////////////
+/*
+    Display functions.  update_display takes in the y, x shift and prints the
+    map according to the shift.  uses enum type conversion to int to match
+    the COLOR_PAIR functions described in main.cpp 1-MEADOW, 2-SWAMP, 3-WATER
+    4-WALL, 5-UNSEEN.
+*/
+////////////////////////////////////////////////////////////////////////////////
 
 void Map::update_display(int starty, int startx) {
 
@@ -115,7 +136,7 @@ void Map::update_display(int starty, int startx) {
         // don't forget to adjust with the scroll: starty, startx
       }
       else {
-        mvwaddch(viewport, i - starty, j - startx, ' ');
+        mvwaddch(viewport, i - starty, j - startx, ' '); // prints grovnick tile
       }
       wattroff(viewport, COLOR_PAIR(color));
 
@@ -123,20 +144,38 @@ void Map::update_display(int starty, int startx) {
 
 }
 
-// ret -1 if off map, wall, water, 2-swamp, 1-meadow
+////////////////////////////////////////////////////////////////////////////////
+/*  
+    Computational functions, helper functions, etc.
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+// ret -1 if off map, wall, or water, 2-swamp, 1-meadow
 int Map::energy_cost(int y, int x) {
   
-  // first checks if off grid, then checks gronick enum type
-  if(y < 0 || x < 0 || y >= KSIZE || x >= KSIZE ||
-    frupal[y][x].square == WALL || frupal[y][x].square == WATER)
+  // first checks if off grid, then checks grovnick enum type
+  if(y < 0 || x < 0 || y >= KSIZE || x >= KSIZE)
     return -1;
   else if(frupal[y][x].square == MEADOW)
     return 1;
   else if(frupal[y][x].square == SWAMP)
     return 2;
+  else if(frupal[y][x].square == WALL || frupal[y][x].square == WATER)
+    return -1;
 
   return 0; // this should never happen though.
 }
 
+// takes in hero's pos & binoculars, adjust map accordingly
+void Map::look_around(int ypos, int xpos, bool binoculars) {
+
+  int sight = 1;
+  sight += binoculars;
+
+  for(int i = ypos - sight; i <= ypos + sight; ++i)
+    for(int j = xpos - sight; j <= xpos + sight; ++j) 
+      if(i >= 0 && j >= 0 && i < KSIZE && j < KSIZE) // check if on map
+        frupal[i][j].viewed = true;
+}
 
 

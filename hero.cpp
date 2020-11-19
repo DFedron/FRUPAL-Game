@@ -11,9 +11,9 @@
 #include "item_tiles.h"
 #include "map.h"
 
+// our 'defaul constructor'
 Hero::Hero(WINDOW * vp, WINDOW * gm) {
 
-  
   xpos = 15;
   ypos = 15;
   whiffles = 1000;
@@ -23,70 +23,47 @@ Hero::Hero(WINDOW * vp, WINDOW * gm) {
   gamemenu = gm;
   viewport = vp;
 
+  // creates map from input file folder
   char loadfile[] = "inputfiles/terrain.txt";
-  map = new Map(viewport, gamemenu, loadfile);
+  map = new Map(viewport, gamemenu, loadfile); // implementation in map.h/cpp
 
-  tool_belt = NULL;
-  curr_item = NULL;
+  tool_belt = NULL; // empty tool belt
+  curr_item = NULL; // empty curr_item(to be passed up from map)
 }
 
 //Hero::Hero(WINDOW * vp, WINDOW * gm, char * filename) {
 //
 //}
 
-void Hero::scroll_function(int& starty, int& startx) {
+////////////////////////////////////////////////////////////////////////////////
+/*
+    These are our display functions.  scroll_function centers hero in map, and
+    makes sure viewport doesn't go out of bounds. update_gamemenu prints the 
+    standard game menu. update_hero prints the hero with scroll mechanism
+*/
+////////////////////////////////////////////////////////////////////////////////
 
-  int centerx, endx, centery, endy, rows, cols;
-
-  // THIS IS THE START OF A COMPLICATED SCROLLING FUNCTION
-  // it's not that complicated but worth taking a look
-  getmaxyx(viewport, rows, cols);
-  centery = rows / 2;
-  centerx = cols / 2;
-
-  startx = xpos - centerx;
-  endx = xpos + centerx;
-
-  if(cols >= KSIZE)
-    startx = 0;
-  else if(startx < 0)
-    startx = 0;
-  else if(endx > KSIZE)
-    startx = KSIZE - cols;
-
-  starty = ypos - centery;
-  endy = ypos + centery;
-
-  if(rows >= KSIZE)
-    starty = 0;
-  else if(starty < 0)
-    starty = 0;
-  else if(endy > KSIZE) {
-    starty = KSIZE - rows;
-  }
-  // END OF SCROLLING MECHANISM
-}
-
+// updates display, kind of a wrapper function
 void Hero::update_display() {
 
   int starty, startx; // will be modified in scroll_function
 
-  werase(viewport);
+  werase(viewport); // resets viewport
   // changes starty, startx to center hero/map
   scroll_function(starty, startx);
 
-  map->look_around(ypos, xpos, binoculars);
+  map->look_around(ypos, xpos, binoculars); // updates map to new view
 
-  map->update_display(starty, startx);
-  update_hero(starty, startx);
+  map->update_display(starty, startx); // prints map based off scroll shift #s
+  update_hero(starty, startx); // prints hero based off scroll shift #s
 
-  update_gamemenu();
+  update_gamemenu(); // erases and reprints gamemenu
 
-  wrefresh(viewport);
-  wrefresh(gamemenu);
-//  refresh();
+  wrefresh(viewport); // refreshes viewport
+  wrefresh(gamemenu); // refreshes game menu
 }
 
+// just erases and redraws the basic gamemenu
 void Hero::update_gamemenu() {
 
   int rows, cols;
@@ -105,6 +82,9 @@ void Hero::update_gamemenu() {
   mvwprintw(gamemenu, rows - 2, 2, "Whiffles: %d", whiffles);
 }
 
+// places the hero on the viewport, shifts by starty and startx
+// which are measured with scroll function, puting hero in center
+// or bound by 0 or KSIZE in map.
 void Hero::update_hero(int starty, int startx) {
 
   wattron(viewport, COLOR_PAIR(6));
@@ -112,6 +92,51 @@ void Hero::update_hero(int starty, int startx) {
   wattroff(viewport, COLOR_PAIR(6));
 
 }
+
+// THIS IS THE START OF A COMPLICATED SCROLLING FUNCTION
+// it's not that complicated but worth taking a look
+void Hero::scroll_function(int& starty, int& startx) {
+
+  int centerx, endx, centery, endy, rows, cols;
+
+  getmaxyx(viewport, rows, cols); // find center of viewport
+  centery = rows / 2;
+  centerx = cols / 2;
+
+  // finds beg and end of x-axis of viewport
+  startx = xpos - centerx;
+  endx = xpos + centerx;
+
+  // makes sure we don't go out of bounds
+  if(cols >= KSIZE)
+    startx = 0;
+  else if(startx < 0)
+    startx = 0;
+  else if(endx > KSIZE)
+    startx = KSIZE - cols;
+
+  // finds beg and end of y-axis of viewport
+  starty = ypos - centery;
+  endy = ypos + centery;
+
+  // makes sure we don't go out of bounds
+  if(rows >= KSIZE)
+    starty = 0;
+  else if(starty < 0)
+    starty = 0;
+  else if(endy > KSIZE) {
+    starty = KSIZE - rows;
+  }
+  // END OF SCROLLING MECHANISM
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/*  updates hero pos.  if map->energy_cost(y,x) -1, it is WATER or WALL so
+    resets position and costs 1 energy, otherwise drops down energy_cost
+    1 for MEADOW, 2 for SWAMP.  updates display reprints entire screen with
+    new positions.
+*/
+////////////////////////////////////////////////////////////////////////////////
 
 void Hero::move_up() {
   int cost;
@@ -168,4 +193,6 @@ void Hero::move_right() {
 
   update_display();
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
