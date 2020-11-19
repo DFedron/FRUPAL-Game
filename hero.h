@@ -13,32 +13,38 @@ class Hero {
 
   public:
     
-    Hero(WINDOW * std, WINDOW * vp, WINDOW * gm);
-//    Hero(WINDOW * stdscr, char * filename);
+    Hero() =delete; // don't need a default constructor
+    Hero(WINDOW * vp, WINDOW * gm); // constructor
+    // TODO create this constructor down here for alternate maps
+//    Hero(WINDOW * vp, WINDOW * gm, char * filename);
 
-    void update_display();
+    void update_display(); // updates hero on viewport after map
 
-    void move_up();
-    void move_down();
+    void move_up(); // moves hero up, updates display
+    void move_down(); // same
     void move_left();
     void move_right();
 
   private:
     
-    int xpos;
-    int ypos;
-    int whiffles;
-    int energy;
-    bool binoculars;
+    int ypos; // hero's pos from top
+    int xpos; // hero's pos from left
+    int whiffles; // hero's whiffles
+    int energy; // hero's energy
+    bool binoculars; // if true, can see 2, otherwise see 1
 
-    Map * map;
+    Map * map; // map object that contains all the functionality for 2D grid
 
-    Item * tool_belt;
-    Item * curr_item; // maybe can use for item interaction?...
+    Item * tool_belt; // will be LLL of Tool class
+    Item * curr_item; // use for interaction, passed up from map
 
-    WINDOW * viewport;
-    WINDOW * gamemenu;
-    WINDOW * stdwindow;
+    WINDOW * viewport; // to have control of vp
+    WINDOW * gamemenu; // to have control of gm
 
-    void update_hero();
+    // takes in scroll parameters, starty, startx, prints hero on screen accoringly
+    void update_hero(int starty, int startx); // updates hero on screen
+    void update_gamemenu(); // prints the standard game menu w/ whiffles/energy
+    void scroll_function(int& starty, int& startx); // determines starty, startx
+    // so we know where to start printing the map and hero relative to viewport
+  
 };
