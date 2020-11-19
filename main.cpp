@@ -19,7 +19,7 @@ int main(int argc, char ** argv)
   // create hero with input file name for == 2
   // regular if == 1
   Hero * hero; // hero object
-  WINDOW * viewport, * in_game; // our 2 windows
+  WINDOW * viewport, * gamemenu; // our 2 windows
   int ch; // input char for getch()
   
   initscr();
@@ -32,20 +32,20 @@ int main(int argc, char ** argv)
   curs_set(0);              // doesn't print cursor to screen
 
   // figures out what the height and width of menu/viewport is
-  int igheight, igwidth = MENUWIDTH, vpheight, vpwidth;
+  int gmheight, gmwidth = MENUWIDTH, vpheight, vpwidth;
   vpheight = LINES;
-  igheight = LINES;
-  vpwidth = COLS - igwidth;
+  gmheight = LINES;
+  vpwidth = COLS - gmwidth;
 
   // changes menu width is screen is really big.
   if(vpwidth > KSIZE) {
     vpwidth = KSIZE;
-    igwidth = COLS - vpwidth;
+    gmwidth = COLS - vpwidth;
   }
 
   viewport = newwin(vpheight, vpwidth, 0, 0); // sets location/height/width of viewport
-  in_game = newwin(igheight, igwidth, 0, vpwidth + 1); // same with menu
-  wborder(in_game, '#', 0, ' ', ' ', '#', 0, '#', 0); // should put just on left side
+  gamemenu = newwin(gmheight, gmwidth, 0, vpwidth + 1); // same with menu
+  wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#', 0); // should put just on left side
 
 
   start_color(); // colors are matched to enum #'s
@@ -58,8 +58,8 @@ int main(int argc, char ** argv)
   init_pair(7,COLOR_WHITE,COLOR_CYAN);    // Royal Diamond
 
 
-  // TODO if argc == 2, create Hero(stdscr, viewport, in_
-  hero = new Hero(stdscr, viewport, in_game);
+  // TODO if argc == 2, create Hero(viewport, in_
+  hero = new Hero(viewport, gamemenu);
  
   refresh(); // starts the screen
   hero->update_display(); // prints the initial screen
@@ -85,8 +85,9 @@ int main(int argc, char ** argv)
     // TODO add in check for hero's energy
     // print 'you died' screen and exit
     // or option to go again?...
+    // also need to make a get_hero_en() function in hero.cpp/h
   }
 
-    endwin();
+    endwin(); // ends window functionality
     return 0;
 }

@@ -11,7 +11,7 @@
 #include "item_tiles.h"
 #include "map.h"
 
-Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm) {
+Hero::Hero(WINDOW * vp, WINDOW * gm) {
 
   
   xpos = 15;
@@ -20,7 +20,6 @@ Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm) {
   energy = 100;
   binoculars = false;
 
-  stdwindow = std;
   gamemenu = gm;
   viewport = vp;
 
@@ -31,7 +30,7 @@ Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm) {
   curr_item = NULL;
 }
 
-//Hero::Hero(WINDOW * std, WINDOW * vp, WINDOW * gm, char * filename) {
+//Hero::Hero(WINDOW * vp, WINDOW * gm, char * filename) {
 //
 //}
 
@@ -116,6 +115,7 @@ void Hero::update_hero(int starty, int startx) {
 
 void Hero::move_up() {
   int cost;
+
   --ypos;
   if((cost = map->energy_cost(ypos, xpos)) == -1) {
     ++ypos;
@@ -129,6 +129,7 @@ void Hero::move_up() {
 
 void Hero::move_down() {
   int cost;
+  
   ++ypos;
   if((cost = map->energy_cost(ypos, xpos)) == -1) {
     --ypos;
@@ -142,6 +143,7 @@ void Hero::move_down() {
 
 void Hero::move_left() {
   int cost;
+
   --xpos;
   if((cost = map->energy_cost(ypos, xpos)) == -1) {
     ++xpos;
@@ -155,6 +157,7 @@ void Hero::move_left() {
 
 void Hero::move_right() {
   int cost;
+
   ++xpos;
   if((cost = map->energy_cost(ypos, xpos)) == -1) {
     --xpos;
