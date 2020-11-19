@@ -8,7 +8,6 @@
 #include <string.h>
 
 #include "hero.h"
-#include "item_tiles.h"
 #include "map.h"
 
 // our 'defaul constructor'

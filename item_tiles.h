@@ -2,14 +2,18 @@
  File name: item_tiles.h
  Author: Austin Anderson
  Group #7
- Version: 0.1
+ Version: 0.2
  */
 
 
-//#ifndef
-//#define
+#ifndef ITEMS_H
+#define ITEMS_H
 
 #include <ncurses.h>
+//Needed for the binoculars
+#include "hero.h"
+//Needed for placement
+#include "map.h"
 
 //Abstract Item base class
 class item{
@@ -29,31 +33,35 @@ class clue : public item{
 
         void random_clue(); //display some random clue
 	private:
+		//I don't think this needs to be here, but I am leaving it in as to not break anything
+		//-Austin Anderson
 	    bool true_false; //determine if the clue is true or false? 	
 };
 
 //Derived tool class
 class tool : public item{
 	public:
-        tool();
+        tool(int cost);
         ~tool();
 
 		//Derived from base class
 		void display_info();
 		int remove_whiffles(int w_rmv);
 	private:
+		//Potentially no longer needed, but also not removing to not break things
+		//-Austin Anderson
 		int tool_cost;
 };
 
 //Derived food class
 class food : public item{
 	public:
-        food();
+        food(int cost, int energy);
         ~food();
 
 		void display_info();
-		int add_energy(int e_added);
-		int remove_whiffles(int w_rmv);
+		int add_energy(Hero * hero);
+		int remove_whiffles(Hero * hero);
 
 	private:
 		int food_cost;
@@ -63,11 +71,11 @@ class food : public item{
 //Derived obstacle class
 class obstacle : public item{
 	public:
-        obstacle();
+        obstacle(int movement_cost);
         ~obstacle();
 
 		void display_info();
-		int remove_energy(int e_rmv);
+		int remove_energy(Hero * hero);
 
 	private:
 		int e_cost;
@@ -76,11 +84,11 @@ class obstacle : public item{
 //Derived treasure chest class
 class treasure_chest : public item{
 	public:
-        treasure_chest();
+        treasure_chest(int value);
         ~treasure_chest();
 
 		void display_info();
-		int add_whiffles(int w_added);
+		int add_whiffles(Hero * hero);
 
 	private:
 		int w_value;
@@ -89,10 +97,10 @@ class treasure_chest : public item{
 //Derived ship class
 class ship : public item{
 	public:
-        ship();
+        ship(int cost);
         ~ship();
 
-		void display_item();
+		void display_info();
 		int remove_whiffles(int w_rmv);
 
 	private:
@@ -106,7 +114,7 @@ class binoculars : public item{
         ~binoculars();
 
 		void display_info();
-		int add_vision();
+		int add_vision(Hero * hero);
 };
 
-//#endif
+#endif
