@@ -1,210 +1,181 @@
-#include "map.h"
-#include <iostream>
-#include <string>
+/* potential rewrite of Map class
+   I just want to see a working model up 
+   on our github, so we'll see if this sticks
+   November 17, 2020
+*/
+
 #include <ncurses.h>
+#include <string>
 #include <fstream>
+#include "map.h"
 
 using namespace std;
 
+////////////////////////////////////////////////////////////////////////////////
+/*
+    Our default constructors.  Normal default constructor deleted. The first
+    Map constructor doesn't get used except for testing.
+*/
+////////////////////////////////////////////////////////////////////////////////
 
-//--- INITIALIZES MAP TO MEADOW GROVNICKS ---//
+// used for testing just sets entire map to unviewed itemless meadow
+Map::Map(WINDOW * vp, WINDOW * gm) {
 
-Map::Map(){
-     map_size = 40;
-   
-     ifstream infile;
-     infile.open("terrain.txt");
-     if(!infile)
-     {   printw("Cannot open file.");
-        exit(1);
-     }
-     int i = 0;
-     while(!infile.eof()){
-         
-          infile>>terrain_list[i];
-          infile.ignore(100, '\n'); 
-          i++;
-     }
-     infile.close();
+  viewport = vp;
+  gamemenu = gm;
 
-    for(int i = 0;i < map_size; i++){
-      for(int j = 0;j < map_size; j++){
-          map[i][j].input_terrain(COLOR_PAIR(1),1);
-      }
-    }
-   input_color_value();
-}
-
-// -- INPUTS COLOR_PAIR VALUE TO LIST --//
-void Map::input_color_value(){
-   for(int i = 0; i < terrain_num; i++)
-        color_value_list[i] = COLOR_PAIR(i+2);   
- 
-}
-void Map::load_map(){  
-
-     for(int i = 0;i< terrain_num; i++) {
-       int energy_cost = 1;
-       if(terrain_list[i] == "swamp.txt" )
-           energy_cost = 2; 
-        load_terrain(terrain_list[i],color_value_list[i],energy_cost);
-     }
-
-}
-void Map::load_terrain(string file, int color_value,int e_cost){
-     int MAX = 100;
-     int x, y = 0;
-
-     ifstream infile;
-     infile.open(file);
-
-     if(!infile)
-     {   printw("Cannot open file.");
-        exit(1);
-     }
-     while(!infile.eof()){
-          infile>>y;
-          infile.get();
-          infile.clear();
-          infile>>x;
-          infile.ignore(MAX, '\n'); 
-          map[y][x].input_terrain(color_value,e_cost); 
-     }
-     infile.close();
-}
-void Map::print_map(){
-
-    for(int i = 0;i<map_size;i++){
-       for(int j = 0;j < map_size; j++){
-           attron(map[i][j].get_terrain_color_value()); 
-           map[i][j].print();
-           attroff(map[i][j].get_terrain_color_value()); 
-      }
-      printw("\n");
+  for(int i = 0; i < KSIZE; ++i)
+    for(int j = 0; j < KSIZE; ++j) {
+      frupal[i][j].square = MEADOW;
+      frupal[i][j].viewed = false; // true total map, false for view
+      frupal[i][j].feature = NULL; 
     }
 }
- void Map::print_grovnick(int i, int j){
-   map[i][j].print();
+
+// Our default constructor
+Map::Map(WINDOW * vp, WINDOW * gm, char * inputfile) {
+
+  viewport = vp; // sets viewport for easy access
+  gamemenu = gm; // sets gamemenu for easy access
+
+  // initally sets to unviewed, itemless MEADOW
+  for(int i = 0; i < KSIZE; ++i)
+    for(int j = 0; j < KSIZE; ++j) {
+      frupal[i][j].square = MEADOW;
+      frupal[i][j].viewed = false; // true total map, false for view
+      frupal[i][j].feature = NULL; 
+    }
+
+  load_map(inputfile);
+
 }
 
-bool Map::colors_match(int i, int j, int pair){
-   if(map[i][j].get_terrain_color_value() == pair)
-       return true;
-   else 
-      return false;
+////////////////////////////////////////////////////////////////////////////////
+/*
+    Loading functions, first function loads file based on string.  loads that
+    into a string array.  That array is filled with other files with drawings
+    for the map.  Those files are loaded in in the load_terrain function.
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+void Map::load_map(string file) {
+
+  ifstream infile;
+  infile.open(file);
+  if(!infile) {
+    printw("Cannot open file.");
+    exit(1);
+  }
+
+  int i = 0;
+  string terrain_list[NUMTERRAIN];
+
+  while(!infile.eof()) {
+    infile >> terrain_list[i];
+    infile.ignore(100, '\n');
+    ++i;
+  }
+  infile.close();
+
+  for(i = 0; i < NUMTERRAIN; ++i)
+    load_terrain(terrain_list[i]);
+
 }
 
+void Map::load_terrain(string file) {
 
-void Map::edit_map(int lines, int cols,WINDOW * viewport){
+  int i, j, temp_terrain;
 
-//--  CURSOR STARTING POSITION --//
-   int row = lines/3;
-   int col = cols/3;
- 
-   char c = 'p';
-   int input = 0;
+  ifstream infile;
+  infile.open(file);
 
-    keypad(viewport, TRUE); 
+  if(!infile) { // error handling
+    printw("Cannot open file.");
+    exit(1);
+  }
 
-    while(1){
-       if(c == 'p'){ 
-          input = wgetch(viewport);
-       
-          switch(input)
-          {
-             case KEY_UP:
-                  if(row != 0)
-                     move(--row,col);
-                  print_grovnick(row,col);
-                     move(row,col); 
-                  break;
-             case KEY_DOWN:
-                  if(row < map_size-1)
-                       move(++row,col);
-                  print_grovnick(row,col);
-                     move(row,col); 
-                  break;
-            case KEY_LEFT:
-                  if(col != 0)
-                       move(row,--col);
-                  print_grovnick(row,col);
-                     move(row,col); 
-                  break;
-            case KEY_RIGHT:
-                  if(col < map_size-1)
-                       move(row,++col);
-                  print_grovnick(row,col);
-                     move(row,col); 
-                  break;
-            case 'm':
-                  edit_terrain(row,col,COLOR_PAIR(1));
-                  move(row,col);
-                  break;
-            case 's':
-                  edit_terrain(row,col,COLOR_PAIR(2));
-                  move(row,col);
-                  break;                          
-            case 'w':
-                  edit_terrain(row,col,COLOR_PAIR(3));
-                  move(row,col);
-                  break;                          
-            case 'l':
-                  edit_terrain(row,col,COLOR_PAIR(4));
-                  move(row,col);
-                  break;                          
-            case 'q':
-                  c = 'q';
-                  break;
-            case 't':
-                  printw("T");
-                  break;
-            case 'f':
-                  printw("F");
-                  break;
-            default:
-                  break;
-        }  //end switch
-          refresh();
-      }   //end c == p
-      else if(c == 'q')
-        break;
+  // sample input: terrain#, yval, xval
+  while(!infile.eof()) {
+    infile >> temp_terrain; // loads in first num = enum type
+    infile.get();
+    infile >> i;  // gets the yvalue of grovnick
+    infile.get();
+    infile >> j;  // gets the xvalue of grovnick
+    infile.ignore(100, '\n');
+      // this converts the number to the matching enum terrain type
+    frupal[i][j].square = static_cast<terrain>(temp_terrain);
+  }
+  infile.close();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/*
+    Display functions.  update_display takes in the y, x shift and prints the
+    map according to the shift.  uses enum type conversion to int to match
+    the COLOR_PAIR functions described in main.cpp 1-MEADOW, 2-SWAMP, 3-WATER
+    4-WALL, 5-UNSEEN.
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+void Map::update_display(int starty, int startx) {
+
+  int i, j, color, rows, cols;
+  getmaxyx(viewport, rows, cols);
+
+  for(i = starty; i < starty + rows && i < KSIZE; ++i)
+    for(j = startx; j < startx + cols && j < KSIZE; ++j) {
+      // this converts enum type to int match to color pair
+      if(frupal[i][j].viewed)
+        color = frupal[i][j].square; // converts enum to #, matched in main
       else
-        break;
-    } //end while loop
+        color = UNSEEN; // UNSEEN = 5 matches init_pair in main
+
+      wattron(viewport, COLOR_PAIR(color));
+      if(frupal[i][j].feature) {
+        // TODO add in something to print out feature tiles
+        // don't forget to adjust with the scroll: starty, startx
+      }
+      else {
+        mvwaddch(viewport, i - starty, j - startx, ' '); // prints grovnick tile
+      }
+      wattroff(viewport, COLOR_PAIR(color));
+
+    }
+
 }
 
-//--CHANGES GROVNICK TERRAIN DATA --//
+////////////////////////////////////////////////////////////////////////////////
+/*  
+    Computational functions, helper functions, etc.
+*/
+////////////////////////////////////////////////////////////////////////////////
 
-void Map::edit_terrain(int i, int j, int color_pair_value){
+// ret -1 if off map, wall, or water, 2-swamp, 1-meadow
+int Map::energy_cost(int y, int x) {
+  
+  // first checks if off grid, then checks grovnick enum type
+  if(y < 0 || x < 0 || y >= KSIZE || x >= KSIZE)
+    return -1;
+  else if(frupal[y][x].square == MEADOW)
+    return 1;
+  else if(frupal[y][x].square == SWAMP)
+    return 2;
+  else if(frupal[y][x].square == WALL || frupal[y][x].square == WATER)
+    return -1;
 
-    if(color_pair_value == COLOR_PAIR(3))  /* IF WATER TERRAIN */
-        map[i][j].input_terrain(color_pair_value,2);
-    else
-       map[i][j].input_terrain(color_pair_value,1);
-    
-    print_grovnick(i,j);
+  return 0; // this should never happen though.
 }
 
+// takes in hero's pos & binoculars, adjust map accordingly
+void Map::look_around(int ypos, int xpos, bool binoculars) {
 
-void Map::save_map(){
+  int sight = 1;
+  sight += binoculars;
 
-       ofstream outfile;
-
-       for(int n = 0; n < terrain_num; n++){ 
-     
-          outfile.open(terrain_list[n]);
-          
-          for(int i = 0; i < map_size;i++){
-            for(int j = 0; j < map_size;j++){
-               if(colors_match(i,j,COLOR_PAIR(n+2))){
-               outfile << i;
-               outfile << ";";
-               outfile << j;
-               outfile << "\n";
-               }
-            } 
-          }
-          outfile.close();
-       }
+  for(int i = ypos - sight; i <= ypos + sight; ++i)
+    for(int j = xpos - sight; j <= xpos + sight; ++j) 
+      if(i >= 0 && j >= 0 && i < KSIZE && j < KSIZE) // check if on map
+        frupal[i][j].viewed = true;
 }
+
 
