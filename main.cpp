@@ -152,6 +152,10 @@ void start()
         hero->move_down();
         break;
     }
+    if(hero->check_energy()){
+   // 	timeout(2000); //wait 2 second;
+	break;
+    }
     // TODO add in check for hero's energy
     // print 'you died' screen and exit
     // or option to go again?...
