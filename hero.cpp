@@ -62,11 +62,12 @@ void Hero::update_display() {
   wrefresh(gamemenu); // refreshes game menu
 }
 
+// returns true if dead, false otherwise
 bool Hero::check_energy(){
-	if(energy < 1)
-		return true;
-	else
-		return false;
+  if(energy < 1)
+    return true;
+  else
+    return false;
 }
 
 void Hero::add_energy(int en) {

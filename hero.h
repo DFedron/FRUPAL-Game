@@ -19,6 +19,8 @@ class Hero {
 //    Hero(WINDOW * vp, WINDOW * gm, char * filename);
 
     void update_display(); // updates hero on viewport after map
+
+    // returns false if energy is 0 or less, returns true otherwise
     bool check_energy(); // check hero's energy
     void move_up(); // moves hero up, updates display
     void move_down(); // same
