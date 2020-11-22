@@ -63,18 +63,14 @@ void Hero::update_display() {
 }
 
 bool Hero::check_energy(){
-	if(energy < 1){
-		werase(viewport);
-		int rows, cols;
-		getmaxyx(viewport, rows, cols);
-		mvwprintw(viewport, rows/2-1, (cols-10)/2, "Game Over!");
-		mvwprintw(viewport, rows/2, (cols-10)/2, "Hero died!");
-		wrefresh(viewport);
-//		wtimeout(viewport,2000);
+	if(energy < 1)
 		return true;
-	}
 	else
 		return false;
+}
+
+void Hero::add_energy(int en) {
+  energy += en;
 }
 
 // just erases and redraws the basic gamemenu
