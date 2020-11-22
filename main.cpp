@@ -13,7 +13,10 @@
 
 using namespace std;
 
-void start();
+int startmenu();
+void gameplay();
+bool end_game_menu(Hero * hero);
+
 int main(int argc, char ** argv) 
 {
   // TODO check for argc#, exit exception for > 2
@@ -28,7 +31,8 @@ int main(int argc, char ** argv)
   // LINES < 24 or COLS < 80.
   if(LINES < 24 || COLS < 80){
   	cout << "Your screen is less than 80*24\n";
-	return 0;
+    endwin();
+    return 0;
   }
 
   noecho();                 // doesn't print input char to screen
@@ -49,8 +53,17 @@ int main(int argc, char ** argv)
   // The primary control of game is move to the function below called start() //
   //////////////////////////////////////////////////////////////////////////////
   
+  if(startmenu() == 0) {
+    erase();
+    gameplay();
+  }
+  endwin();
+  return 0;
+}
+
   
-  
+int startmenu()
+{
   //This is start menu
   //Maybe add customized function?
 	string option[2] = {"1.Start Game","0.Exit"};
@@ -59,55 +72,55 @@ int main(int argc, char ** argv)
   while (true)
   {	
   	WINDOW * mainMenu = newwin(7, COLS-16, LINES-13, 7);
-	box(mainMenu,0,0);
-	refresh();
-	wrefresh(mainMenu);
-	keypad(mainMenu, true);
-	for(int i=0; i<2; ++i)
-	{
-		if(i == hightlight)
-			wattron(mainMenu, A_REVERSE);
-		//make sure it's on the center.
-		//12 is length of the "1.Start Game"
-		mvwprintw(mainMenu, i+1, (COLS-16-12)/2, option[i].c_str());
-		wattroff(mainMenu, A_REVERSE);
-	}		
+  	box(mainMenu,0,0);
+    refresh();
+    wrefresh(mainMenu);
+    keypad(mainMenu, true);
+    for(int i=0; i<2; ++i)
+    {
+    	if(i == hightlight)
+    		wattron(mainMenu, A_REVERSE);
+    	//make sure it's on the center.
+    	//12 is length of the "1.Start Game"
+    	mvwprintw(mainMenu, i+1, (COLS-16-12)/2, option[i].c_str());
+    	wattroff(mainMenu, A_REVERSE);
+    }		
 		choice = wgetch(mainMenu);
 		switch (choice)
-	    	{
-	      	case 10: //10 is the value of the key Enter
-	      		if(hightlight == 0){
-				clear();
-	      			start();  //start the game
-			}
-	      		else if (hightlight == 1){
-				endwin();
-	      			return 0;
-			}
-	      		break;
-		  	case KEY_UP:
-	       	 	--hightlight;
-	       	 	if(hightlight < 0)
-	       	 		hightlight = 0;
-	        	break;
-	      	case KEY_DOWN:
-	       	 	++hightlight;
-	       	 	if(hightlight > 1)
-	       	 		hightlight = 1;
-	        	break;
-	    	default:
-	    		break;
-	    	}
+	  {
+	   	case 10: //10 is the value of the key Enter
+//	     	if(hightlight == 0){
+//				  clear();
+//	      	start();  //start the game
+//			  }
+//	      else if (hightlight == 1){
+//				  endwin();
+//	      	return 0;
+//			  }
+        return hightlight;
+	      break;
+		  case KEY_UP:
+	      --hightlight;
+	      if(hightlight < 0)
+	      	hightlight = 0;
+	      break;
+	    case KEY_DOWN:
+	      ++hightlight;
+	      if(hightlight > 1)
+	      	hightlight = 1;
+	      break;
+	    default:
+	    	break;
+    }
 	    
 	clear();
 	refresh();
   }
     endwin(); // ends window functionality
     return 0;
-   
 }
 
-void start()
+void gameplay()
 {
   // TODO if argc == 2, create Hero(viewport, in_
   
@@ -154,11 +167,44 @@ void start()
     }
     if(hero->check_energy()){
    // 	timeout(2000); //wait 2 second;
-	break;
+      if(end_game_menu(hero))
+        continue;
+      else
+	      break;
     }
     // TODO add in check for hero's energy
     // print 'you died' screen and exit
     // or option to go again?...
     // also need to make a get_hero_en() function in hero.cpp/h
   }
+}
+
+bool end_game_menu(Hero * hero)
+{
+  nodelay(stdscr, false);
+  WINDOW * endgame;
+
+  endgame = newwin(20, 50, (LINES - 20) / 2, (COLS - 50) / 2);
+
+  wborder(endgame, '#', '#', '#', '#', '#', '#', '#', '#'); // should put border
+
+  mvwprintw(endgame, 7, 20, "Game Over!");
+	mvwprintw(endgame, 8, 20, "Hero died!");
+  mvwprintw(endgame, 9, 11, "Add 100 Energy for 25 cents?");
+  mvwprintw(endgame, 10, 18, "(Y)es or (N)o?");
+  wrefresh(endgame);
+
+  int ch;
+  ch = getch();
+  while(ch != 'y' && ch != 'n')
+    ch = getch();
+
+  if(ch == 'y') {
+    hero->add_energy(100);
+    hero->update_display();
+    nodelay(stdscr, true);
+    return true;
+  }
+  else
+    return false;
 }

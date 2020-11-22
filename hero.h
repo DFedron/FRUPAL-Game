@@ -25,6 +25,8 @@ class Hero {
     void move_left();
     void move_right();
 
+    void add_energy(int en);
+
   private:
     
     int ypos; // hero's pos from top
