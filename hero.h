@@ -20,7 +20,7 @@ class Hero {
 
     void update_display(); // updates hero on viewport after map
 
-    // returns false if energy is 0 or less, returns true otherwise
+    // returns true if energy is 0 or less, returns false otherwise
     bool check_energy(); // check hero's energy
     void move_up(); // moves hero up, updates display
     void move_down(); // same
