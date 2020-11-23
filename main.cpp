@@ -9,6 +9,7 @@
 #include <iostream>
 #include <ncurses.h>
 #include <string>
+#include <cstring>
 #define MENUWIDTH 35 // sets the menu width
 
 using namespace std;
@@ -27,7 +28,15 @@ int main(int argc, char **argv) {
   initscr();
   if (LINES < 24 || COLS < 80) {
     // TODO  maybe make a seperate function that makes this look nice.
-    cout << "Your screen is less than 80*24\n";
+    char string[] = "Terminal is smaller than 80x24. Please resize your terminal!";
+    int x = (COLS/2) - (strlen(string)/2);
+    int y = LINES/2;
+
+    mvprintw(y, x, string);
+    wborder(stdscr, '#', '#', '#', '#', '#', '#', '#', '#');
+    refresh();
+    getch();
+
     endwin();
     return 0;
   }
