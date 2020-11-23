@@ -18,6 +18,7 @@ Hero::Hero(WINDOW * vp, WINDOW * gm) {
   whiffles = 1000;
   energy = 100;
   binoculars = false;
+  cash = 100;
 
   gamemenu = gm;
   viewport = vp;
@@ -70,8 +71,12 @@ bool Hero::check_energy(){
     return false;
 }
 
-void Hero::add_energy(int en) {
+bool Hero::add_energy(int en) {
+  cash -= 25; // player loses 25 cents per try
   energy += en;
+  if (cash < 1)
+      return false;
+  return true;
 }
 
 // just erases and redraws the basic gamemenu
@@ -91,6 +96,7 @@ void Hero::update_gamemenu() {
   mvwprintw(gamemenu, 1, 1, "Menu:");
   mvwprintw(gamemenu, rows - 3, 2, "Energy: %d", energy);
   mvwprintw(gamemenu, rows - 2, 2, "Whiffles: %d", whiffles);
+  mvwprintw(gamemenu, rows - 1, 2, "Player Cash: %d", cash);
 }
 
 // places the hero on the viewport, shifts by starty and startx
