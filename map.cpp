@@ -68,10 +68,10 @@ Map::Map(WINDOW * vp, WINDOW * gm, char * inputfile) {
     infile.close();
 
     load_items();
-    update_display(0,0); 
+   update_display(0,0); 
 
-   edit_item_map();
-   save_item_map();
+//   edit_item_map();
+//   save_item_map();
 
 }
 
@@ -314,8 +314,13 @@ bool Map::has_item(int i,int j){
       return frupal[i][j].feature;
 }
 void Map::print_item(WINDOW * gm, int i, int j){
-     frupal[i][j].feature->display_info(gm,10,2);
+     frupal[i][j].feature->display_info(gm,3,2);
 }
+
+void Map::get_item(Item *& item,int i,int j){
+      item = frupal[i][j].feature;
+
+} 
 void Map::edit_item_map(){
 
   update_display(0,0);
@@ -353,7 +358,7 @@ void Map::edit_item_map(){
                           if(row > 0){
                                starty = --row;
                                if(frupal[row][col].feature)
-                                   frupal[row][col].feature->display_info(gamemenu,10,2);
+                                   frupal[row][col].feature->display_info(gamemenu,4,2);
                                scroll_function(starty,startx,row, col);
                                update_display(starty,startx);
                                wmove(viewport,row,col);
@@ -363,7 +368,7 @@ void Map::edit_item_map(){
                           if(row < KSIZE-1){
                                starty = ++row;
                                if(frupal[row][col].feature)
-                                   frupal[row][col].feature->display_info(gamemenu,10,2);
+                                   frupal[row][col].feature->display_info(gamemenu,4,2);
                                scroll_function(starty,startx,row, col);
                                update_display(starty,startx);
                                wmove(viewport, row,col);
@@ -373,7 +378,7 @@ void Map::edit_item_map(){
                           if(col > 0){
                                startx = --col;
                                if(frupal[row][col].feature)
-                                   frupal[row][col].feature->display_info(gamemenu,10,2);
+                                   frupal[row][col].feature->display_info(gamemenu,4,2);
                                scroll_function(starty,startx,row, col);
                                update_display(starty,startx);
                                wmove(viewport,row,col);
@@ -383,7 +388,7 @@ void Map::edit_item_map(){
                           if(col < KSIZE -1){
                                startx = ++col;
                                if(frupal[row][col].feature)
-                                   frupal[row][col].feature->display_info(gamemenu,10,2);
+                                   frupal[row][col].feature->display_info(gamemenu,4,2);
                                scroll_function(starty,startx,row, col);
                                update_display(starty,startx);
                                wmove(viewport,row,col);

@@ -5,6 +5,8 @@
 */
 
 #include <ncurses.h>
+#include <string>
+using namespace std;
 
 class Item; // pre declaration
 class Map; // another pre declaration
@@ -24,7 +26,9 @@ class Hero {
     void move_down(); // same
     void move_left();
     void move_right();
-
+    void engage_item(int ypos, int xpos);
+    bool tool_match(Item *& curr_tool, string type);   
+    void print_tool_belt(Item * t_belt, int row);
   private:
     
     int ypos; // hero's pos from top

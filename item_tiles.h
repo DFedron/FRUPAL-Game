@@ -23,7 +23,7 @@ class Item{
             Item();
             Item(char icon,string type);
             Item(const Item & item);   // initializes to item. useful for adding tools to hero's toolbelt
-            Item *& get_next();         // returns item
+            Item *& get_next();         // returns next
             void get_type(string & type);       // returns type    
             void get_icon(char &i);
             void print_icon(WINDOW * viewport,int color);
