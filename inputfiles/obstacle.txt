@@ -1,0 +1,3 @@
+!;obstacle;boulder;110;15;53
+!;obstacle;tree;90;27;33
+!;obstacle;hidden treasure gate;1000;29;35

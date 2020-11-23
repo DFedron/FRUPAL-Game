@@ -62,18 +62,6 @@ void Hero::update_display() {
   wrefresh(gamemenu); // refreshes game menu
 }
 
-// returns true if dead, false otherwise
-bool Hero::check_energy(){
-  if(energy < 1)
-    return true;
-  else
-    return false;
-}
-
-void Hero::add_energy(int en) {
-  energy += en;
-}
-
 // just erases and redraws the basic gamemenu
 void Hero::update_gamemenu() {
 
@@ -156,11 +144,16 @@ void Hero::move_up() {
   if((cost = map->energy_cost(ypos, xpos)) == -1) {
     ++ypos;
     --energy;
+
   }
   else
     energy -= cost;
-
+   
   update_display();
+
+  if(map->has_item(ypos,xpos))
+       map->print_item(gamemenu, ypos,xpos);
+
 }
 
 void Hero::move_down() {
@@ -175,6 +168,10 @@ void Hero::move_down() {
     energy -= cost;
 
   update_display();
+
+  if(map->has_item(ypos,xpos))
+       map->print_item(gamemenu, ypos,xpos);
+
 }
 
 void Hero::move_left() {
@@ -189,6 +186,10 @@ void Hero::move_left() {
     energy -= cost;
 
   update_display();
+
+  if(map->has_item(ypos,xpos))
+       map->print_item(gamemenu, ypos,xpos);
+
 }
 
 void Hero::move_right() {
@@ -203,6 +204,10 @@ void Hero::move_right() {
     energy -= cost;
 
   update_display();
+ 
+ if(map->has_item(ypos,xpos))
+       map->print_item(gamemenu, ypos,xpos);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////

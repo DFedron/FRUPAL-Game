@@ -13,21 +13,17 @@ class Hero {
 
   public:
     
-    Hero() =delete; // don't need a default constructor
+//    Hero() =delete; // don't need a default constructor
     Hero(WINDOW * vp, WINDOW * gm); // constructor
     // TODO create this constructor down here for alternate maps
 //    Hero(WINDOW * vp, WINDOW * gm, char * filename);
 
     void update_display(); // updates hero on viewport after map
 
-    // returns true if energy is 0 or less, returns false otherwise
-    bool check_energy(); // check hero's energy
     void move_up(); // moves hero up, updates display
     void move_down(); // same
     void move_left();
     void move_right();
-
-    void add_energy(int en);
 
   private:
     

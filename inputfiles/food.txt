@@ -1,0 +1,6 @@
+F;food;Baked Ham;10;50;14;32
+F;food;Wild Turnips;50;110;15;34
+F;food;Swamp Vegetable;5;1;16;35
+F;food;Kweedus Meat;100;500;17;36
+F;food; ;0;0;55;15
+F;food; ;0;0;88;15
