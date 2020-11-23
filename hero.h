@@ -27,7 +27,7 @@ class Hero {
     void move_left();
     void move_right();
 
-    bool add_energy(int en);
+    void add_energy(int en);
 
   private:
     
@@ -35,7 +35,6 @@ class Hero {
     int xpos; // hero's pos from left
     int whiffles; // hero's whiffles
     int energy; // hero's energy
-    int cash; // amount of money the player has to retry
     bool binoculars; // if true, can see 2, otherwise see 1
 
     Map * map; // map object that contains all the functionality for 2D grid

@@ -202,13 +202,8 @@ bool end_game_menu(Hero *hero) {
 
   // if yes, add's 100 energy to hero returns true
   // refreshes display to get fully rid of game over window
-  //
-  // Added a 'wallet' for the player: 100 cents
   if (ch == 'y') {
-    bool check;
-    check = hero->add_energy(100);
-    if (!check)
-        return false;
+    hero->add_energy(100);
     erase();
     refresh();
     hero->update_display();
