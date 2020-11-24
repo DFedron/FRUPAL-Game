@@ -205,10 +205,13 @@ bool end_game_menu(Hero *hero) {
   //
   // Added a 'wallet' for the player: 100 cents
   if (ch == 'y') {
+    /* Commented out to not affect testing
     bool check;
     check = hero->add_energy(100);
     if (!check)
         return false;
+    */
+    hero->add_energy(100);
     erase();
     refresh();
     hero->update_display();
