@@ -1,0 +1,20 @@
+Tools:
+Icon, item type, tool name, rating, obstacle type, tool cost, x, y
+
+Food: 
+Icon, item type, food name, energy amount, cost, x, y
+
+Obstacle:
+Icon, item type, obstacle name, required energy, x, y
+
+Clue:
+Icon, item type, clue message, x, y
+
+Treasure chest:
+Icon, item type, whiffle amount, x, y
+
+Ship:
+Icon, item type, obstacle type, cost, x, y
+
+Binoculars:
+Icon, item type, cost, x, y

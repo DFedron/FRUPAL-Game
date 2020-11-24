@@ -5,11 +5,10 @@
 */
 
 #include <string>
-
+#include "item_tiles.h"
 #define KSIZE 128 // defines kingdom size
 #define NUMTERRAIN 3 // defines # of terrain files
-
-class Item; // pre declaration
+#define NUMITEM 7  //defines # of item filesclass Item; // pre declaration
 
 enum terrain {NONE, MEADOW, SWAMP, WATER, WALL, UNSEEN};
 
@@ -27,7 +26,7 @@ class Map {
 
   public:
 
-  Map() =delete;
+//  Map() =delete;
   Map(WINDOW * vp, WINDOW * gm);
   Map(WINDOW * vp, WINDOW * gm, char * inputfile);
   
@@ -36,6 +35,20 @@ class Map {
                                  // 2-swamp, 1-meadow
 
   void look_around(int ypos, int xpos, bool binoculars);
+  void scroll_function(int&starty,int&start,int ypos, int xpos);
+ 
+///// ----  Item input/output/edit/print functions   ---- /////
+     void create_item(char icon, int i, int j);
+     void remove_item(int row,int col);
+     bool has_item(int i, int j);
+     void print_item(WINDOW*gm,int i, int j);
+     void get_item(Item *& item,int i, int j);
+     void load_items();
+     void edit_item_map();
+     void save_item_map();
+     void save_item(string file);
+
+
 
   private:
     
@@ -46,5 +59,7 @@ class Map {
 
     void load_terrain(string file); // loads a terrain file
     void load_map(string file); // loads ALL the terrain files
+    
+    string item_list[NUMITEM];
 };
 

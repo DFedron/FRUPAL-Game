@@ -18,7 +18,6 @@ Hero::Hero(WINDOW * vp, WINDOW * gm) {
   whiffles = 1000;
   energy = 100;
   binoculars = false;
-  cash = 100;
 
   gamemenu = gm;
   viewport = vp;
@@ -63,22 +62,6 @@ void Hero::update_display() {
   wrefresh(gamemenu); // refreshes game menu
 }
 
-// returns true if dead, false otherwise
-bool Hero::check_energy(){
-  if(energy < 1)
-    return true;
-  else
-    return false;
-}
-
-bool Hero::add_energy(int en) {
-  cash -= 25; // player loses 25 cents per try
-  energy += en;
-  if (cash < 1)
-      return false;
-  return true;
-}
-
 // just erases and redraws the basic gamemenu
 void Hero::update_gamemenu() {
 
@@ -96,7 +79,6 @@ void Hero::update_gamemenu() {
   mvwprintw(gamemenu, 1, 1, "Menu:");
   mvwprintw(gamemenu, rows - 3, 2, "Energy: %d", energy);
   mvwprintw(gamemenu, rows - 2, 2, "Whiffles: %d", whiffles);
-  mvwprintw(gamemenu, rows - 1, 2, "Player Cash: %d", cash);
 }
 
 // places the hero on the viewport, shifts by starty and startx
@@ -162,11 +144,17 @@ void Hero::move_up() {
   if((cost = map->energy_cost(ypos, xpos)) == -1) {
     ++ypos;
     --energy;
+
   }
   else
     energy -= cost;
-
+   
   update_display();
+
+  if(map->has_item(ypos,xpos)){
+       map->print_item(gamemenu, ypos,xpos);
+       engage_item(ypos,xpos);
+  }
 }
 
 void Hero::move_down() {
@@ -181,6 +169,11 @@ void Hero::move_down() {
     energy -= cost;
 
   update_display();
+
+  if(map->has_item(ypos,xpos)){
+       map->print_item(gamemenu, ypos,xpos);
+       engage_item(ypos,xpos);
+  }
 }
 
 void Hero::move_left() {
@@ -195,6 +188,12 @@ void Hero::move_left() {
     energy -= cost;
 
   update_display();
+
+  if(map->has_item(ypos,xpos)){
+       map->print_item(gamemenu, ypos,xpos);
+       engage_item(ypos,xpos);
+  }
+
 }
 
 void Hero::move_right() {
@@ -209,7 +208,135 @@ void Hero::move_right() {
     energy -= cost;
 
   update_display();
+ 
+  if(map->has_item(ypos,xpos)){
+       map->print_item(gamemenu, ypos,xpos);
+       engage_item(ypos,xpos);
+//       engage_item(map->frupal[ypos][xpos]->feature);
+  }
 }
 
+///function for interacting with items
+void Hero::engage_item(int ypos, int xpos){
+
+       //if food, tool, ship or binoculars, ask for purchase
+       // if yes, subtract cost from account, add tool to belt, add ship somewhere, binoculars is true, add energy to hero energy
+      //after purchase, map removes item from map
+
+      //curr_item gets item        
+      map->get_item(curr_item,ypos,xpos);
+      
+      Food * food_ptr = dynamic_cast<Food*>(curr_item);
+      Tool * tool_ptr = dynamic_cast<Tool*>(curr_item);
+      Obstacle * ob_ptr = dynamic_cast<Obstacle*>(curr_item);
+      Ship * ship_ptr = dynamic_cast<Ship*>(curr_item);
+      Binoculars * bino_ptr = dynamic_cast<Binoculars*>(curr_item);
+      Treasure_chest * treasure_ptr = dynamic_cast<Treasure_chest*>(curr_item);
+
+
+      if(food_ptr)
+      {
+           whiffles -= curr_item->get_cost();
+           energy += curr_item->get_energy();           
+           map->remove_item(ypos,xpos); 
+      }
+      else if(tool_ptr)
+      {
+           if(!tool_belt){
+                 tool_belt = new Tool(*tool_ptr);
+           }
+           else{ 
+                Item * temp = new Tool(*tool_ptr);
+                 temp->get_next() = tool_belt; 
+                 tool_belt = temp;
+           }
+           whiffles -= curr_item->get_cost();
+      }
+      else if(ob_ptr)
+      {
+           if(tool_belt){
+                int row = 25;
+                mvwprintw(gamemenu, row,3, "Tools in Tool Belt: ");
+                print_tool_belt(tool_belt,++row);
+
+                string type;
+                curr_item->get_type(type);   //gets type of obstacle
+                Item * curr_tool = tool_belt;
+
+                if(!tool_match(curr_tool,type)) // if no tool match is found
+                   energy -= ob_ptr->get_energy(); 
+           }
+           else
+              energy -= ob_ptr->get_energy(); 
+      }
+      else if(ship_ptr)
+      {
+         //should there be a bool ship? true if you have it false if not? 
+      }
+      else if(bino_ptr)
+      {
+          binoculars = true;
+      }
+      else if(treasure_ptr)
+      {
+          whiffles += treasure_ptr->get_whiffles();
+      }
+          
+      curr_item = NULL;
+      map->remove_item(ypos,xpos);
+  
+}
+
+bool Hero::tool_match(Item *& curr_tool,string type){
+     if(!curr_tool)
+          return false;
+     string ob_type;
+     curr_tool->get_obstacle_type(ob_type);
+
+     if(type.compare(ob_type)){
+         float quotient = curr_item->get_energy() / tool_belt->get_energy(); 
+         energy -= static_cast<int>(quotient);    
+         
+          string tool_name;
+          curr_tool->get_name(tool_name);
+          mvwprintw(gamemenu,20,3,"Removed ");
+          waddstr(gamemenu,ob_type.data());
+          mvwprintw(gamemenu,21,3," with ");
+          waddstr(gamemenu,tool_name.data());
+          wrefresh(gamemenu);                    
+
+          //remove toolbelt item... 
+          if(!curr_tool->get_next())  //if there's no next tool in toolbelt
+          {
+                delete curr_tool;
+                curr_item = NULL;
+                tool_belt = NULL;
+          }
+          else
+          {
+              Item * temp = curr_tool->get_next();
+              if(curr_tool == tool_belt)
+                   tool_belt = temp;
+              delete curr_tool;
+              curr_tool = temp;
+              temp = NULL;
+          }             
+
+          return true;
+     }
+     else
+          return tool_match(curr_tool->get_next(),type);
+}
+void Hero::print_tool_belt(Item * t_belt,int row){
+      if(!t_belt)
+          return;
+      string name;
+      t_belt->get_name(name);
+      mvwaddstr(gamemenu,row++,3,name.data());
+      wprintw(gamemenu, ": Rating %dX",t_belt->get_energy());
+      
+      print_tool_belt(t_belt->get_next(),row);
+      
+}
 ////////////////////////////////////////////////////////////////////////////////
 

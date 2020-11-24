@@ -6,28 +6,69 @@
  */
 #include "item_tiles.h"
 
+//ITEM IMPLEMENTATION
+Item::Item(){
+    icon = ' ';
+    item_type = " ";
+    next = NULL;
+}
+Item::Item(char item_icon,string type){
+     item_type = type;
+     icon = item_icon; 
+}
+
+Item::Item(const Item & item){
+    item_type = item.item_type;
+    icon = item.icon;
+}
+Item*& Item::get_next(){
+    return next;
+}
+
+void Item::get_type(string & type){
+    type = item_type;
+}
+void Item::get_icon(char &i){
+     i = icon;
+}
+void Item::print_icon(WINDOW * vp, int color){
+    wattron(vp, COLOR_PAIR(color)); 
+    wprintw(vp,"%c",icon); 
+    wattroff(vp, COLOR_PAIR(color)); 
+}
+
+//VIRTUAL FUNCTIONS IN ITEM
+int Item::get_energy(){ return 0;}
+int Item::get_cost(){ return 0;}
+void Item::get_obstacle_type(string& ob_type){}
+int Item::get_whiffles(){return 0;}
+void Item::get_message(string& msg){}
+void Item::get_name(string & name){}
+void Item::get_terrain_type(string & type){}
+
+
+//CLUE IMPLEMENTATION
+Clue::Clue(){
+    icon = '?';
+    item_type = "clue";
+    message = " ";  //<---random_clue();
+}
+Clue::Clue(char icon, string type, string msg):Item(icon,type),message(msg){
+
+}
+Clue::Clue(const Item & item, string msg): Item(item), message(msg){
+
+}
+void Clue::display_info(WINDOW * gm,int row,int col){
+//    werase(gm);
+    mvwprintw(gm,row++,col, "Clue: ");
+    waddstr(gm,message.data()); 
+    wrefresh(gm);
+}
+void Clue::get_message(string & msg){
+   msg = message;
+}
 /*
- * Item base class
- */
-
-//Constructor
-item::item(){}
-
-//Destructor
-item::~item(){}
-
-/*
- * Clue Class
- */
-
-//Constructor
-clue::clue(){}
-
-//Destructor
-clue::~clue(){}
-
-//Public Functions
-
 void clue::random_clue(){
 	//Stub
 	//There will likely be an addition of random values to the header file call
@@ -36,158 +77,192 @@ void clue::random_clue(){
 	return;
 }
 
-/*
- * Tool Class
- */
 
-//Constructor
-tool::tool(int cost){
-	tool_cost = cost;
+*/
+
+
+//TOOL IMPLEMENTATION
+Tool::Tool(){
+   icon = 'T';
+   item_type = "tool";
+
+   tool_name = " ";
+   cost = 0;
+   rating = 0;
+   obstacle_type = " ";
+}
+Tool::Tool(char icon, string type, string name, int e_amount, int w_cost, string ob_type): Item(icon,type), tool_name(name),cost(w_cost),rating(e_amount),obstacle_type(ob_type){
+
+}
+Tool::Tool(const Item & item, string name,int e_amount,int w_cost,string ob_type):Item(item),tool_name(name),cost(w_cost),rating(e_amount),obstacle_type(ob_type){
+
 }
 
-//Deconstructor
-tool::~tool(){}
+Tool::Tool(const Tool & tool):Item(tool),tool_name(tool.tool_name),cost(tool.cost),rating(tool.rating),obstacle_type(tool.obstacle_type){
 
-//Public Functions
-
-void tool::display_info(){
-	//Stub
-	return;
+}
+int Tool::get_energy(){
+    return rating;
+}
+int Tool::get_cost(){
+   return cost;
+}
+void Tool::get_name(string& name){
+   name = tool_name;
+}
+void Tool::get_obstacle_type(string & type){
+   type = obstacle_type;
+}
+void Tool::display_info(WINDOW * gm,int row, int col){
+//   werase(gm);
+   mvwprintw(gm,row++,col, "Tool: " );
+   waddstr(gm,tool_name.data());
+   mvwprintw(gm,row++,col, "Cost: %d", cost);
+   mvwprintw(gm,row++,col, "Rating: %dX", rating);
+   mvwprintw(gm,row++,col, "Obstacle type: ");
+   waddstr(gm,obstacle_type.data());
+    wrefresh(gm);
 }
 
-int tool::remove_whiffles(int w_rmv){
-	//Stub
-	return 0;
+
+//FOOD IMPLEMENTATION
+Food::Food(){
+   icon = 'F';
+   item_type = "food";
+   food_name = " ";
+   food_cost = 0;
+   energy_value = 0;
+}
+Food::Food(char icon, string type, string name, int energy, int cost):Item(icon,type),food_name(name),food_cost(cost),energy_value(energy){
+
+}
+Food::Food(const Item& item,string name, int energy, int cost):Item(item),food_name(name),food_cost(cost),energy_value(energy){
+
+}
+int Food::get_energy(){
+   return energy_value;
+}
+int Food::get_cost(){
+   return food_cost;
+}
+void Food::get_name(string & name){
+    name = food_name;
+}
+void Food::display_info(WINDOW * gm,int row, int col){
+//   werase(gm);
+   mvwprintw(gm, row++, col, "Food: ");
+   waddstr(gm,food_name.data());
+   mvwprintw(gm,row++, col,"Cost: %d whiffles", food_cost);
+   mvwprintw(gm,row++, col, "Energy: %d", energy_value);
+    wrefresh(gm);
 }
 
-/*
- * Food Class
- */
 
-//Constructor
-food::food(int cost, int energy){
-	food_cost = cost;
-	energy_value = energy;
+//OBSTACLE IMPLEMENTATION 
+Obstacle::Obstacle(){
+   icon = '!';
+   item_type = "obstacle";
+   energy_cost = 0;
+   obstacle_name = " ";
+}
+Obstacle::Obstacle(char icon, string type, string name, int energy):Item(icon,type),energy_cost(energy),obstacle_name(name){
+
+}
+Obstacle::Obstacle(const Item& item, string name, int energy):Item(item),energy_cost(energy),obstacle_name(name){
+
+}
+int Obstacle::get_energy(){
+     return energy_cost;
+}
+void Obstacle::get_name(string & name){     
+      name = obstacle_name; 
+}
+void Obstacle::display_info(WINDOW * gm,int row, int col){
+//   werase(gm);
+   mvwprintw(gm,row++, col, "Obstacle: ");
+   waddstr(gm,obstacle_name.data());
+   mvwprintw(gm,row++, col, "Removal energy: %d", energy_cost);
+    wrefresh(gm);
 }
 
-//Deconstructor
-food::~food(){}
 
-//Public Functions
+//TREASURE_CHEST IMPLEMENTATION
+Treasure_chest::Treasure_chest()
+{
+   icon = '$';
+   item_type = "treasure";
+   whiffle_value = 0;
+}
+Treasure_chest::Treasure_chest(char icon, string type, int whiffles):Item(icon,type),whiffle_value(whiffles){
 
-void food::display_info(){
-	//Stub
-	return;
+}
+Treasure_chest::Treasure_chest(const Item & item, int whiffles):Item(item),whiffle_value(whiffles){
+
+}
+int Treasure_chest::get_whiffles(){
+    return whiffle_value;
+}
+void Treasure_chest::display_info(WINDOW * gm,int row, int col){
+//   werase(gm);
+   mvwprintw(gm,row++,col, "Treasure chest!!");
+   mvwprintw(gm,row++,col,"Bounty: %d whiffles", whiffle_value);
+    wrefresh(gm);
+
 }
 
-int food::add_energy(Hero * hero){
-	//Stub
-	//Takes the hero and adds energy to the hero's energy meter based on the
-	//amount the food provides
-	return 0;
+
+//SHIP IMPLEMENTATION
+Ship::Ship(){
+    icon = 'S';
+    item_type = "ship";
+    cost = 0;
+    terrain_type = " ";
+}
+Ship::Ship(char icon, string type, int w_cost, string t_type):Item(icon, type), cost(w_cost),terrain_type(t_type){
+
+}
+Ship::Ship(const Item & item, int w_cost, string t_type):Item(item),cost(w_cost),terrain_type(t_type){
+
+}
+Ship::Ship(const Ship& ship):Item(ship),cost(ship.cost),terrain_type(ship.terrain_type){
+
+}
+int Ship::get_cost(){
+    return cost;
+}
+void Ship::get_terrain_type(string & type){
+    type = terrain_type;
+}
+void Ship::display_info(WINDOW * gm,int row,int col){
+//   werase(gm);
+   mvwprintw(gm, row++,col,"Ship!!");
+   mvwprintw(gm, row++,col,"Cost: %d whiffles", cost);
+   mvwprintw(gm, row++,col, "Terrain type: ");
+   waddstr(gm,terrain_type.data());
+    wrefresh(gm);
+   
 }
 
-int food::remove_whiffles(Hero * hero){
-	//Stub
-	//Removes whiffles for the hero's wallet based on the cost of the food
-	//Need to ensure that the hero cannot buy the food if they doe not have
-	//enough whiffles to purchase it. This goes for other purchases too
-	return 0;
+
+//BINOCULAR IMPLEMENTATION
+Binoculars::Binoculars(){
+    icon = 'B';
+    item_type = "binoculars";
+   cost = 0;
 }
+Binoculars::Binoculars(char icon, string type, int w_cost):Item(icon, type),cost(w_cost){
 
-/*
- * Obstacle Class
- */
-
-//Constructor
-obstacle::obstacle(int movement_cost){}
-
-//Deconstructor
-obstacle::~obstacle(){}
-
-//Public Functions
-
-void obstacle::display_info(){
-	//Stub
-	return;
 }
+Binoculars::Binoculars(const Item & item, int w_cost):Item(item),cost(w_cost){
 
-int obstacle::remove_energy(Hero * hero){
-	//Stub
-	//Call the hero's remove energy function, but do not update the position
-	return 0;
 }
-
-/*
- * Treasure Chest Class
- */
-
-//Constructor
-treasure_chest::treasure_chest(int value){
-	w_value = value;
+int Binoculars::get_cost(){
+   return cost;
 }
-
-//Deconstructor
-treasure_chest::~treasure_chest(){}
-
-//Public Functions
-
-void treasure_chest::display_info(){
-	//Stub
-	return;
-}
-
-int treasure_chest::add_whiffles(Hero * hero){
-	//Stub
-	//Add the value of the treasure to the hero's wallet
-	return 0;
-}
-
-/*
- * Ship Class
- */
-
-//Constructor
-ship::ship(int cost){
-	w_cost = cost;
-}
-
-//Deconstructor
-ship::~ship(){}
-
-//Public Functions
-
-void ship::display_info(){
-	//Stub
-	return;
-}
-
-int remove_whiffles(Hero * hero){
-	//Stub
-	//Remove whiffles from the hero's wallet
-	return 0;
-}
-
-/*
- * Binocular Class
- */
-
-//Constructor
-binoculars::binoculars(){}
-
-//Destructor
-binoculars::~binoculars(){}
-
-//Public Functions
-
-void binoculars::display_info(){
-	//Stub
-	return;
-}
-
-int binoculars::add_vision(Hero * hero){
-	//Stub
-	//Requires the hero class function to alter the vision
-	//*hero.add_vision();
-	return 1;
+void Binoculars::display_info(WINDOW * gm,int row, int col){
+//   werase(gm);
+   mvwprintw(gm,row++,col,"Binoculars!!");
+   mvwprintw(gm,row++,col,"Cost: %d whiffles", cost);
+    wrefresh(gm);
+   
 }

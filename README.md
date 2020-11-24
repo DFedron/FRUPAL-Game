@@ -28,3 +28,15 @@
   4. WALL is 4
   
  It initially sets everything to MEADOW, before loading in inputfiles.
+ 
+ ##Items:
+ I modified and added to Austin's item base class and derived classes. Also created functions for creating items on the map and saving/loading/printing item data. The item_data_order.txt file shows the data order for all the items' input files. Still haven't put in a function to take in user input for the item data but there's sample data in the input files. When you exit the edit function, the game starts but the map is visible. Turn off the edit function and turn viewed to false to see the game format with included items.
+I added the scroll function to map class. I'm not really sure how to use the scroll function so don't know if I implemented it right in the edit_item_map function. There's some skipping with the cursor in the lower portion of the map when adding items. 
+The edit functions are in the map constructor.
+Things that still need to be done: function for inputting user data into items from game menu, function for purchasing items, function for copying tool items to hero's tool belt, functions for hero to interact with the other items, function for items to disappear when purchased.  
+ 
+ 
+ 
+ 
+ 
+ 
