@@ -1,20 +1,20 @@
 Tools:
-Icon, item type, tool name, rating, obstacle type, tool cost, x, y
+char Icon, string item type, string tool name, int rating, string obstacle type, int tool cost, int x, int y
 
 Food: 
-Icon, item type, food name, energy amount, cost, x, y
+char Icon, string item type, string food name, int energy amount, int cost, int x, int y
 
 Obstacle:
-Icon, item type, obstacle name, required energy, x, y
+char Icon, string item type, string obstacle name, int required energy, int x, int y
 
 Clue:
-Icon, item type, clue message, x, y
+char Icon, string item type, string clue message, int x, int y
 
 Treasure chest:
-Icon, item type, whiffle amount, x, y
+char Icon, string item type, int whiffle amount, int x, int y
 
 Ship:
-Icon, item type, obstacle type, cost, x, y
+char Icon, string item type, string obstacle type, int cost, int x, int y
 
 Binoculars:
-Icon, item type, cost, x, y
+char Icon, string item type, int cost, int x, int y
