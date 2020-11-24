@@ -62,6 +62,18 @@ void Hero::update_display() {
   wrefresh(gamemenu); // refreshes game menu
 }
 
+// returns true if dead, false otherwise
+bool Hero::check_energy(){
+  if(energy < 1)
+    return true;
+  else
+    return false;
+}
+
+void Hero::add_energy(int en) {
+  energy += en;
+}
+
 // just erases and redraws the basic gamemenu
 void Hero::update_gamemenu() {
 
