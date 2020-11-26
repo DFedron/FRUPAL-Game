@@ -25,8 +25,9 @@ class Item{
             Item(const Item & item);   // initializes to item. useful for adding tools to hero's toolbelt
             Item *& get_next();         // returns next
             void get_type(string & type);       // returns type    
-            void get_icon(char &i);
-            void print_icon(WINDOW * viewport,int color);
+
+      // XXX THIS IS ALL STUFF THAT I AM ADDING / SUBTRACTING.
+            char get_char() const; // returns items icon for map to print it.
 		
             virtual void display_info(WINDOW * game_menu,int row, int col) = 0;
             virtual int get_energy();

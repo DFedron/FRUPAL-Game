@@ -28,14 +28,15 @@ Item*& Item::get_next(){
 void Item::get_type(string & type){
     type = item_type;
 }
-void Item::get_icon(char &i){
-     i = icon;
+
+// XXX THIS IS STUFF/FUNCTIONS ADDING/SUBTRACTING
+
+char Item::get_char() const {
+  return icon;
 }
-void Item::print_icon(WINDOW * vp, int color){
-    wattron(vp, COLOR_PAIR(color)); 
-    wprintw(vp,"%c",icon); 
-    wattroff(vp, COLOR_PAIR(color)); 
-}
+
+// REMOVED  print_icon(WINDOW *,int), get_icon(&char)
+// END CHANGES BY CAMILO
 
 //VIRTUAL FUNCTIONS IN ITEM
 int Item::get_energy(){ return 0;}

@@ -157,9 +157,8 @@ void Map::update_display(int starty, int startx) {
 
       wattron(viewport, COLOR_PAIR(color));
       if(frupal[i][j].feature) {
-        // TODO add in something to print out feature tiles
-        // don't forget to adjust with the scroll: starty, startx
-           frupal[i][j].feature->print_icon(viewport,color);
+           // TODO  ADD IN A CHECK FOR THE ROYAL DIAMOND
+        mvwaddch(viewport, i - starty, j - startx, frupal[i][j].feature->get_char());
       }
       else {
         mvwaddch(viewport, i - starty, j - startx, ' '); // prints grovnick tile
@@ -177,7 +176,7 @@ void Map::update_display(int starty, int startx) {
 ////////////////////////////////////////////////////////////////////////////////
 
 // ret -1 if off map, wall, or water, 2-swamp, 1-meadow
-int Map::energy_cost(int y, int x) {
+int Map::energy_cost(int y, int x, bool ship) {
   
   // first checks if off grid, then checks grovnick enum type
   if(y < 0 || x < 0 || y >= KSIZE || x >= KSIZE)
@@ -187,7 +186,7 @@ int Map::energy_cost(int y, int x) {
   else if(frupal[y][x].square == SWAMP)
     return 2;
   else if(frupal[y][x].square == WALL || frupal[y][x].square == WATER)
-    return -1;
+    return (ship ? 0 : -1);
 
   return 0; // this should never happen though.
 }
@@ -454,7 +453,6 @@ void Map::save_item(string file){
     string ob_type;
     string message;
 
-    char icon = ' ';
     Item * item = NULL;
     ofstream outfile;
 
@@ -470,8 +468,7 @@ void Map::save_item(string file){
                   
                   if(file.compare("inputfiles/" + type + ".txt") == 0){ 
                       
-                       item->get_icon(icon);     // outputs 'F', 'T', etc..
-                       outfile << icon;
+                       outfile << item->get_char(); 
                        outfile << ";";
                        outfile<< type;                           // outputs 'food', 'tool', etc..
                        outfile << ";";

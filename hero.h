@@ -42,6 +42,8 @@ class Hero {
     int whiffles; // hero's whiffles
     int energy; // hero's energy
     bool binoculars; // if true, can see 2, otherwise see 1
+    bool ship;//if true, have ship, otherwise don't have ship
+    bool diamond;// if true, have diamond, otherwise don't have diamond
 
     Map * map; // map object that contains all the functionality for 2D grid
 

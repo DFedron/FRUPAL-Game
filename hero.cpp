@@ -18,6 +18,8 @@ Hero::Hero(WINDOW * vp, WINDOW * gm) {
   whiffles = 1000;
   energy = 100;
   binoculars = false;
+  ship = false;
+  diamond = false;
 
   gamemenu = gm;
   viewport = vp;
@@ -153,7 +155,7 @@ void Hero::move_up() {
   int cost;
 
   --ypos;
-  if((cost = map->energy_cost(ypos, xpos)) == -1) {
+  if((cost = map->energy_cost(ypos, xpos, ship)) == -1) {
     ++ypos;
     --energy;
 
@@ -173,7 +175,7 @@ void Hero::move_down() {
   int cost;
   
   ++ypos;
-  if((cost = map->energy_cost(ypos, xpos)) == -1) {
+  if((cost = map->energy_cost(ypos, xpos, ship)) == -1) {
     --ypos;
     --energy;
   }
@@ -192,7 +194,7 @@ void Hero::move_left() {
   int cost;
 
   --xpos;
-  if((cost = map->energy_cost(ypos, xpos)) == -1) {
+  if((cost = map->energy_cost(ypos, xpos, ship)) == -1) {
     ++xpos;
     --energy;
   }
@@ -212,7 +214,7 @@ void Hero::move_right() {
   int cost;
 
   ++xpos;
-  if((cost = map->energy_cost(ypos, xpos)) == -1) {
+  if((cost = map->energy_cost(ypos, xpos, ship)) == -1) {
     --xpos;
     --energy;
   }
@@ -283,6 +285,7 @@ void Hero::engage_item(int ypos, int xpos){
       }
       else if(ship_ptr)
       {
+        ship = true;
          //should there be a bool ship? true if you have it false if not? 
       }
       else if(bino_ptr)
