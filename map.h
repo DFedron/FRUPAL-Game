@@ -8,7 +8,7 @@
 #include "item_tiles.h"
 #define KSIZE 128 // defines kingdom size
 #define NUMTERRAIN 3 // defines # of terrain files
-#define NUMITEM 7  //defines # of item filesclass Item; // pre declaration
+#define NUMITEM 8  //defines # of item filesclass Item; // pre declaration
 
 enum terrain {NONE, MEADOW, SWAMP, WATER, WALL, UNSEEN};
 
@@ -31,7 +31,7 @@ class Map {
   Map(WINDOW * vp, WINDOW * gm, char * inputfile);
   
   void update_display(int starty, int startx); // updates viewport
-  int energy_cost(int y, int x); // ret -1 if off map, wall, water,
+  int energy_cost(int y, int x, bool ship); // ret -1 if off map, wall, water,
                                  // 2-swamp, 1-meadow
 
   void look_around(int ypos, int xpos, bool binoculars);
