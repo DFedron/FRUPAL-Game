@@ -466,7 +466,7 @@ void Map::save_item(string file) {
 
         if (file.compare("inputfiles/" + type + ".txt") == 0) {
 
-        // THIS I CHANGED TO GET CHAR(), HOPEFULLY DOESN'T BREAK.
+        //XXX THIS I CHANGED TO GET CHAR(), HOPEFULLY DOESN'T BREAK.
           outfile << item->get_char();
           outfile << ";";
           outfile << type; // outputs 'food', 'tool', etc..
