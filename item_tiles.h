@@ -132,6 +132,20 @@ class Treasure_chest : public Item{
           int whiffle_value;
 };
 
+//DERIVED DIAMOND CLASS 
+class Diamond : public Item{
+	public:
+           Diamond();
+           Diamond(char icon,string type, int whiffles);
+           Diamond(const Item & item, int whiffles);
+           int get_whiffles();
+           void display_info(WINDOW * game_menu,int row, int col);
+           ~Diamond(){};
+
+	private:
+          long long whiffle_value;
+};
+
 //DERIVED SHIP CLASS
 class Ship : public Item{
 	public:

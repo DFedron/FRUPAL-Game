@@ -5,4 +5,4 @@ inputfiles/obstacle.txt
 inputfiles/ship.txt
 inputfiles/binoculars.txt
 inputfiles/treasure.txt
-
+inputfiles/diamond.txt

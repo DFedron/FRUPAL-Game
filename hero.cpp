@@ -246,6 +246,7 @@ void Hero::engage_item(int ypos, int xpos){
       Ship * ship_ptr = dynamic_cast<Ship*>(curr_item);
       Binoculars * bino_ptr = dynamic_cast<Binoculars*>(curr_item);
       Treasure_chest * treasure_ptr = dynamic_cast<Treasure_chest*>(curr_item);
+      Diamond * diamond_ptr = dynamic_cast<Diamond*>(curr_item);
 
 
       if(food_ptr)
@@ -297,6 +298,26 @@ void Hero::engage_item(int ypos, int xpos){
           whiffles += treasure_ptr->get_whiffles();
       }
           
+      else if(diamond_ptr){
+      	  diamond = true;
+	  whiffles += diamond_ptr->get_whiffles();
+      
+      	  // maybe temporary, maybe move to main.cpp
+	  // for the same endgame,so most data from main end_game_menu function
+	  nodelay(stdscr,false);
+	  WINDOW *endgame;
+	  endgame = newwin(20, 50, (LINES-20) /2, (COLS-50) /2);
+	  int c = '#';
+	  wborder(endgame,c,c,c,c,c,c,c,c);
+	  
+	  mvwprintw(endgame, 9, 20, "YOU WIN!!!");
+
+	  wrefresh(endgame);
+	  getch();
+	  endwin();
+	  exit(0);
+      
+      }
       curr_item = NULL;
       map->remove_item(ypos,xpos);
   

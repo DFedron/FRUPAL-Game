@@ -211,6 +211,29 @@ void Treasure_chest::display_info(WINDOW * gm,int row, int col){
 
 }
 
+// DIAMOND IMPLEMENTATION
+Diamond::Diamond()
+{
+   icon = '$';
+   item_type = "diamond";
+   whiffle_value = 0;
+}
+Diamond::Diamond(char icon, string type, int whiffles):Item(icon,type),whiffle_value(whiffles){
+
+}
+Diamond::Diamond(const Item & item, int whiffles):Item(item),whiffle_value(whiffles){
+
+}
+int Diamond::get_whiffles(){
+    return whiffle_value;
+}
+void Diamond::display_info(WINDOW * gm,int row, int col){
+//   werase(gm);
+   mvwprintw(gm,row++,col, "DIAMOND!!");
+   mvwprintw(gm,row++,col,"Bounty: %d whiffles", whiffle_value);
+    wrefresh(gm);
+
+}
 
 //SHIP IMPLEMENTATION
 Ship::Ship(){
