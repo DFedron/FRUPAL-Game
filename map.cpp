@@ -563,3 +563,39 @@ void Map::scroll_function(int &starty, int &startx, int ypos, int xpos) {
   }
   // END OF SCROLLING MECHANISM
 }
+
+void Map::print_options( WINDOW * gm, int row, int col,bool has_ship){
+//shows which actions are currently available to the player and which keys to hit to take those actions
+ 
+    int r = 9;
+    int c = 1; 
+    int num = 1;
+    mvwprintw(gm,r++,c," Options: ");
+
+    if(row > 0 && (frupal[row - 1][col].square == MEADOW || frupal[row-1][col].square == SWAMP || (frupal[row-1][col].square == WATER && has_ship == true)))
+          mvwprintw(gm,r++,c," %d) North ",num++);
+     if(col< KSIZE-1 && (frupal[row][col+1].square == MEADOW || frupal[row][col+1].square == SWAMP || (frupal[row][col+1].square == WATER && has_ship == true)))
+          mvwprintw(gm,r++,c," %d) East ",num++);
+     if(row < KSIZE-1 && (frupal[row+1][col].square == MEADOW || frupal[row+1][col].square == SWAMP || (frupal[row+1][col].square == WATER && has_ship == true)))
+          mvwprintw(gm,r++,c," %d) South",num++);
+    if(col > 0 && (frupal[row][col-1].square == MEADOW || frupal[row][col-1].square == SWAMP || (frupal[row][col-1].square == WATER && has_ship == true)))
+          mvwprintw(gm,r++,c," %d) West",num++);
+}
+
+void Map::print_current_grovnick(WINDOW * gm, int row, int col){
+    int r = 3;
+    string type;
+    
+    if(frupal[row][col].square == MEADOW)
+       type = "MEADOW";
+    else if(frupal[row][col].square == SWAMP)
+       type = "SWAMP";
+    else if(frupal[row][col].square == WATER)
+       type = "WATER";
+    
+ 
+    mvwprintw(gm,r++,1,"  Grovnick Terrain: ");
+    mvwprintw(gm,r++,1,"  ");
+    wprintw(gm,type.data());
+    
+}

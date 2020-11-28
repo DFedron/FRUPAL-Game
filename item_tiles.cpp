@@ -52,7 +52,7 @@ Clue::Clue(char icon, string type, string msg)
 Clue::Clue(const Item &item, string msg) : Item(item), message(msg) {}
 void Clue::display_info(WINDOW *gm, int row, int col) {
   //    werase(gm);
-  mvwprintw(gm, row++, col, "Clue: ");
+  mvwprintw(gm, row++, col, " > Clue: ");
   waddstr(gm, message.data());
   wrefresh(gm);
 }
@@ -99,11 +99,12 @@ void Tool::get_name(string &name) { name = tool_name; }
 void Tool::get_obstacle_type(string &type) { type = obstacle_type; }
 void Tool::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
-  mvwprintw(gm, row++, col, "Tool: ");
+  mvwprintw(gm, row++, col, " > Tool: ");
+  mvwprintw(gm, row++, col, " > ");
   waddstr(gm, tool_name.data());
-  mvwprintw(gm, row++, col, "Cost: %d", cost);
-  mvwprintw(gm, row++, col, "Rating: %dX", rating);
-  mvwprintw(gm, row++, col, "Obstacle type: ");
+  mvwprintw(gm, row++, col, " > Cost: %d", cost);
+  mvwprintw(gm, row++, col, " > Rating: %dX", rating);
+  mvwprintw(gm, row++, col, " > Obstacle type: ");
   waddstr(gm, obstacle_type.data());
   wrefresh(gm);
 }
@@ -127,10 +128,11 @@ int Food::get_cost() { return food_cost; }
 void Food::get_name(string &name) { name = food_name; }
 void Food::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
-  mvwprintw(gm, row++, col, "Food: ");
+  mvwprintw(gm, row++, col, " > Food: ");
+  mvwprintw(gm, row++, col, " > ");
   waddstr(gm, food_name.data());
-  mvwprintw(gm, row++, col, "Cost: %d whiffles", food_cost);
-  mvwprintw(gm, row++, col, "Energy: %d", energy_value);
+  mvwprintw(gm, row++, col, " > Cost: %d whiffles", food_cost);
+  mvwprintw(gm, row++, col, " > Energy: %d", energy_value);
   wrefresh(gm);
 }
 
@@ -149,9 +151,10 @@ int Obstacle::get_energy() { return energy_cost; }
 void Obstacle::get_name(string &name) { name = obstacle_name; }
 void Obstacle::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
-  mvwprintw(gm, row++, col, "Obstacle: ");
+  mvwprintw(gm, row++, col, " > Obstacle: ");
+  mvwprintw(gm, row++, col, " > ");
   waddstr(gm, obstacle_name.data());
-  mvwprintw(gm, row++, col, "Removal energy: %d", energy_cost);
+  mvwprintw(gm, row++, col, " > Removal energy: %d", energy_cost);
   wrefresh(gm);
 }
 
@@ -168,8 +171,8 @@ Treasure_chest::Treasure_chest(const Item &item, int whiffles)
 int Treasure_chest::get_whiffles() { return whiffle_value; }
 void Treasure_chest::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
-  mvwprintw(gm, row++, col, "Treasure chest!!");
-  mvwprintw(gm, row++, col, "Bounty: %d whiffles", whiffle_value);
+  mvwprintw(gm, row++, col, " > Treasure chest!!");
+  mvwprintw(gm, row++, col, " > Bounty: %d whiffles!!", whiffle_value);
   wrefresh(gm);
 }
 
@@ -186,8 +189,8 @@ Diamond::Diamond(const Item &item, int whiffles)
 int Diamond::get_whiffles() { return whiffle_value; }
 void Diamond::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
-  mvwprintw(gm, row++, col, "DIAMOND!!");
-  mvwprintw(gm, row++, col, "Bounty: %d whiffles", whiffle_value);
+  mvwprintw(gm, row++, col, " > ROYAL DIAMOND!!");
+  mvwprintw(gm, row++, col, " > Bounty: %d whiffles!!", whiffle_value);
   wrefresh(gm);
 }
 
@@ -208,9 +211,10 @@ int Ship::get_cost() { return cost; }
 void Ship::get_terrain_type(string &type) { type = terrain_type; }
 void Ship::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
-  mvwprintw(gm, row++, col, "Ship!!");
-  mvwprintw(gm, row++, col, "Cost: %d whiffles", cost);
-  mvwprintw(gm, row++, col, "Terrain type: ");
+  mvwprintw(gm, row++, col, " > Ship!!");
+  mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
+  mvwprintw(gm, row++, col, " > Terrain type: ");
+  mvwprintw(gm, row++, col, " > ");
   waddstr(gm, terrain_type.data());
   wrefresh(gm);
 }
@@ -228,7 +232,7 @@ Binoculars::Binoculars(const Item &item, int w_cost)
 int Binoculars::get_cost() { return cost; }
 void Binoculars::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
-  mvwprintw(gm, row++, col, "Binoculars!!");
-  mvwprintw(gm, row++, col, "Cost: %d whiffles", cost);
+  mvwprintw(gm, row++, col, " > Binoculars!!");
+  mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
   wrefresh(gm);
 }
