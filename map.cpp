@@ -43,7 +43,7 @@ Map::Map(WINDOW *vp, WINDOW *gm, char *inputfile) {
   for (int i = 0; i < KSIZE; ++i)
     for (int j = 0; j < KSIZE; ++j) {
       frupal[i][j].square = MEADOW;
-      frupal[i][j].viewed = true; // true total map, false for view
+      frupal[i][j].viewed = false; // true total map, false for view
       frupal[i][j].feature = NULL;
     }
 
@@ -158,12 +158,15 @@ void Map::update_display(int starty, int startx) {
         // TODO  ADD IN A CHECK FOR THE ROYAL DIAMOND
         string temp;
         frupal[i][j].feature->get_type(temp);
-        if (temp.compare("diamond") == 0)
+        if ((temp.compare("diamond") == 0) && color != UNSEEN)
           wattron(viewport, COLOR_PAIR(7));
+
         mvwaddch(viewport, i - starty, j - startx,
-                 frupal[i][j].feature->get_char());
-        if (temp.compare("diamond") == 0)
+        frupal[i][j].feature->get_char());
+
+        if ((temp.compare("diamond") == 0) && color != UNSEEN)
           wattroff(viewport, COLOR_PAIR(7));
+     
       } else {
         mvwaddch(viewport, i - starty, j - startx, ' '); // prints grovnick tile
       }
