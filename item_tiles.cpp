@@ -98,9 +98,7 @@ int Tool::get_cost() { return cost; }
 void Tool::get_name(string &name) { name = tool_name; }
 void Tool::get_obstacle_type(string &type) { type = obstacle_type; }
 void Tool::display_info(WINDOW *gm, int row, int col) {
-  //   werase(gm);
   mvwprintw(gm, row++, col, " > Tool: ");
-  mvwprintw(gm, row++, col, " > ");
   waddstr(gm, tool_name.data());
   mvwprintw(gm, row++, col, " > Cost: %d", cost);
   mvwprintw(gm, row++, col, " > Rating: %dX", rating);
@@ -127,9 +125,7 @@ int Food::get_energy() { return energy_value; }
 int Food::get_cost() { return food_cost; }
 void Food::get_name(string &name) { name = food_name; }
 void Food::display_info(WINDOW *gm, int row, int col) {
-  //   werase(gm);
   mvwprintw(gm, row++, col, " > Food: ");
-  mvwprintw(gm, row++, col, " > ");
   waddstr(gm, food_name.data());
   mvwprintw(gm, row++, col, " > Cost: %d whiffles", food_cost);
   mvwprintw(gm, row++, col, " > Energy: %d", energy_value);
@@ -152,7 +148,6 @@ void Obstacle::get_name(string &name) { name = obstacle_name; }
 void Obstacle::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
   mvwprintw(gm, row++, col, " > Obstacle: ");
-  mvwprintw(gm, row++, col, " > ");
   waddstr(gm, obstacle_name.data());
   mvwprintw(gm, row++, col, " > Removal energy: %d", energy_cost);
   wrefresh(gm);
@@ -214,7 +209,6 @@ void Ship::display_info(WINDOW *gm, int row, int col) {
   mvwprintw(gm, row++, col, " > Ship!!");
   mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
   mvwprintw(gm, row++, col, " > Terrain type: ");
-  mvwprintw(gm, row++, col, " > ");
   waddstr(gm, terrain_type.data());
   wrefresh(gm);
 }
