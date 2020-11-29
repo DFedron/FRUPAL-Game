@@ -51,10 +51,24 @@ Clue::Clue(char icon, string type, string msg)
     : Item(icon, type), message(msg) {}
 Clue::Clue(const Item &item, string msg) : Item(item), message(msg) {}
 void Clue::display_info(WINDOW *gm, int row, int col) {
-  //    werase(gm);
-  mvwprintw(gm, row++, col, " > Clue: ");
-  waddstr(gm, message.data());
+  
+  // this part requires player to press 'c' to continue
+  keypad(gm,TRUE);  
+  char choice  = 'v'; //for view clue
+  int input = 0;
+
+  while(choice == 'v'){
+
+           mvwprintw(gm, row+1, col, " > Clue: ");
+           waddstr(gm, message.data());
+           mvwprintw(gm,row+2,col, "  Press C to continue: "); 
+           wrefresh(gm);
+           input = wgetch(gm);
+           if(input == 'c' || input == 'C')
+                choice = 'c';
+  }
   wrefresh(gm);
+   
 }
 void Clue::get_message(string &msg) { msg = message; }
 /*
