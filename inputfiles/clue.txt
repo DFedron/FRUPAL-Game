@@ -1,2 +1,3 @@
-?;clue; ;25;53
+?;clue;The Royal Diamonds are north y grovnicks and west x grovnicks;25;53
 ?;clue;The Royal Diamonds are north y grovnicks and east x grovnicks;33;29
+?;clue;The Royal Diamonds are south y grovnicks and east x grovnicks;13;41
