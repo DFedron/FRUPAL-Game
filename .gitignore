@@ -10,4 +10,5 @@ frupal
 .DS_Store
 frupal.*
 ._*
+.nfs*
 Info.plist
