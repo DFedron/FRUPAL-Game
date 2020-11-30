@@ -3,3 +3,5 @@ inputfiles/water.txt
 inputfiles/wall.txt
 inputfiles/castle.txt
 inputfiles/northerncastles.txt
+inputfiles/east_swamp.txt
+inputfiles/north_lake.txt
