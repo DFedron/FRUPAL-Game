@@ -36,6 +36,8 @@ class Map {
 
   void look_around(int ypos, int xpos, bool binoculars);
   void scroll_function(int&starty,int&start,int ypos, int xpos);
+  void print_options(WINDOW * gm, int row, int col,bool has_ship);
+  void print_current_grovnick(WINDOW*gm,int row, int col);
  
 ///// ----  Item input/output/edit/print functions   ---- /////
      void create_item(char icon, int i, int j);
@@ -43,7 +45,6 @@ class Map {
      bool has_item(int i, int j);
      void print_item(WINDOW*gm,int i, int j);
      void get_item(Item *& item,int i, int j);
-     void load_items();
      void edit_item_map();
      void save_item_map();
      void save_item(string file);
@@ -59,6 +60,7 @@ class Map {
 
     void load_terrain(string file); // loads a terrain file
     void load_map(string file); // loads ALL the terrain files
+     void load_items();
     
     string item_list[NUMITEM];
 };

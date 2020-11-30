@@ -83,6 +83,8 @@ void Hero::update_gamemenu() {
   werase(gamemenu);
   wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#', 0);
 
+  map->print_options(gamemenu,ypos,xpos,ship);
+
   // XXX remove these 3 lines, all testing stuff
   mvwprintw(gamemenu, rows - 6, 2, "This is for testing:");
   mvwprintw(gamemenu, rows - 5, 2, "x-position: %d", xpos);
@@ -165,6 +167,10 @@ void Hero::move_up() {
     map->print_item(gamemenu, ypos, xpos);
     engage_item(ypos, xpos);
   }
+  else{
+     map->print_current_grovnick(gamemenu,ypos,xpos);
+     wrefresh(gamemenu);
+  }
 }
 
 void Hero::move_down() {
@@ -182,6 +188,10 @@ void Hero::move_down() {
   if (map->has_item(ypos, xpos)) {
     map->print_item(gamemenu, ypos, xpos);
     engage_item(ypos, xpos);
+  }
+  else{
+     map->print_current_grovnick(gamemenu,ypos,xpos);
+     wrefresh(gamemenu);
   }
 }
 
@@ -201,6 +211,10 @@ void Hero::move_left() {
     map->print_item(gamemenu, ypos, xpos);
     engage_item(ypos, xpos);
   }
+  else{
+     map->print_current_grovnick(gamemenu,ypos,xpos);
+     wrefresh(gamemenu);
+  }
 }
 
 void Hero::move_right() {
@@ -219,6 +233,10 @@ void Hero::move_right() {
     map->print_item(gamemenu, ypos, xpos);
     engage_item(ypos, xpos);
     //       engage_item(map->frupal[ypos][xpos]->feature);
+  }
+  else{
+     map->print_current_grovnick(gamemenu,ypos,xpos);
+     wrefresh(gamemenu);
   }
 }
 
@@ -259,7 +277,7 @@ void Hero::engage_item(int ypos, int xpos) {
   } else if (ob_ptr) {
     if (tool_belt) {
       int row = 25;
-      mvwprintw(gamemenu, row, 3, "Tools in Tool Belt: ");
+      mvwprintw(gamemenu, row, 3, "TOOLS IN TOOL BELT: ");
       print_tool_belt(tool_belt, ++row);
 
       string type;
@@ -344,9 +362,14 @@ void Hero::print_tool_belt(Item *t_belt, int row) {
     return;
   string name;
   t_belt->get_name(name);
-  mvwaddstr(gamemenu, row++, 3, name.data());
+  mvwprintw(gamemenu,row++,3, " <> ");
+  waddstr(gamemenu,  name.data());
   wprintw(gamemenu, ": Rating %dX", t_belt->get_energy());
 
   print_tool_belt(t_belt->get_next(), row);
 }
+/*
+void Hero::grovnick_description(WINDOW * vp, WINDOW * gm, int row, col){
+//prints a  descriptio of the grovnick the hero is on top of
+}*/
 ////////////////////////////////////////////////////////////////////////////////

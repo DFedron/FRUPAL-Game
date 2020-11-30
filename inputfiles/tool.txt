@@ -1,4 +1,4 @@
-T;tool;Pick Axe;3;boulder;200;6;44
-T;tool;Axe;2;tree;100;8;43
-T;tool;Hammer;2;boulder;100;9;41
-T;tool;Lockpick;5;hidden treasure gate;100;10;40
+T;tool;Pick Axe;3;boulder;20;6;44
+T;tool;Axe;2;tree;10;8;43
+T;tool;Hammer;2;boulder;10;9;41
+T;tool;Saw;5;tree;15;10;40
