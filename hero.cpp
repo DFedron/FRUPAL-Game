@@ -324,8 +324,15 @@ void Hero::engage_item(int ypos, int xpos) {
        map->remove_item(ypos, xpos);
     }
   } else if (treasure_ptr) {
+    ch = getch();
+
+    while(ch != 10) // while it's not <ENTER>
+      ch = getch();
+
     whiffles += treasure_ptr->get_whiffles();
     map->remove_item(ypos, xpos);
+    update_display();
+    wrefresh(gamemenu);
   }
 
   else if (diamond_ptr) {
