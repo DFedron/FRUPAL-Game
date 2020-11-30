@@ -67,6 +67,11 @@ void Clue::display_info(WINDOW *gm, int row, int col) {
            if(input == 'c' || input == 'C')
                 choice = 'c';
   }
+  wmove(gm,row+1,col);
+  wclrtoeol(gm);
+  wmove(gm,row+2,col);
+  wclrtoeol(gm);
+  mvwprintw(gm,row+1,col, "  Onward then! "); 
   wrefresh(gm);
    
 }
