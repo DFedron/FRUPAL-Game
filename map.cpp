@@ -43,7 +43,7 @@ Map::Map(WINDOW *vp, WINDOW *gm, char *inputfile) {
   for (int i = 0; i < KSIZE; ++i)
     for (int j = 0; j < KSIZE; ++j) {
       frupal[i][j].square = MEADOW;
-      frupal[i][j].viewed = false; // true total map, false for view
+      frupal[i][j].viewed = true; // true total map, false for view
       frupal[i][j].feature = NULL;
     }
 
