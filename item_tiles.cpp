@@ -143,6 +143,8 @@ void Food::display_info(WINDOW *gm, int row, int col) {
   waddstr(gm, food_name.data());
   mvwprintw(gm, row++, col, " > Cost: %d whiffles", food_cost);
   mvwprintw(gm, row++, col, " > Energy: %d", energy_value);
+  mvwprintw(gm, row++, col, "Would you like to buy?");
+  mvwprintw(gm, row++, col, "(Y)es or (N)o?");
   wrefresh(gm);
 }
 

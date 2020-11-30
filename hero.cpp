@@ -247,7 +247,7 @@ void Hero::engage_item(int ypos, int xpos) {
   // if yes, subtract cost from account, add tool to belt, add ship somewhere,
   // binoculars is true, add energy to hero energy
   // after purchase, map removes item from map
-
+  int ch; // will hold decisions
   // curr_item gets item
   map->get_item(curr_item, ypos, xpos);
 
@@ -260,11 +260,26 @@ void Hero::engage_item(int ypos, int xpos) {
   Treasure_chest *treasure_ptr = dynamic_cast<Treasure_chest *>(curr_item);
   Diamond *diamond_ptr = dynamic_cast<Diamond *>(curr_item);
 
+  nodelay(stdscr, false);
   // must find one of them at least
   if (food_ptr) {
-    whiffles -= curr_item->get_cost();
-    energy += curr_item->get_energy();
-    map->remove_item(ypos, xpos);
+    ch = getch();
+    while(ch != 'y' && ch != 'n')
+      ch = getch();
+// makes decision if should buy the food or not.
+    if(ch == 'y') {
+      whiffles -= curr_item->get_cost();
+      energy += curr_item->get_energy();
+      map->remove_item(ypos, xpos);
+      update_display();
+      mvwprintw(gamemenu, 5, 3, "Thanks for your purchase!");
+      wrefresh(gamemenu);
+    }
+    else {
+      update_display();
+      mvwprintw(gamemenu, 5, 3, "Maybe next time!");
+      wrefresh(gamemenu);
+    }
   } else if (tool_ptr) {
     if (!tool_belt) {
       tool_belt = new Tool(*tool_ptr);
@@ -274,6 +289,7 @@ void Hero::engage_item(int ypos, int xpos) {
       tool_belt = temp;
     }
     whiffles -= curr_item->get_cost();
+    map->remove_item(ypos, xpos);
   } else if (ob_ptr) {
     if (tool_belt) {
       int row = 25;
@@ -288,13 +304,16 @@ void Hero::engage_item(int ypos, int xpos) {
         energy -= ob_ptr->get_energy();
     } else
       energy -= ob_ptr->get_energy();
+    map->remove_item(ypos, xpos);
   } else if (ship_ptr) {
     ship = true;
-    // should there be a bool ship? true if you have it false if not?
+    map->remove_item(ypos, xpos);
   } else if (bino_ptr) {
     binoculars = true;
+    map->remove_item(ypos, xpos);
   } else if (treasure_ptr) {
     whiffles += treasure_ptr->get_whiffles();
+    map->remove_item(ypos, xpos);
   }
 
   else if (diamond_ptr) {
@@ -303,7 +322,6 @@ void Hero::engage_item(int ypos, int xpos) {
 
     // maybe temporary, maybe move to main.cpp
     // for the same endgame,so most data from main end_game_menu function
-    nodelay(stdscr, false);
     WINDOW *endgame;
     endgame = newwin(20, 50, (LINES - 20) / 2, (COLS - 50) / 2);
     int c = '#';
@@ -317,7 +335,7 @@ void Hero::engage_item(int ypos, int xpos) {
     exit(0);
   }
   curr_item = NULL;
-  map->remove_item(ypos, xpos);
+//  map->remove_item(ypos, xpos);
 }
 
 bool Hero::tool_match(Item *&curr_tool, string type) {
