@@ -306,11 +306,23 @@ void Hero::engage_item(int ypos, int xpos) {
       energy -= ob_ptr->get_energy();
     map->remove_item(ypos, xpos);
   } else if (ship_ptr) {
-    ship = true;
-    map->remove_item(ypos, xpos);
+    ch = getch();
+    while(ch != 'y' && ch != 'n')
+      ch = getch();
+// makes decision if should buy the ship or not.
+    if(ch == 'y') {
+       ship = true;
+       map->remove_item(ypos, xpos);
+    }
   } else if (bino_ptr) {
-    binoculars = true;
-    map->remove_item(ypos, xpos);
+    ch = getch();
+    while(ch != 'y' && ch != 'n')
+      ch = getch();
+// makes decision if should buy the binoculars or not.
+    if(ch == 'y') {
+       binoculars = true;
+       map->remove_item(ypos, xpos);
+    }
   } else if (treasure_ptr) {
     whiffles += treasure_ptr->get_whiffles();
     map->remove_item(ypos, xpos);
@@ -348,6 +360,7 @@ bool Hero::tool_match(Item *&curr_tool, string type) {
     float quotient = curr_item->get_energy() / tool_belt->get_energy();
     energy -= static_cast<int>(quotient);
 
+//Prints tool name used to remove obstacle
     string tool_name;
     curr_tool->get_name(tool_name);
     mvwprintw(gamemenu, 20, 3, "Removed ");
@@ -361,7 +374,8 @@ bool Hero::tool_match(Item *&curr_tool, string type) {
     {
       delete curr_tool;
       curr_item = NULL;
-      tool_belt = NULL;
+      if(tool_belt == curr_tool)
+         tool_belt = NULL;
     } else {
       Item *temp = curr_tool->get_next();
       if (curr_tool == tool_belt)
@@ -386,8 +400,6 @@ void Hero::print_tool_belt(Item *t_belt, int row) {
 
   print_tool_belt(t_belt->get_next(), row);
 }
-/*
-void Hero::grovnick_description(WINDOW * vp, WINDOW * gm, int row, col){
-//prints a  descriptio of the grovnick the hero is on top of
-}*/
+
+
 ////////////////////////////////////////////////////////////////////////////////

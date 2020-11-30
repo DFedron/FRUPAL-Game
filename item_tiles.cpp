@@ -226,6 +226,8 @@ void Ship::display_info(WINDOW *gm, int row, int col) {
   mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
   mvwprintw(gm, row++, col, " > Terrain type: ");
   waddstr(gm, terrain_type.data());
+  mvwprintw(gm, row++, col, "Would you like to buy?");
+  mvwprintw(gm, row++, col, "(Y)es or (N)o?");
   wrefresh(gm);
 }
 
@@ -244,5 +246,7 @@ void Binoculars::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
   mvwprintw(gm, row++, col, " > Binoculars!!");
   mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
+  mvwprintw(gm, row++, col, "Would you like to buy?");
+  mvwprintw(gm, row++, col, "(Y)es or (N)o?");
   wrefresh(gm);
 }
