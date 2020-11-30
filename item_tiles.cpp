@@ -143,6 +143,8 @@ void Food::display_info(WINDOW *gm, int row, int col) {
   waddstr(gm, food_name.data());
   mvwprintw(gm, row++, col, " > Cost: %d whiffles", food_cost);
   mvwprintw(gm, row++, col, " > Energy: %d", energy_value);
+  mvwprintw(gm, row++, col, " > Would you like to buy?");
+  mvwprintw(gm, row++, col, " > (Y)es or (N)o?");
   wrefresh(gm);
 }
 
@@ -180,8 +182,9 @@ Treasure_chest::Treasure_chest(const Item &item, int whiffles)
 int Treasure_chest::get_whiffles() { return whiffle_value; }
 void Treasure_chest::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
-  mvwprintw(gm, row++, col, " > Treasure chest!!");
-  mvwprintw(gm, row++, col, " > Bounty: %d whiffles!!", whiffle_value);
+  mvwprintw(gm, row++, col, " > You found a Treasure Chest!!");
+  mvwprintw(gm, row++, col, " > Reward: %d whiffles!!", whiffle_value);
+  mvwprintw(gm, row++, col, " > Press <ENTER> to continue.");
   wrefresh(gm);
 }
 
@@ -224,6 +227,8 @@ void Ship::display_info(WINDOW *gm, int row, int col) {
   mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
   mvwprintw(gm, row++, col, " > Terrain type: ");
   waddstr(gm, terrain_type.data());
+  mvwprintw(gm, row++, col, "Would you like to buy?");
+  mvwprintw(gm, row++, col, "(Y)es or (N)o?");
   wrefresh(gm);
 }
 
@@ -242,5 +247,7 @@ void Binoculars::display_info(WINDOW *gm, int row, int col) {
   //   werase(gm);
   mvwprintw(gm, row++, col, " > Binoculars!!");
   mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
+  mvwprintw(gm, row++, col, "Would you like to buy?");
+  mvwprintw(gm, row++, col, "(Y)es or (N)o?");
   wrefresh(gm);
 }
