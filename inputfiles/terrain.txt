@@ -5,3 +5,5 @@ inputfiles/castle.txt
 inputfiles/northerncastles.txt
 inputfiles/east_swamp.txt
 inputfiles/north_lake.txt
+inputfiles/big_castle.txt
+inputfiles/east_shore.txt
