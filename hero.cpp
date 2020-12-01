@@ -30,6 +30,13 @@ Hero::Hero(WINDOW *vp, WINDOW *gm) {
 
   tool_belt = NULL; // empty tool belt
   curr_item = NULL; // empty curr_item(to be passed up from map)
+
+  //tool_win pad
+  tool_num = 0; //number of tools in toolbelt
+  tool_row = 0;   
+  tw_lr_row = 43;  //tool_win lower-right row
+  tool_win = newpad(20, COLS-(KSIZE+2));
+  prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
 }
 
 // Hero::Hero(WINDOW * vp, WINDOW * gm, char * filename) {
@@ -62,6 +69,7 @@ void Hero::update_display() {
 
   wrefresh(viewport); // refreshes viewport
   wrefresh(gamemenu); // refreshes game menu
+  display_tool_window();
 }
 
 // returns true if dead, false otherwise
@@ -83,7 +91,8 @@ void Hero::update_gamemenu() {
   werase(gamemenu);
   wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#', 0);
 
-  map->print_options(gamemenu,ypos,xpos,ship);
+  map->print_options(gamemenu,ypos,xpos,ship); //prints player movement options
+    
 
   // XXX remove these 3 lines, all testing stuff
   mvwprintw(gamemenu, rows - 6, 2, "This is for testing:");
@@ -93,6 +102,8 @@ void Hero::update_gamemenu() {
   mvwprintw(gamemenu, 1, 1, "Menu:");
   mvwprintw(gamemenu, rows - 3, 2, "Energy: %d", energy);
   mvwprintw(gamemenu, rows - 2, 2, "Whiffles: %d", whiffles);
+  wrefresh(gamemenu);
+  display_tool_window(); 
 }
 
 // places the hero on the viewport, shifts by starty and startx
@@ -171,6 +182,8 @@ void Hero::move_up() {
      map->print_current_grovnick(gamemenu,ypos,xpos);
      wrefresh(gamemenu);
   }
+  display_tool_window(); 
+  
 }
 
 void Hero::move_down() {
@@ -193,6 +206,7 @@ void Hero::move_down() {
      map->print_current_grovnick(gamemenu,ypos,xpos);
      wrefresh(gamemenu);
   }
+  display_tool_window(); 
 }
 
 void Hero::move_left() {
@@ -215,6 +229,7 @@ void Hero::move_left() {
      map->print_current_grovnick(gamemenu,ypos,xpos);
      wrefresh(gamemenu);
   }
+  display_tool_window(); 
 }
 
 void Hero::move_right() {
@@ -238,6 +253,7 @@ void Hero::move_right() {
      map->print_current_grovnick(gamemenu,ypos,xpos);
      wrefresh(gamemenu);
   }
+  display_tool_window(); 
 }
 
 /// function for interacting with items
@@ -272,39 +288,71 @@ void Hero::engage_item(int ypos, int xpos) {
       energy += curr_item->get_energy();
       map->remove_item(ypos, xpos);
       update_display();
+      display_tool_window();
       mvwprintw(gamemenu, 5, 3, "Thanks for your purchase!");
       wrefresh(gamemenu);
+      display_tool_window();
     }
     else {
       update_display();
+      display_tool_window();
       mvwprintw(gamemenu, 5, 3, "Maybe next time!");
       wrefresh(gamemenu);
+      display_tool_window();
     }
   } else if (tool_ptr) {
-    if (!tool_belt) {
-      tool_belt = new Tool(*tool_ptr);
-    } else {
-      Item *temp = new Tool(*tool_ptr);
-      temp->get_next() = tool_belt;
-      tool_belt = temp;
+    ch = getch();
+    while(ch != 'y' && ch != 'n'){
+      ch = getch();
     }
-    whiffles -= curr_item->get_cost();
-    map->remove_item(ypos, xpos);
-  } else if (ob_ptr) {
+// makes decision if should buy the tool or not.
+    if(ch == 'y') {
+        if (!tool_belt) 
+        {
+            tool_belt = new Tool(*tool_ptr);
+        } 
+        else 
+        {
+            Item *temp = new Tool(*tool_ptr);
+            temp->get_next() = tool_belt;
+            tool_belt = temp;
+        }
+        tool_num++;
+        whiffles -= curr_item->get_cost();
+        map->remove_item(ypos, xpos);
+        update_display();
+        mvwprintw(gamemenu, 5, 3, "Thanks for your purchase!");
+        wrefresh(gamemenu);
+        display_tool_window();
+    }
+    else
+    {
+        update_display();
+        mvwprintw(gamemenu, 5, 3, "Maybe next time!");
+        wrefresh(gamemenu);
+        display_tool_window();
+    }
+        display_tool_window();
+  } 
+  else if (ob_ptr) {
+    display_tool_window();
     if (tool_belt) {
-      int row = 25;
-      mvwprintw(gamemenu, row, 3, "TOOLS IN TOOL BELT: ");
-      print_tool_belt(tool_belt, ++row);
+        int r = 35;
+        mvwprintw(gamemenu,r,3,"< Toolbelt >");  
+        mvwprintw(gamemenu,r++,3," Choose a tool with the arrow keys. ");  
+        mvwprintw(gamemenu,r++,3," Press 'Enter' to choose. Press 'e' to exit Toolbelt");  
+        wrefresh(gamemenu);
 
-      string type;
-      curr_item->get_type(type); // gets type of obstacle
-      Item *curr_tool = tool_belt;
-
-      if (!tool_match(curr_tool, type)) // if no tool match is found
-        energy -= ob_ptr->get_energy();
+        string ob_type;
+        curr_item->get_name(ob_type); // gets type of obstacle
+        if( choose_tool(ob_type)) // if no tool was chosen, remove energy..
+            energy -= ob_ptr->get_energy();
     } else
-      energy -= ob_ptr->get_energy();
-    map->remove_item(ypos, xpos);
+        energy -= ob_ptr->get_energy();
+      map->remove_item(ypos, xpos);
+      wrefresh(gamemenu);
+      display_tool_window();
+       
   } else if (ship_ptr) {
     ch = getch();
     while(ch != 'y' && ch != 'n')
@@ -354,58 +402,174 @@ void Hero::engage_item(int ypos, int xpos) {
     exit(0);
   }
   curr_item = NULL;
+  display_tool_window();
 //  map->remove_item(ypos, xpos);
 }
 
-bool Hero::tool_match(Item *&curr_tool, string type) {
+bool Hero::tool_match(Item *&curr_tool, string ob_type,int choice_num) {
   if (!curr_tool)
     return false;
-  string ob_type;
-  curr_tool->get_obstacle_type(ob_type);
+  string tool_ob_type;
+  
+   if(choice_num == 0){ //this is selected tool
+         curr_tool->get_obstacle_type(tool_ob_type);
 
-  if (type.compare(ob_type)) {
-    float quotient = curr_item->get_energy() / tool_belt->get_energy();
-    energy -= static_cast<int>(quotient);
+           //clears gamemenu lines
+            wmove(gamemenu,20,3);
+            wclrtoeol(gamemenu); 
+            wmove(gamemenu,21,3);
+            wclrtoeol(gamemenu); 
+            wmove(gamemenu,22,3);
+            wclrtoeol(gamemenu); 
 
-//Prints tool name used to remove obstacle
-    string tool_name;
-    curr_tool->get_name(tool_name);
-    mvwprintw(gamemenu, 20, 3, "Removed ");
-    waddstr(gamemenu, ob_type.data());
-    mvwprintw(gamemenu, 21, 3, " with ");
-    waddstr(gamemenu, tool_name.data());
-    wrefresh(gamemenu);
+         if (ob_type.compare(tool_ob_type) == 0) {
+              float quotient = curr_item->get_energy() / tool_belt->get_energy();
+              energy -= static_cast<int>(quotient);
 
-    // remove toolbelt item...
-    if (!curr_tool->get_next()) // if there's no next tool in toolbelt
-    {
-      delete curr_tool;
-      curr_item = NULL;
-      if(tool_belt == curr_tool)
-         tool_belt = NULL;
-    } else {
-      Item *temp = curr_tool->get_next();
-      if (curr_tool == tool_belt)
-        tool_belt = temp;
-      delete curr_tool;
-      curr_tool = temp;
-      temp = NULL;
-    }
+             update_gamemenu();
 
-    return true;
-  } else
-    return tool_match(curr_tool->get_next(), type);
+            //Prints tool name used to remove obstacle
+              string tool_name;
+              curr_tool->get_name(tool_name);
+              mvwprintw(gamemenu, 20, 3, "Removed ");
+              waddstr(gamemenu, tool_ob_type.data());
+              mvwprintw(gamemenu, 21, 3, "with ");
+              waddstr(gamemenu, tool_name.data());
+              wrefresh(gamemenu);
+
+           // remove toolbelt item...
+            if (!curr_tool->get_next()) // if there's no next tool in toolbelt
+            {
+                if(tool_belt == curr_tool)
+                     tool_belt = NULL;
+                delete curr_tool;
+                curr_tool= NULL;
+            } 
+            else {
+                Item *temp = curr_tool->get_next();
+                if (curr_tool == tool_belt){
+                      curr_tool = temp;
+                      delete tool_belt;
+                      tool_belt = temp;
+                }
+                else{
+                      delete curr_tool;
+                      curr_tool = temp;
+                      temp = NULL;
+                }
+            }//ends remove  
+            tool_num--;
+            return true;
+        }//ends compare 
+        else {
+            string tool_name;
+            curr_tool->get_name(tool_name);
+            mvwprintw(gamemenu, 20, 3, "Cannot remove ");
+            waddstr(gamemenu, ob_type.data());
+            mvwprintw(gamemenu, 21, 3, "with ");
+            waddstr(gamemenu, tool_name.data());
+            mvwprintw(gamemenu, 22, 3, "Choose a different tool ");
+            wrefresh(gamemenu);
+            return false;
+       }
+  } //ends choice
+  else
+    return tool_match(curr_tool->get_next(), ob_type,choice_num-1);
 }
-void Hero::print_tool_belt(Item *t_belt, int row) {
+void Hero::print_tool_belt(Item *t_belt, int row, int choice_num,bool select) {
   if (!t_belt)
     return;
   string name;
-  t_belt->get_name(name);
-  mvwprintw(gamemenu,row++,3, " <> ");
-  waddstr(gamemenu,  name.data());
-  wprintw(gamemenu, ": Rating %dX", t_belt->get_energy());
+//if number is zero, highlight that tool
+  if(choice_num == 0 && select == TRUE)
+    wattron(tool_win,A_REVERSE);   //turns on highlight
 
-  print_tool_belt(t_belt->get_next(), row);
+  t_belt->get_name(name);
+  if(t_belt->get_energy() == 0)
+      return;
+  mvwprintw(tool_win,row++,3, " <> ");
+  waddstr(tool_win,  name.data());
+  wprintw(tool_win, ": Rating %dX", t_belt->get_energy());
+ 
+  wattroff(tool_win,A_REVERSE);  //turns off hightlight
+
+  print_tool_belt(t_belt->get_next(), row,choice_num-1,select);
+}
+
+///////////////////////////////////////////////////////////////
+//Toolbelt is the window that displays all the tools
+//The player can scroll through it to choose a tool for an obstacle
+///////////////////////////////////////////////////////////////
+void Hero::display_tool_window(){
+    werase(tool_win);
+//    wborder(tool_win,' ','-','-',' ',' ', ' ', ' ',' ');
+    int row = 1;
+    mvwprintw(gamemenu,39,3," < Toolbelt > ");  
+
+    print_tool_belt(tool_belt,row,0,0);     
+
+    prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+
+}
+
+bool Hero::choose_tool(string ob_type){
+    int row = 1;
+    int choice_num = 0; // is the place number of the tool in the list
+    char ch = 'c'; 
+    bool select = TRUE;
+    Item *curr_tool= tool_belt;
+    keypad(tool_win,TRUE);
+    tool_row = 0;  
+    while(ch != 't' && ch != 'f'){
+
+        print_tool_belt(curr_tool,row,choice_num,select);     
+        prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+        int input = wgetch(tool_win);
+
+      switch(input){
+           case KEY_DOWN:
+               if((choice_num+1) < tool_num){   
+                  choice_num++;     
+                  print_tool_belt(tool_belt,row,choice_num,select);
+               
+                  if(tool_num > choice_num && tool_row < 20){
+                     prefresh(tool_win,tool_row++,0,40,KSIZE+2,tw_lr_row,COLS);
+                  }
+                  else
+                     prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+               }
+               break;     
+           case KEY_UP:
+               if(choice_num != 0){
+                  choice_num--;     
+                  print_tool_belt(tool_belt,row,choice_num,select);
+               
+                  if(tool_row > 0){
+                      prefresh(tool_win,tool_row--,0,40,KSIZE+2,tw_lr_row,COLS);
+                  }
+                  else
+                      prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+               }
+               break;     
+           case 10: //Enter
+               if(tool_match(curr_tool,ob_type,choice_num)){
+                 ch = 't'; 
+                  choice_num = 0;
+                    display_tool_window();                 
+                    prefresh(tool_win,tool_row--,0,40,KSIZE+2,tw_lr_row,COLS);
+               }else
+               prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+               break;
+          case 'e':
+               ch = 'f';
+               break;
+          default:
+               break;
+      }
+   } 
+   if(ch == 't')
+      return true;
+   return false;
 }
 
 

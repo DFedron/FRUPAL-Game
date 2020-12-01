@@ -32,9 +32,10 @@ class Hero {
     void add_energy(int en); 
     
     void engage_item(int ypos, int xpos);
-    bool tool_match(Item *& curr_tool, string type);   
-    void print_tool_belt(Item * t_belt, int row);
-    
+    bool tool_match(Item *& curr_tool, string type,int choice_num);   
+    void print_tool_belt(Item * t_belt, int row,int choice_num,bool select);
+    void display_tool_window();    
+    bool choose_tool(string type);
   private:
     
     int ypos; // hero's pos from top
@@ -52,6 +53,10 @@ class Hero {
 
     WINDOW * viewport; // to have control of vp
     WINDOW * gamemenu; // to have control of gm
+    WINDOW * tool_win; // for tool window
+    int tool_num;  //number of tools in toolbelt
+    int tool_row;  //needed for tool_win pad
+    int tw_lr_row;  //tool_win lower-right row
 
     // takes in scroll parameters, starty, startx, prints hero on screen accoringly
     void update_hero(int starty, int startx); // updates hero on screen

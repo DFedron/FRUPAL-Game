@@ -37,7 +37,7 @@ public:
   virtual void get_message(string &msg);           // function for Clue class
   virtual void get_name(string &name); // returns Tool, Food, Obstacle name
   virtual void get_terrain_type(string &type); // function for Ship class
-  virtual ~Item(){};
+  virtual ~Item();
 
 protected:
   char icon;        // For print function
