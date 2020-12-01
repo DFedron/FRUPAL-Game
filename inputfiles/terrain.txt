@@ -7,3 +7,4 @@ inputfiles/east_swamp.txt
 inputfiles/north_lake.txt
 inputfiles/big_castle.txt
 inputfiles/east_shore.txt
+inputfiles/death_swamps.txt

@@ -7,7 +7,7 @@
 #include <string>
 #include "item_tiles.h"
 #define KSIZE 128 // defines kingdom size
-#define NUMTERRAIN 9 // defines # of terrain files
+#define NUMTERRAIN 10 // defines # of terrain files
 #define NUMITEM 8  //defines # of item filesclass Item; // pre declaration
 
 enum terrain {NONE, MEADOW, SWAMP, WATER, WALL, UNSEEN};
