@@ -4,4 +4,14 @@ F;food;Baked Ham;10;50;14;32
 F;food;Wild Turnips;50;110;15;34
 F;food;Candied Beetles;10;10;16;13
 F;food;Swamp Vegetable;5;1;16;35
-F;food;Kweedus Meat;100;500;17;36
+F;food;Kweedus Meat;100;500;17;36  // does commenting stuff work here?
+F;food;Wheat;10;15;83;16 // these are foods around the castle
+F;food;Wheat;10;15;82;17 // apparently SPACES are NOT PERMITTED...
+F;food;Wheat;10;15;82;14
+F;food;Wheat;10;15;78;17
+F;food;Wheat;10;15;85;33
+F;food;Wheat;10;10;83;35
+F;food;Wheat;10;10;81;34
+F;food;Wheat;10;10;78;33
+F;food;Wheat;10;10;77;34
+F;food;TESTBONUS;999;10;86;87 // THIS IS FOR TESTING STUFF/NOT DEAD
