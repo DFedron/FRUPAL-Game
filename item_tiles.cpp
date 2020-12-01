@@ -61,7 +61,7 @@ void Clue::display_info(WINDOW *gm, int row, int col) {
 
            mvwprintw(gm, row+1, col, " > Clue: ");
            waddstr(gm, message.data());
-           mvwprintw(gm,row+2,col, "  Press C to continue: "); 
+           mvwprintw(gm,row+3,col, "  Press C to continue: "); 
            wrefresh(gm);
            input = wgetch(gm);
            if(input == 'c' || input == 'C')
