@@ -503,7 +503,8 @@ void Hero::print_tool_belt(Item *t_belt, int row, int choice_num,bool select) {
 void Hero::display_tool_window(){
     werase(tool_win);
 //    wborder(tool_win,' ','-','-',' ',' ', ' ', ' ',' ');
-    int row = 1;
+    int row = 0;
+    tool_row = 0;
     mvwprintw(gamemenu,39,3," < Toolbelt > ");  
 
     print_tool_belt(tool_belt,row,0,0);     
@@ -512,6 +513,7 @@ void Hero::display_tool_window(){
 
 }
 
+//opens toolbelt for choosing tools
 bool Hero::choose_tool(string ob_type){
     int row = 1;
     int choice_num = 0; // is the place number of the tool in the list
@@ -519,7 +521,7 @@ bool Hero::choose_tool(string ob_type){
     bool select = TRUE;
     Item *curr_tool= tool_belt;
     keypad(tool_win,TRUE);
-    tool_row = 0;  
+    tool_row = 1;  
     while(ch != 't' && ch != 'f'){
 
         print_tool_belt(curr_tool,row,choice_num,select);     
@@ -532,7 +534,7 @@ bool Hero::choose_tool(string ob_type){
                   choice_num++;     
                   print_tool_belt(tool_belt,row,choice_num,select);
                
-                  if(tool_num > choice_num && tool_row < 20){
+                  if(tool_num > choice_num && tool_row < 20 && tool_row ){
                      prefresh(tool_win,tool_row++,0,40,KSIZE+2,tw_lr_row,COLS);
                   }
                   else
@@ -544,7 +546,7 @@ bool Hero::choose_tool(string ob_type){
                   choice_num--;     
                   print_tool_belt(tool_belt,row,choice_num,select);
                
-                  if(tool_row > 0){
+                  if(tool_row > 1){
                       prefresh(tool_win,tool_row--,0,40,KSIZE+2,tw_lr_row,COLS);
                   }
                   else
