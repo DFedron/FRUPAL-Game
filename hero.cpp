@@ -13,8 +13,8 @@
 // our 'defaul constructor'
 Hero::Hero(WINDOW *vp, WINDOW *gm) {
 
-  xpos = 15;
-  ypos = 15;
+  xpos = 88;
+  ypos = 84;
   whiffles = 1000;
   energy = 100;
   binoculars = false;
