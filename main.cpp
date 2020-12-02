@@ -124,6 +124,7 @@ void gameplay() {
 
   Hero *hero;                  // hero object
   WINDOW *viewport, *gamemenu; // our 2 windows
+//  WINDOW * tool_win; //tool belt window
 
   // figures out what the height and width of menu/viewport is
   int gmheight, gmwidth = MENUWIDTH, vpheight, vpwidth;
@@ -136,6 +137,10 @@ void gameplay() {
     vpwidth = KSIZE;
     gmwidth = COLS - vpwidth;
   }
+  //figures out what the height and width of toolbelt window
+//  int twheight,twwidth;
+//  twheight = 3; 
+//  twwidth = gmwidth;
 
   viewport =
       newwin(vpheight, vpwidth, 0, 0); // sets location/height/width of viewport
@@ -143,7 +148,7 @@ void gameplay() {
   wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#',
           0); // should put just on left side
 
-  hero = new Hero(viewport, gamemenu);
+  hero = new Hero(viewport, gamemenu,gmwidth);
   int ch;
   refresh();              // starts the screen
   hero->update_display(); // prints the initial screen

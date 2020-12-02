@@ -11,7 +11,7 @@
 #include "map.h"
 
 // our 'defaul constructor'
-Hero::Hero(WINDOW *vp, WINDOW *gm) {
+Hero::Hero(WINDOW *vp, WINDOW *gm,int gmwidth) {
 
   xpos = 15;
   ypos = 15;
@@ -34,9 +34,11 @@ Hero::Hero(WINDOW *vp, WINDOW *gm) {
   //tool_win pad
   tool_num = 0; //number of tools in toolbelt
   tool_row = 0;   
-  tw_lr_row = 43;  //tool_win lower-right row
-  tool_win = newpad(20, COLS-(KSIZE+2));
-  prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+  tw_ul_row = LINES - 8;  //tool_win upper-left row  (top row)
+  tw_lr_row = LINES -5;  //tool_win lower-right row (bottom row)
+  tw_l_col = ( COLS - gmwidth+2) ;
+  tool_win = newpad(20, gmwidth-2);//+2);
+  prefresh(tool_win,tool_row,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
 }
 
 // Hero::Hero(WINDOW * vp, WINDOW * gm, char * filename) {
@@ -95,9 +97,9 @@ void Hero::update_gamemenu() {
     
 
   // XXX remove these 3 lines, all testing stuff
-  mvwprintw(gamemenu, rows - 6, 2, "This is for testing:");
-  mvwprintw(gamemenu, rows - 5, 2, "x-position: %d", xpos);
-  mvwprintw(gamemenu, rows - 4, 2, "y-position: %d", ypos);
+//  mvwprintw(gamemenu, rows - 6, 2, "This is for testing:");
+//  mvwprintw(gamemenu, rows - 5, 2, "x-position: %d", xpos);
+//  mvwprintw(gamemenu, rows - 4, 2, "y-position: %d", ypos);
 
   mvwprintw(gamemenu, 1, 1, "Menu:");
   mvwprintw(gamemenu, rows - 3, 2, "Energy: %d", energy);
@@ -323,21 +325,21 @@ void Hero::engage_item(int ypos, int xpos) {
         update_display();
         mvwprintw(gamemenu, 5, 3, "Thanks for your purchase!");
         wrefresh(gamemenu);
-        display_tool_window();
+//        display_tool_window();
     }
     else
     {
         update_display();
         mvwprintw(gamemenu, 5, 3, "Maybe next time!");
         wrefresh(gamemenu);
-        display_tool_window();
+//        display_tool_window();
     }
         display_tool_window();
   } 
   else if (ob_ptr) {
     display_tool_window();
     if (tool_belt) {
-        int r = 35;
+        int r = tw_ul_row-3;//35;
         mvwprintw(gamemenu,r,3,"< Toolbelt >");  
         mvwprintw(gamemenu,r++,3," Choose a tool with the arrow keys. ");  
         mvwprintw(gamemenu,r++,3," Press 'Enter' to choose. Press 'e' to exit Toolbelt");  
@@ -415,11 +417,11 @@ bool Hero::tool_match(Item *&curr_tool, string ob_type,int choice_num) {
          curr_tool->get_obstacle_type(tool_ob_type);
 
            //clears gamemenu lines
-            wmove(gamemenu,20,3);
+            wmove(gamemenu,tw_ul_row-2,3);
             wclrtoeol(gamemenu); 
-            wmove(gamemenu,21,3);
+            wmove(gamemenu,tw_ul_row-3,3);
             wclrtoeol(gamemenu); 
-            wmove(gamemenu,22,3);
+            wmove(gamemenu,tw_ul_row-4,3);
             wclrtoeol(gamemenu); 
 
          if (ob_type.compare(tool_ob_type) == 0) {
@@ -431,9 +433,9 @@ bool Hero::tool_match(Item *&curr_tool, string ob_type,int choice_num) {
             //Prints tool name used to remove obstacle
               string tool_name;
               curr_tool->get_name(tool_name);
-              mvwprintw(gamemenu, 20, 3, "Removed ");
+              mvwprintw(gamemenu, tw_ul_row-4, 3, "Removed ");
               waddstr(gamemenu, tool_ob_type.data());
-              mvwprintw(gamemenu, 21, 3, "with ");
+              mvwprintw(gamemenu, tw_ul_row-3, 3, "with ");
               waddstr(gamemenu, tool_name.data());
               wrefresh(gamemenu);
 
@@ -464,11 +466,11 @@ bool Hero::tool_match(Item *&curr_tool, string ob_type,int choice_num) {
         else {
             string tool_name;
             curr_tool->get_name(tool_name);
-            mvwprintw(gamemenu, 20, 3, "Cannot remove ");
+            mvwprintw(gamemenu, tw_ul_row-4, 3, "Cannot remove ");
             waddstr(gamemenu, ob_type.data());
-            mvwprintw(gamemenu, 21, 3, "with ");
+            mvwprintw(gamemenu, tw_ul_row-3, 3, "with ");
             waddstr(gamemenu, tool_name.data());
-            mvwprintw(gamemenu, 22, 3, "Choose a different tool ");
+            mvwprintw(gamemenu, tw_ul_row-2, 3, "Choose a different tool ");
             wrefresh(gamemenu);
             return false;
        }
@@ -487,7 +489,7 @@ void Hero::print_tool_belt(Item *t_belt, int row, int choice_num,bool select) {
   t_belt->get_name(name);
   if(t_belt->get_energy() == 0)
       return;
-  mvwprintw(tool_win,row++,3, " <> ");
+  mvwprintw(tool_win,row++,0, " <> ");
   waddstr(tool_win,  name.data());
   wprintw(tool_win, ": Rating %dX", t_belt->get_energy());
  
@@ -502,14 +504,15 @@ void Hero::print_tool_belt(Item *t_belt, int row, int choice_num,bool select) {
 ///////////////////////////////////////////////////////////////
 void Hero::display_tool_window(){
     werase(tool_win);
+    prefresh(tool_win,tool_row,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
 //    wborder(tool_win,' ','-','-',' ',' ', ' ', ' ',' ');
     int row = 0;
     tool_row = 0;
-    mvwprintw(gamemenu,39,3," < Toolbelt > ");  
+    mvwprintw(gamemenu,tw_ul_row-1,3," < Toolbelt > ");  
 
     print_tool_belt(tool_belt,row,0,0);     
 
-    prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+    prefresh(tool_win,tool_row,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
 
 }
 
@@ -524,8 +527,9 @@ bool Hero::choose_tool(string ob_type){
     tool_row = 1;  
     while(ch != 't' && ch != 'f'){
 
+       werase(tool_win);
         print_tool_belt(curr_tool,row,choice_num,select);     
-        prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+        prefresh(tool_win,tool_row,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
         int input = wgetch(tool_win);
 
       switch(input){
@@ -535,10 +539,10 @@ bool Hero::choose_tool(string ob_type){
                   print_tool_belt(tool_belt,row,choice_num,select);
                
                   if(tool_num > choice_num && tool_row < 20 && tool_row ){
-                     prefresh(tool_win,tool_row++,0,40,KSIZE+2,tw_lr_row,COLS);
+                     prefresh(tool_win,tool_row++,0,tw_lr_row,tw_l_col,tw_lr_row,COLS);
                   }
                   else
-                     prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+                     prefresh(tool_win,tool_row,0,tw_lr_row,tw_l_col,tw_lr_row,COLS);
                }
                break;     
            case KEY_UP:
@@ -547,10 +551,10 @@ bool Hero::choose_tool(string ob_type){
                   print_tool_belt(tool_belt,row,choice_num,select);
                
                   if(tool_row > 1){
-                      prefresh(tool_win,tool_row--,0,40,KSIZE+2,tw_lr_row,COLS);
+                      prefresh(tool_win,tool_row--,0,tw_lr_row,tw_l_col,tw_lr_row,COLS);
                   }
                   else
-                      prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+                      prefresh(tool_win,tool_row,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
                }
                break;     
            case 10: //Enter
@@ -558,9 +562,9 @@ bool Hero::choose_tool(string ob_type){
                  ch = 't'; 
                   choice_num = 0;
                     display_tool_window();                 
-                    prefresh(tool_win,tool_row--,0,40,KSIZE+2,tw_lr_row,COLS);
+                    prefresh(tool_win,tool_row--,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
                }else
-               prefresh(tool_win,tool_row,0,40,KSIZE+2,tw_lr_row,COLS);
+               prefresh(tool_win,tool_row,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
                break;
           case 'e':
                ch = 'f';

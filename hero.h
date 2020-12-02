@@ -16,7 +16,7 @@ class Hero {
   public:
     
 //    Hero() =delete; // don't need a default constructor
-    Hero(WINDOW * vp, WINDOW * gm); // constructor
+    Hero(WINDOW * vp, WINDOW * gm, int gmwidth); // constructor
     // TODO create this constructor down here for alternate maps
 //    Hero(WINDOW * vp, WINDOW * gm, char * filename);
 
@@ -56,8 +56,9 @@ class Hero {
     WINDOW * tool_win; // for tool window
     int tool_num;  //number of tools in toolbelt
     int tool_row;  //needed for tool_win pad
-    int tw_lr_row;  //tool_win lower-right row
-
+    int tw_lr_row;  //tool_win lower-right row  (bottom row)
+    int  tw_ul_row;  //tool_win upper-left row  (top row)
+    int tw_l_col;   //tool_win left column
     // takes in scroll parameters, starty, startx, prints hero on screen accoringly
     void update_hero(int starty, int startx); // updates hero on screen
     void update_gamemenu(); // prints the standard game menu w/ whiffles/energy
