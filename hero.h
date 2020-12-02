@@ -58,9 +58,9 @@ class Hero {
 //data related to tool_belt window
     int tool_num;  //number of tools in toolbelt
     int tool_row;  //needed for tool_win pad
-    int tw_lr_row;  //tool_win lower-right row  (bottom row)
-    int  tw_ul_row;  //tool_win upper-left row  (top row)
-    int tw_l_col;   //tool_win left column
+    int tw_bottom_row;  //tool_win lower-right row  (bottom row)
+    int  tw_top_row;  //tool_win upper-left row  (top row)
+    int tw_left_col;   //tool_win left column
     int max_tools;  // # of tools that can fit in toolbelt
 
     // takes in scroll parameters, starty, startx, prints hero on screen accoringly
