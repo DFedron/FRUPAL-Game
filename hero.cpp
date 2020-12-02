@@ -90,7 +90,7 @@ void Hero::update_gamemenu() {
   mvwprintw(gamemenu, rows - 5, 2, "x-position: %d", xpos);
   mvwprintw(gamemenu, rows - 4, 2, "y-position: %d", ypos);
 
-  mvwprintw(gamemenu, 1, 1, "Menu:");
+  mvwprintw(gamemenu, 1, 2, "Menu:");
   mvwprintw(gamemenu, rows - 3, 2, "Energy: %d", energy);
   mvwprintw(gamemenu, rows - 2, 2, "Whiffles: %d", whiffles);
 }
