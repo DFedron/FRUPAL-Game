@@ -32,7 +32,7 @@ Hero::Hero(WINDOW *vp, WINDOW *gm,int gmwidth) {
   curr_item = NULL; // empty curr_item(to be passed up from map)
 
   //tool_win pad
-  max_tools = 3;  // max # of tools can fit in toolbelt
+  max_tools = 20;  // max # of tools can fit in toolbelt
   tool_num = 0; // # of tools in toolbelt
   tool_row = 0;   
   tw_top_row = LINES - 8;  // 'rectangle's' upper-left row  (top row)
