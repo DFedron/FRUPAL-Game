@@ -75,6 +75,8 @@ void Clue::display_info(WINDOW *gm, int row, int col) {
   wclrtoeol(gm);
   wmove(gm,row+2,col);
   wclrtoeol(gm);
+  wmove(gm,row+3,col);
+  wclrtoeol(gm);
   mvwprintw(gm,row+1,col, "  Onward then! "); 
   wrefresh(gm);
    

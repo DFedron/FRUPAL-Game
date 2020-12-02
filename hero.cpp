@@ -501,13 +501,13 @@ void Hero::print_tool_belt(Item *t_belt, int row, int choice_num,bool select) {
   t_belt->get_name(name);
   if(t_belt->get_energy() == 0)
       return;
-  mvwprintw(tool_win,row++,0, " <> ");
+  mvwprintw(tool_win,row,0, " <> ");
   waddstr(tool_win,  name.data());
   wprintw(tool_win, ": Rating %dX", t_belt->get_energy());
  
   wattroff(tool_win,A_REVERSE);  //turns off hightlight
 
-  print_tool_belt(t_belt->get_next(), row,choice_num-1,select);
+  print_tool_belt(t_belt->get_next(), ++row,choice_num-1,select);
 }
 
 ///////////////////////////////////////////////////////////////
@@ -564,7 +564,7 @@ bool Hero::choose_tool(string ob_type){
                   choice_num--;     
                   print_tool_belt(tool_belt,row,choice_num,select);
                
-                  if(tool_row > 1){
+                  if(tool_row >= 1){
                       prefresh(tool_win,tool_row--,0,tw_top_row,tw_left_col,tw_bottom_row,COLS);
                   }
                   else
