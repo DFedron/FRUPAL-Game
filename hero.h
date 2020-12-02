@@ -54,11 +54,15 @@ class Hero {
     WINDOW * viewport; // to have control of vp
     WINDOW * gamemenu; // to have control of gm
     WINDOW * tool_win; // for tool window
+ 
+//data related to tool_belt window
     int tool_num;  //number of tools in toolbelt
     int tool_row;  //needed for tool_win pad
     int tw_lr_row;  //tool_win lower-right row  (bottom row)
     int  tw_ul_row;  //tool_win upper-left row  (top row)
     int tw_l_col;   //tool_win left column
+    int max_tools;  // # of tools that can fit in toolbelt
+
     // takes in scroll parameters, starty, startx, prints hero on screen accoringly
     void update_hero(int starty, int startx); // updates hero on screen
     void update_gamemenu(); // prints the standard game menu w/ whiffles/energy

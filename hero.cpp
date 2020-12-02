@@ -32,12 +32,15 @@ Hero::Hero(WINDOW *vp, WINDOW *gm,int gmwidth) {
   curr_item = NULL; // empty curr_item(to be passed up from map)
 
   //tool_win pad
-  tool_num = 0; //number of tools in toolbelt
+  max_tools = 21;  // (max - 1) # of tools can fit in toolbelt
+  tool_num = 0; // # of tools in toolbelt
   tool_row = 0;   
-  tw_ul_row = LINES - 8;  //tool_win upper-left row  (top row)
-  tw_lr_row = LINES -5;  //tool_win lower-right row (bottom row)
+  tw_ul_row = LINES - 8;  // 'rectangle's' upper-left row  (top row)
+  tw_lr_row = LINES -5;  // 'rectangle's' lower-right row (bottom row)
   tw_l_col = ( COLS - gmwidth+2) ;
-  tool_win = newpad(20, gmwidth-2);//+2);
+  tool_win = newpad(max_tools, gmwidth-2); //pad that displays portions of itself to the 'rectangle' formed from last 4 args in prefresh
+  //prefresh is pad refresh
+  //2nd and 3rd args of prefresh are coordinates of tool_win pad that are displayed in the 'rectangle's upper-left corner
   prefresh(tool_win,tool_row,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
 }
 
@@ -309,15 +312,24 @@ void Hero::engage_item(int ypos, int xpos) {
     }
 // makes decision if should buy the tool or not.
     if(ch == 'y') {
-        if (!tool_belt) 
+         if(tool_num +1 == max_tools){
+               update_display();
+               mvwprintw(gamemenu,5,3,"Your tool belt is full!");
+               wrefresh(gamemenu);
+               return;
+         }
+
+         if (!tool_belt) 
         {
             tool_belt = new Tool(*tool_ptr);
         } 
         else 
         {
-            Item *temp = new Tool(*tool_ptr);
-            temp->get_next() = tool_belt;
-            tool_belt = temp;
+            if(tool_num < max_tools){
+               Item *temp = new Tool(*tool_ptr);
+               temp->get_next() = tool_belt;
+               tool_belt = temp;
+            }
         }
         tool_num++;
         whiffles -= curr_item->get_cost();
@@ -499,7 +511,7 @@ void Hero::print_tool_belt(Item *t_belt, int row, int choice_num,bool select) {
 }
 
 ///////////////////////////////////////////////////////////////
-//Toolbelt is the window that displays all the tools
+//Toolbelt is the window pad that displays all the tools
 //The player can scroll through it to choose a tool for an obstacle
 ///////////////////////////////////////////////////////////////
 void Hero::display_tool_window(){
@@ -536,22 +548,24 @@ bool Hero::choose_tool(string ob_type){
            case KEY_DOWN:
                if((choice_num+1) < tool_num){   
                   choice_num++;     
+       werase(tool_win);
                   print_tool_belt(tool_belt,row,choice_num,select);
                
-                  if(tool_num > choice_num && tool_row < 20 && tool_row ){
-                     prefresh(tool_win,tool_row++,0,tw_lr_row,tw_l_col,tw_lr_row,COLS);
+                  if(tool_num > choice_num && tool_row+4 < max_tools){
+                     prefresh(tool_win,tool_row++,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
                   }
                   else
-                     prefresh(tool_win,tool_row,0,tw_lr_row,tw_l_col,tw_lr_row,COLS);
+                     prefresh(tool_win,tool_row,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
                }
                break;     
            case KEY_UP:
                if(choice_num != 0){
                   choice_num--;     
+       werase(tool_win);
                   print_tool_belt(tool_belt,row,choice_num,select);
                
                   if(tool_row > 1){
-                      prefresh(tool_win,tool_row--,0,tw_lr_row,tw_l_col,tw_lr_row,COLS);
+                      prefresh(tool_win,tool_row--,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
                   }
                   else
                       prefresh(tool_win,tool_row,0,tw_ul_row,tw_l_col,tw_lr_row,COLS);
