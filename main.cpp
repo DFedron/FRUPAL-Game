@@ -124,6 +124,8 @@ void gameplay() {
 
   Hero *hero;                  // hero object
   WINDOW *viewport, *gamemenu; // our 2 windows
+//  WINDOW * tool_win; //tool belt window
+
   // figures out what the height and width of menu/viewport is
   int gmheight, gmwidth = MENUWIDTH, vpheight, vpwidth;
   vpheight = LINES;
@@ -135,6 +137,10 @@ void gameplay() {
     vpwidth = KSIZE;
     gmwidth = COLS - vpwidth;
   }
+  //figures out what the height and width of toolbelt window
+//  int twheight,twwidth;
+//  twheight = 3; 
+//  twwidth = gmwidth;
 
   viewport =
       newwin(vpheight, vpwidth, 0, 0); // sets location/height/width of viewport
@@ -142,7 +148,7 @@ void gameplay() {
   wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#',
           0); // should put just on left side
 
-  hero = new Hero(viewport, gamemenu);
+  hero = new Hero(viewport, gamemenu,gmwidth);
   int ch;
   refresh();              // starts the screen
   hero->update_display(); // prints the initial screen
@@ -172,6 +178,10 @@ void gameplay() {
     }
   }
 }
+   
+
+
+
 
 // end game menu.  adds 100 energy and returns true if player
 // wants to continue the game, returns false to quit game.
@@ -215,6 +225,7 @@ bool end_game_menu(Hero *hero) {
     erase();
     refresh();
     hero->update_display();
+    hero->display_tool_window();
     nodelay(stdscr, true);
     return true;
   } else // else, returns false and game is over!

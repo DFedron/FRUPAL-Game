@@ -28,6 +28,10 @@ void Item::get_type(string &type) { type = item_type; }
 // XXX THIS IS STUFF/FUNCTIONS ADDING/SUBTRACTING
 
 char Item::get_char() const { return icon; }
+  
+Item::~Item(){
+   
+}
 
 // REMOVED  print_icon(WINDOW *,int), get_icon(&char)
 // END CHANGES BY CAMILO
@@ -123,6 +127,8 @@ void Tool::display_info(WINDOW *gm, int row, int col) {
   mvwprintw(gm, row++, col, " > Rating: %dX", rating);
   mvwprintw(gm, row++, col, " > Obstacle type: ");
   waddstr(gm, obstacle_type.data());
+  mvwprintw(gm, row++, col, " > Would you like to buy?");
+  mvwprintw(gm, row++, col, " > (Y)es or (N)o?");
   wrefresh(gm);
 }
 
