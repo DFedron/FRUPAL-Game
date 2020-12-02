@@ -79,11 +79,101 @@ int startmenu() {
   string option[2] = {"1.Start Game", "0.Exit"};
   int hightlight = 0;
   int choice; // get the input
+
+  ///////////////////////////////////
+  //for the title
+  int widthX = 100;
+  int heightY = 20;
+  int posX = (COLS - widthX)/2;
+  int posY = (LINES - heightY)/2;
+  char draw = 'X';
+  //////////////////////////////////
+
   while (true) {
+    //window to draw the title FRUPAL
+    WINDOW * mainTitle = newwin(heightY, widthX, posY, posX);
+
+    ///////////////////////////////////////////////
+    //Draw 'F'
+    mvwvline(mainTitle, 2, 3, draw, 11);
+    mvwhline(mainTitle, 2, 4, draw, 13);
+    mvwvline(mainTitle, 3, 16, draw, 2);
+    mvwhline(mainTitle, 4, 6, draw, 10);
+    mvwvline(mainTitle, 5, 6, draw, 1);
+    mvwhline(mainTitle, 6, 6, draw, 10);
+    mvwvline(mainTitle, 6, 16, draw, 2);
+    mvwhline(mainTitle, 8, 6, draw, 11);
+    mvwvline(mainTitle, 9, 6, draw, 4);
+    mvwhline(mainTitle, 12, 4, draw, 2);
+
+    //Draw 'R'
+    mvwvline(mainTitle, 2, 19, draw, 11);
+    mvwhline(mainTitle, 2, 20, draw, 14);
+    mvwvline(mainTitle, 3, 33, draw, 5);
+    mvwhline(mainTitle, 8, 31, draw, 3);
+    mvwvline(mainTitle, 9, 31, draw, 1);
+    mvwhline(mainTitle, 10, 31, draw, 5);
+    mvwvline(mainTitle, 11, 35, draw, 1);
+    mvwhline(mainTitle, 12, 27, draw, 9);
+    mvwvline(mainTitle, 9, 27, draw, 3);
+    mvwhline(mainTitle, 8, 23, draw, 5);
+    mvwvline(mainTitle, 9, 23, draw, 3);
+    mvwhline(mainTitle, 12, 20, draw, 4);
+    mvwhline(mainTitle, 4, 23, draw, 7);
+    mvwvline(mainTitle, 5, 23, draw, 1);
+    mvwhline(mainTitle, 6, 23, draw, 7);
+    mvwvline(mainTitle, 5, 29, draw, 1);
+
+    //Draw 'U'
+    mvwvline(mainTitle, 2, 38, draw, 11);
+    mvwhline(mainTitle, 2, 39, draw, 4);
+    mvwvline(mainTitle, 3, 42, draw, 7);
+    mvwhline(mainTitle, 10, 42, draw, 5);
+    mvwvline(mainTitle, 3, 46, draw, 7);
+    mvwhline(mainTitle, 2, 46, draw, 5);
+    mvwvline(mainTitle, 3, 50, draw, 10);
+    mvwhline(mainTitle, 12, 39, draw, 11);
+
+    //Draw 'P'
+    mvwvline(mainTitle, 2, 53, draw, 11);
+    mvwhline(mainTitle, 2, 54, draw, 12);
+    mvwvline(mainTitle, 3, 65, draw, 5);
+    mvwhline(mainTitle, 8, 57, draw, 9);
+    mvwvline(mainTitle, 9, 57, draw, 3);
+    mvwhline(mainTitle, 12, 54, draw, 4);
+    mvwhline(mainTitle, 4, 57, draw, 5);
+    mvwhline(mainTitle, 5, 57, draw, 1);
+    mvwhline(mainTitle, 6, 57, draw, 5);
+    mvwhline(mainTitle, 5, 61, draw, 1);
+
+    //Draw 'A'
+    mvwvline(mainTitle, 2, 68, draw, 11);
+    mvwhline(mainTitle, 2, 69, draw, 12);
+    mvwvline(mainTitle, 3, 80, draw, 10);
+    mvwhline(mainTitle, 12, 76, draw, 5);
+    mvwvline(mainTitle, 9, 76, draw, 3);
+    mvwhline(mainTitle, 8, 72, draw, 5);
+    mvwvline(mainTitle, 9, 72, draw, 3);
+    mvwhline(mainTitle, 12, 69, draw, 4);
+    mvwhline(mainTitle, 4, 72, draw, 5);
+    mvwhline(mainTitle, 5, 72, draw, 1);
+    mvwhline(mainTitle, 6, 72, draw, 5);
+    mvwhline(mainTitle, 5, 76, draw, 1);
+
+    //Draw 'L'
+    mvwvline(mainTitle, 2, 83, draw, 11);
+    mvwhline(mainTitle, 2, 84, draw, 4);
+    mvwvline(mainTitle, 3, 87, draw, 8);
+    mvwhline(mainTitle, 10, 87, draw, 9);
+    mvwhline(mainTitle, 11, 95, draw, 1);
+    mvwhline(mainTitle, 12, 84, draw, 12);
+    /////////////////////////////////////////////////////////
+
     WINDOW *mainMenu = newwin(7, COLS - 16, LINES - 13, 7);
     box(mainMenu, 0, 0);
     refresh();
     wrefresh(mainMenu);
+    wrefresh(mainTitle);
     keypad(mainMenu, true);
     for (int i = 0; i < 2; ++i) {
       if (i == hightlight)
