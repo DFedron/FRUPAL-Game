@@ -9,20 +9,20 @@
 **November 10, 2020**
  
 ## Instructions:
- 1. make with `make`
- 2. run with `./frupal`
- 3. currently arrow keys to explore `q` to quit.
- 4. a couple swamps around start
- 5. river with bridge to south, wall to north
- 6. meadows everywhere else, but feel free to walk about
- 7. items lying around
+ 1. Make with `make`
+ 2. Run with `./frupal`
+ 3. Use arrow keys to explore, `q` to quit.
+ 4. How to win: Find the Royal Diamonds (white '$' symbol).
+ 5. How to lose: Run out of energy before finding the Royal Diamonds.
+ 6. How to play: Hero can walk over meadows (green background) and swamps (purple background) with energy cost of 1 for meadows, 2 for swamps. Water (blue background) and walls (white background) are impassable, but water can be traversed at no energy cost if a ship ('S' symbol) is purchased. Food ('F' symbol) can be purchased with currency (whiffles) for energy.  Obstacles ('!' symbol) require energy to remove. Tools ('T' symbol) can be purchased to minimize energy cost when landing on obstacles. Binoculars ('B' symbol) can be purchased to increase visual range 2X. Treasure chests (black '$' symbol) give currency (whiffles). Clues ('?' symbol) give completely true or completely false information about the location of the Royal Diamonds. Beware. 
+ 7. Game menu: The right side panel of the screen will display important information about the game, such as, picked-up item details, movement options available to the hero, tools in tool belt, and current energy and currency. 
  
 ## Version:
- This branch version has tiles colored black until you discover them.  It has implementation of a load file that is somewhat reproducable to create a 128x128 map.  It has hero produced on a dynamic viewport over a terrain input from input files.  It has a scroll mechanism.  All color is correctly displayed.  SWAMPS cost 2 energy, MEADOWS 1, WALLS and WATER cost 1 and send you back to your old position, as does trying to walk off the map.  The hero dies when energy is 0 or less but has option to keep playing if the player purchases 100 energy. Have testing x, y coordinates of hero by whiffles and energy.  It does not have a grovnick class.  With this implementation is just a struct.
- There is implementation for loading item files and printing them on the map. The hero automatically interacts with the items when the hero lands on them but purchases need to be changed to user choice. All items are displayed when the hero lands on them. The tool belt is displayed when the hero lands on an obstacle if the tool belt is not empty. Choice of tool is automated but needs to be changed to user choice. 
+ This branch version has tiles colored black until you discover them.  It has implementation of a load file that is somewhat reproducable to create a 128x128 map.  It has hero produced on a dynamic viewport over a terrain input from input files.  It has a scroll mechanism.  All color is correctly displayed.  SWAMPS cost 2 energy, MEADOWS 1, WALLS and WATER cost 1 and send you back to your old position, as does trying to walk off the map.  The hero dies when energy is 0 or less but has option to keep playing if the player purchases 100 energy. The grovnick is a struct. 
+ There is implementation for loading item files and printing them on the map. All items are displayed in the game menu when the hero lands on them and the hero may purchase them if they are food, tools, binoculars or ships. The tool belt is always displayed in the game menu. When the hero lands on an obstacle, the hero may choose a tool to remove the obstacle. 
  
 
-## Load files:
+## Load terrain files:
  The load mechanism is built off of Chiharu's load mechanism. It is modified however to be able to create instance of terrain structures.  Any new file created needs to be linked inside of `terrain.txt`.  The `NUMTERRAIN` definition also needs to be changed in map.h.  The input structure is `int terrain;int y coord; int x coord`. y and x start from the top and left, respective to the map and controls.  After that you can type notes on the rest of the line to describe what you are making.
  Numbers asigned to terrain as follows:
   1. MEADOW is 1, if you want to overlay terrains.
@@ -34,6 +34,7 @@
  
  ##Load item files:
    All item text file names are in 'item.txt'. Any new item text files must be included in 'item.txt'. The 'NUMITEM' will need to be changed in map.h. The input structure for each item is written in 'item_data_order.txt'. 
+ 
  
 
  
