@@ -325,6 +325,10 @@ void Map::print_item(WINDOW *gm, int i, int j) {
   frupal[i][j].feature->display_info(gm, 3, 2);
 }
 
+void Map::show_item(WINDOW *gm, int i, int j){
+  frupal[i][j].feature->show_info(gm, 3, 2);
+}
+
 void Map::get_item(Item *&item, int i, int j) { item = frupal[i][j].feature; }
 void Map::edit_item_map() {
 
@@ -595,7 +599,8 @@ void Map::print_current_grovnick(WINDOW * gm, int row, int col){
        type = "SWAMP";
     else if(frupal[row][col].square == WATER)
        type = "WATER";
-    
+    else
+       type = "restricted area"; 
  
     mvwprintw(gm,r++,1,"  Grovnick Terrain: ");
     mvwprintw(gm,r++,1,"  ");
