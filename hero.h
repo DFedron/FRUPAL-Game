@@ -68,5 +68,8 @@ class Hero {
     void update_gamemenu(); // prints the standard game menu w/ whiffles/energy
     void scroll_function(int& starty, int& startx); // determines starty, startx
     // so we know where to start printing the map and hero relative to viewport
+
+    void yes_answer(); // simple yes output/refresh
+    void no_answer(); // simple no output/refresh
   
 };
