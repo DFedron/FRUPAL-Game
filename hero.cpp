@@ -359,7 +359,7 @@ void Hero::engage_item(int ypos, int xpos) {
 
         string ob_type;
         curr_item->get_name(ob_type); // gets type of obstacle
-        if( choose_tool(ob_type)) // if no tool was chosen, remove energy..
+        if(! choose_tool(ob_type)) // if no tool was chosen, remove energy..
             energy -= ob_ptr->get_energy();
     } else
         energy -= ob_ptr->get_energy();
