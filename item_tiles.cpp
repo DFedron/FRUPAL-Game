@@ -15,11 +15,13 @@ Item::Item() {
 Item::Item(char item_icon, string type) {
   item_type = type;
   icon = item_icon;
+  next = NULL;
 }
 
 Item::Item(const Item &item) {
   item_type = item.item_type;
   icon = item.icon;
+  next = NULL;
 }
 Item *&Item::get_next() { return next; }
 

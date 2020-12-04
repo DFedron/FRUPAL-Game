@@ -2,3 +2,5 @@ T;tool;Pick Axe;3;boulder;20;6;44
 T;tool;Axe;2;tree;10;8;43
 T;tool;Hammer;2;boulder;10;9;41
 T;tool;Saw;5;tree;15;10;40
+T;tool;Hammer;5;boulder;10;88;86  // hammer to left of start
+T;tool;Saw;5;tree;15;88;90    // saw to the right of start
