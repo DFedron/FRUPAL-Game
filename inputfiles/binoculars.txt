@@ -1,1 +1,2 @@
 B;binoculars;100;32;52
+B;binoculars;399;88;88 // some test binoculars
