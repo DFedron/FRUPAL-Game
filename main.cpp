@@ -258,6 +258,11 @@ void gameplay() {
     case KEY_DOWN:
       hero->move_down();
       break;
+    case 'c':
+      hero->check_around();
+      break;
+    default:
+      break;
     }
     // check_energy returns true if hero's 'dead' false otherwise
     if (hero->check_energy()) {

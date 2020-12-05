@@ -36,6 +36,8 @@ class Hero {
     void print_tool_belt(Item * t_belt, int row,int choice_num,bool select);
     void display_tool_window();    
     bool choose_tool(string type);
+    void check(int x, int y);
+    void check_around();
   private:
     
     int ypos; // hero's pos from top

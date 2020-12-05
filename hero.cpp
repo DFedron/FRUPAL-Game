@@ -590,4 +590,44 @@ bool Hero::choose_tool(string ob_type) {
   return false;
 }
 
+void Hero::check_around(){
+  char ch;
+  ch = getch();
+  while(ch != 'c'){
+    int x = xpos;
+    int y = ypos;
+    switch(ch){
+      case 'w':
+        check(x, y-1);
+	break;
+      case 's':
+	check(x, y+1);
+	break;
+      case 'a':
+	check(x-1, y);
+	break;
+      case 'd':
+	check(x+1, y);
+	break;
+      default:
+        break;
+    }
+    ch = getch();
+  }
+  curs_set(0);
+}
+
+void Hero::check(int x, int y){
+  werase(gamemenu);
+  curs_set(1);
+  attron(A_BLINK);
+  mvwprintw(viewport,y,x," ");
+  attroff(A_BLINK);
+  if(map->has_item(y,x))
+    map->show_item(gamemenu,y,x);
+  else
+    map->print_current_grovnick(gamemenu,y,x);
+  wrefresh(gamemenu); 
+}
+
 ////////////////////////////////////////////////////////////////////////////////
