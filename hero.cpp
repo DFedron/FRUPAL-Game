@@ -591,6 +591,16 @@ bool Hero::choose_tool(string ob_type) {
 }
 
 void Hero::check_around(){
+  werase(gamemenu);
+  wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#', 0);
+  mvwprintw(gamemenu,1,1," Check around: ");
+  mvwprintw(gamemenu,9,1," Options: ");
+  mvwprintw(gamemenu,10,1," w: Check North ");
+  mvwprintw(gamemenu,11,1," s: Chck South ");
+  mvwprintw(gamemenu,12,1," a: Check West ");
+  mvwprintw(gamemenu,13,1," d: Check Eest ");
+  mvwprintw(gamemenu,14,1," Press c back to movement ");
+  wrefresh(gamemenu);
   char ch;
   ch = getch();
   while(ch != 'c'){
@@ -614,20 +624,27 @@ void Hero::check_around(){
     }
     ch = getch();
   }
-  curs_set(0);
+  werase(gamemenu);
+  update_gamemenu();
+  wrefresh(gamemenu);
 }
 
 void Hero::check(int x, int y){
   werase(gamemenu);
-  curs_set(1);
-  attron(A_BLINK);
-  mvwprintw(viewport,y,x," ");
-  attroff(A_BLINK);
+  wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#', 0);
+  mvwprintw(gamemenu,1,1," Check around: ");
+  mvwprintw(gamemenu,9,1," Options: ");
+
+  mvwprintw(gamemenu,10,1," w: Check North ");
+  mvwprintw(gamemenu,11,1," s: Chck South ");
+  mvwprintw(gamemenu,12,1," a: Check West ");
+  mvwprintw(gamemenu,13,1," d: Check Eest ");
+  mvwprintw(gamemenu,14,1," Press c back to movement ");
   if(map->has_item(y,x))
     map->show_item(gamemenu,y,x);
   else
     map->print_current_grovnick(gamemenu,y,x);
-  wrefresh(gamemenu); 
+  wrefresh(gamemenu);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
