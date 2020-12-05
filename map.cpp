@@ -155,7 +155,6 @@ void Map::update_display(int starty, int startx) {
 
       wattron(viewport, COLOR_PAIR(color));
       if (frupal[i][j].feature) {
-        // TODO  ADD IN A CHECK FOR THE ROYAL DIAMOND
         string temp;
         frupal[i][j].feature->get_type(temp);
         if ((temp.compare("diamond") == 0) && color != UNSEEN)
