@@ -83,6 +83,14 @@ void Clue::display_info(WINDOW *gm, int row, int col) {
   wrefresh(gm);
    
 }
+
+void Clue::show_info(WINDOW *gm, int row, int col){
+
+  mvwprintw(gm, row+1, col, " > Clue: ");
+  waddstr(gm, message.data());
+  wrefresh(gm);
+
+}
 void Clue::get_message(string &msg) { msg = message; }
 /*
 void clue::random_clue(){
@@ -136,6 +144,16 @@ void Tool::display_info(WINDOW *gm, int row, int col) {
   wrefresh(gm);
 }
 
+void Tool::show_info(WINDOW *gm, int row, int col){
+
+  mvwprintw(gm, row++, col, " > Tool: ");
+  waddstr(gm, tool_name.data());
+  mvwprintw(gm, row++, col, " > Cost: %d", cost);
+  mvwprintw(gm, row++, col, " > Rating: %dX", rating);
+  mvwprintw(gm, row++, col, " > Obstacle type: ");
+  waddstr(gm, obstacle_type.data());
+  wrefresh(gm);
+}
 // FOOD IMPLEMENTATION
 Food::Food() {
   icon = 'F';
@@ -163,6 +181,14 @@ void Food::display_info(WINDOW *gm, int row, int col) {
   wrefresh(gm);
 }
 
+void Food::show_info(WINDOW *gm, int row, int col){
+
+  mvwprintw(gm, row++, col, " > Food: ");
+  waddstr(gm, food_name.data());
+  mvwprintw(gm, row++, col, " > Cost: %d whiffles", food_cost);
+  mvwprintw(gm, row++, col, " > Energy: %d", energy_value);
+  wrefresh(gm);
+}
 // OBSTACLE IMPLEMENTATION
 Obstacle::Obstacle() {
   icon = '!';
@@ -184,6 +210,12 @@ void Obstacle::display_info(WINDOW *gm, int row, int col) {
   wrefresh(gm);
 }
 
+void Obstacle::show_info(WINDOW *gm, int row, int col) {
+  mvwprintw(gm, row++, col, " > Obstacle: ");
+  waddstr(gm, obstacle_name.data());
+  mvwprintw(gm, row++, col, " > Removal energy: %d", energy_cost);
+  wrefresh(gm);
+}
 // TREASURE_CHEST IMPLEMENTATION
 Treasure_chest::Treasure_chest() {
   icon = '$';
@@ -203,6 +235,13 @@ void Treasure_chest::display_info(WINDOW *gm, int row, int col) {
   wrefresh(gm);
 }
 
+void Treasure_chest::show_info(WINDOW *gm, int row, int col) {
+  //   werase(gm);
+  mvwprintw(gm, row++, col, " > You found a Treasure Chest!!");
+  mvwprintw(gm, row++, col, " > Reward: %d whiffles!!", whiffle_value);
+  mvwprintw(gm, row++, col, " > Press <ENTER> to continue.");
+  wrefresh(gm);
+}
 // DIAMOND IMPLEMENTATION
 Diamond::Diamond() {
   icon = '$';
@@ -221,6 +260,12 @@ void Diamond::display_info(WINDOW *gm, int row, int col) {
   wrefresh(gm);
 }
 
+void Diamond::show_info(WINDOW *gm, int row, int col) {
+  //   werase(gm);
+  mvwprintw(gm, row++, col, " > ROYAL DIAMOND!!");
+  mvwprintw(gm, row++, col, " > Bounty: %d whiffles!!", whiffle_value);
+  wrefresh(gm);
+}
 // SHIP IMPLEMENTATION
 Ship::Ship() {
   icon = 'S';
@@ -247,6 +292,13 @@ void Ship::display_info(WINDOW *gm, int row, int col) {
   wrefresh(gm);
 }
 
+void Ship::show_info(WINDOW *gm, int row, int col) {
+  mvwprintw(gm, row++, col, " > Ship!!");
+  mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
+  mvwprintw(gm, row++, col, " > Terrain type: ");
+  waddstr(gm, terrain_type.data());
+  wrefresh(gm);
+}
 // BINOCULAR IMPLEMENTATION
 Binoculars::Binoculars() {
   icon = 'B';
@@ -266,3 +318,10 @@ void Binoculars::display_info(WINDOW *gm, int row, int col) {
   mvwprintw(gm, row++, col, "(Y)es or (N)o?");
   wrefresh(gm);
 }
+
+void Binoculars::show_info(WINDOW *gm, int row, int col) {
+  mvwprintw(gm, row++, col, " > Binoculars!!");
+  mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
+  wrefresh(gm);
+}
+

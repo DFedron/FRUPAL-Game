@@ -30,6 +30,7 @@ public:
   char get_char() const; // returns items icon for map to print it.
 
   virtual void display_info(WINDOW *game_menu, int row, int col) = 0;
+  virtual void show_info(WINDOW *game_menu, int row, int col) = 0;
   virtual int get_energy();
   virtual int get_cost();
   virtual void get_obstacle_type(string &ob_type); // function for Tool class
@@ -52,6 +53,7 @@ public:
   Clue(char icon, string type, string message);
   Clue(const Item &item, string message);
   void display_info(WINDOW *game_menu, int row, int col);
+  void show_info(WINDOW *game_menu, int row, int col);
   void get_message(string &msg); // for outfile
   ~Clue(){};
 
@@ -73,6 +75,7 @@ public:
   void get_name(string &name);
   void get_obstacle_type(string &type);
   void display_info(WINDOW *game_menu, int row, int col);
+  void show_info(WINDOW *game_menu, int row, int col);
   ~Tool(){};
 
 private:
@@ -94,6 +97,7 @@ public:
   int get_cost();
   void get_name(string &name);
   void display_info(WINDOW *game_menu, int row, int col);
+  void show_info(WINDOW *game_menu, int row, int col);
   ~Food(){};
 
 private:
@@ -111,6 +115,7 @@ public:
   int get_energy(); // return energy cost
   void get_name(string &name);
   void display_info(WINDOW *game_menu, int row, int col);
+  void show_info(WINDOW *game_menu, int row, int col);
   ~Obstacle(){};
 
 private:
@@ -126,6 +131,7 @@ public:
   Treasure_chest(const Item &item, int whiffles);
   int get_whiffles();
   void display_info(WINDOW *game_menu, int row, int col);
+  void show_info(WINDOW *game_menu, int row, int col);
   ~Treasure_chest(){};
 
 private:
@@ -140,6 +146,7 @@ public:
   Diamond(const Item &item, int whiffles);
   int get_whiffles();
   void display_info(WINDOW *game_menu, int row, int col);
+  void show_info(WINDOW *game_menu, int row, int col);
   ~Diamond(){};
 
 private:
@@ -156,6 +163,7 @@ public:
   int get_cost();
   void get_terrain_type(string &type);
   void display_info(WINDOW *game_menu, int row, int col);
+  void show_info(WINDOW *game_menu, int row, int col);
   ~Ship(){};
 
 private:
@@ -171,6 +179,7 @@ public:
   Binoculars(const Item &item, int cost);
   int get_cost();
   void display_info(WINDOW *game_menu, int row, int col);
+  void show_info(WINDOW *game_menu, int row, int col);
   ~Binoculars(){};
 
 private:

@@ -44,6 +44,7 @@ class Map {
      void remove_item(int row,int col);
      bool has_item(int i, int j);
      void print_item(WINDOW*gm,int i, int j);
+     void show_item(WINDOW *gm,int i, int j);
      void get_item(Item *& item,int i, int j);
      void edit_item_map();
      void save_item_map();
