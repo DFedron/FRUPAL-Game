@@ -15,3 +15,33 @@ F;food;Wheat;10;10;81;34
 F;food;Wheat;10;10;78;33
 F;food;Wheat;10;10;77;34
 F;food;TESTBONUS;999;10;86;87 // THIS IS FOR TESTING STUFF/NOT DEAD
+F;food;Cabbage;5;2;105;30 // top row of cabbage
+F;food;Cabbage;5;2;105;31
+F;food;Cabbage;5;2;105;32
+F;food;Cabbage;5;2;105;33
+F;food;Cabbage;5;2;105;34
+F;food;Cabbage;5;2;105;35
+F;food;Cabbage;5;2;105;36
+F;food;Cabbage;5;2;105;37
+F;food;Cabbage;5;2;105;38
+F;food;Cabbage;5;2;105;39
+F;food;Wilted Cabbage;3;2;107;30 // middle row of cabbage
+F;food;Wilted Cabbage;3;2;107;31
+F;food;Wilted Cabbage;3;2;107;32
+F;food;Wilted Cabbage;3;2;107;33
+F;food;Wilted Cabbage;3;2;107;34
+F;food;Wilted Cabbage;3;2;107;35
+F;food;Wilted Cabbage;3;2;107;36
+F;food;Wilted Cabbage;3;2;107;37
+F;food;Wilted Cabbage;3;2;107;38
+F;food;Wilted Cabbage;3;2;107;39
+F;food;Dead Cabbage;1;2;109;30 // bottom row of cabbage
+F;food;Dead Cabbage;1;2;109;31
+F;food;Dead Cabbage;1;2;109;32
+F;food;Dead Cabbage;1;2;109;33
+F;food;Dead Cabbage;1;2;109;34
+F;food;Dead Cabbage;1;2;109;35
+F;food;Dead Cabbage;1;2;109;36
+F;food;Dead Cabbage;1;2;109;37
+F;food;Dead Cabbage;1;2;109;38
+F;food;Dead Cabbage;1;2;109;39

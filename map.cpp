@@ -43,7 +43,7 @@ Map::Map(WINDOW *vp, WINDOW *gm, char *inputfile) {
   for (int i = 0; i < KSIZE; ++i)
     for (int j = 0; j < KSIZE; ++j) {
       frupal[i][j].square = MEADOW;
-      frupal[i][j].viewed = true; // true total map, false for view
+      frupal[i][j].viewed = false; // true total map, false for view
       frupal[i][j].feature = NULL;
     }
 
@@ -155,7 +155,6 @@ void Map::update_display(int starty, int startx) {
 
       wattron(viewport, COLOR_PAIR(color));
       if (frupal[i][j].feature) {
-        // TODO  ADD IN A CHECK FOR THE ROYAL DIAMOND
         string temp;
         frupal[i][j].feature->get_type(temp);
         if ((temp.compare("diamond") == 0) && color != UNSEEN)

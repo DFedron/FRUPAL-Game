@@ -3,3 +3,6 @@
 !;obstacle;boulder;10;29;35
 !;obstacle;boulder;20;89;85 // practice rock
 !;obstacle;tree;30;89;91 // practice tree
+!;obstacle;monster;30;110;95 // obstacles towards death swamp
+!;obstacle;monster;30;112;95
+!;obstacle;monster;30;114;97
