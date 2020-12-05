@@ -4,3 +4,60 @@ T;tool;Hammer;2;boulder;10;9;41
 T;tool;Saw;5;tree;15;10;40
 T;tool;Hammer;5;boulder;10;88;86  // hammer to left of start
 T;tool;Saw;5;tree;15;88;90    // saw to the right of start
+T;tool;Big Sword;6;monster;35;18;115 // AAA start right bank rando
+T;tool;Saw;5;tree;34;19;111
+T;tool;Sword;2;monster;30;21;115
+T;tool;Big Saw;7;tree;32;22;99
+T;tool;Big Saw;7;tree;35;22;108
+T;tool;Big Hammer;6;boulder;29;22;110
+T;tool;Big Saw;8;tree;30;26;123
+T;tool;Big Sword;8;monster;29;27;106
+T;tool;Hammer;4;boulder;30;28;107
+T;tool;Big Hammer;8;boulder;32;28;118
+T;tool;Big Hammer;6;boulder;33;28;126
+T;tool;Hammer;4;boulder;29;29;122
+T;tool;Hammer;2;boulder;29;33;107
+T;tool;Saw;5;tree;34;33;113
+T;tool;Big Sword;6;monster;30;34;118
+T;tool;Big Saw;7;tree;30;36;120
+T;tool;Hammer;3;boulder;32;37;98
+T;tool;Big Sword;6;monster;33;37;105
+T;tool;Sword;3;monster;31;38;115
+T;tool;Hammer;3;boulder;30;39;110
+T;tool;Big Saw;8;tree;32;40;117
+T;tool;Hammer;4;boulder;31;40;122
+T;tool;Hammer;3;boulder;35;43;107
+T;tool;Big Sword;7;monster;34;43;120
+T;tool;Big Saw;8;tree;32;44;108
+T;tool;Big Saw;7;tree;29;45;126
+T;tool;Sword;2;monster;31;46;97
+T;tool;Sword;4;monster;31;46;110
+T;tool;Sword;5;monster;32;46;123
+T;tool;Big Hammer;8;boulder;34;48;116
+T;tool;Sword;4;monster;30;49;118
+T;tool;Saw;3;tree;35;50;123
+T;tool;Sword;2;monster;33;54;109
+T;tool;Big Hammer;6;boulder;30;55;110
+T;tool;Big Hammer;8;boulder;34;58;107
+T;tool;Sword;2;monster;31;60;103
+T;tool;Big Sword;6;monster;32;61;100
+T;tool;Big Hammer;7;boulder;32;61;120
+T;tool;Big Saw;8;tree;33;62;111
+T;tool;Big Sword;6;monster;29;64;100
+T;tool;Sword;5;monster;30;65;106
+T;tool;Hammer;4;boulder;33;66;107
+T;tool;Sword;5;monster;33;67;124
+T;tool;Big Hammer;6;boulder;31;69;116
+T;tool;Big Hammer;8;boulder;33;69;118
+T;tool;Big Hammer;7;boulder;30;70;110
+T;tool;Big Sword;6;monster;34;70;117
+T;tool;Hammer;2;boulder;33;72;116
+T;tool;Saw;2;tree;33;73;117
+T;tool;Saw;3;tree;35;73;120
+T;tool;Big Saw;7;tree;34;74;111
+T;tool;Sword;3;monster;30;75;115
+T;tool;Big Hammer;8;boulder;29;75;123
+T;tool;Saw;5;tree;33;76;111
+T;tool;Sword;3;monster;32;77;109
+T;tool;Hammer;4;boulder;30;79;104
+T;tool;Sword;3;monster;33;80;109 // ZZZ end right bank rando
