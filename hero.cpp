@@ -596,10 +596,10 @@ void Hero::check_around(){
   mvwprintw(gamemenu,1,1," Check around: ");
   mvwprintw(gamemenu,9,1," Options: ");
   mvwprintw(gamemenu,10,1," w: Check North ");
-  mvwprintw(gamemenu,11,1," s: Chck South ");
+  mvwprintw(gamemenu,11,1," s: Check South ");
   mvwprintw(gamemenu,12,1," a: Check West ");
-  mvwprintw(gamemenu,13,1," d: Check Eest ");
-  mvwprintw(gamemenu,14,1," Press c back to movement ");
+  mvwprintw(gamemenu,13,1," d: Check East ");
+  mvwprintw(gamemenu,14,1," c: Back to Movement ");
   wrefresh(gamemenu);
   char ch;
   ch = getch();
@@ -639,7 +639,7 @@ void Hero::check(int x, int y){
   mvwprintw(gamemenu,11,1," s: Chck South ");
   mvwprintw(gamemenu,12,1," a: Check West ");
   mvwprintw(gamemenu,13,1," d: Check Eest ");
-  mvwprintw(gamemenu,14,1," Press c back to movement ");
+  mvwprintw(gamemenu,14,1," c: Back to Movement ");
   if(map->has_item(y,x))
     map->show_item(gamemenu,y,x);
   else
