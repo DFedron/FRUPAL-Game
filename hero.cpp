@@ -76,7 +76,7 @@ void Hero::update_display() {
   update_gamemenu(); // erases and reprints gamemenu
 
   // XXX testing for item placement
-  mvwprintw(viewport, 0, 0, "y = %d x = %d", ypos, xpos);
+//  mvwprintw(viewport, 0, 0, "y = %d x = %d", ypos, xpos);
   // XXX end of testing
   wrefresh(viewport); // refreshes viewport
   wrefresh(gamemenu); // refreshes game menu

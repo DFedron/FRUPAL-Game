@@ -1,3 +1,9 @@
 ?;clue;The Royal Diamonds are north 20 grovnicks and west 20 grovnicks;25;53
 ?;clue;The Royal Diamonds are north 15 grovnicks and east 2 grovnicks;33;29
 ?;clue;The Royal Diamonds are south 70 grovnicks and west 15 grovnicks;13;41
+?;clue;Your grandpa's binoculars are 7 grovnicks North;86;90
+?;clue;I left some cake behind you.;86;87 // mom's clue
+?;clue;Get you dad's boat.  It north @ the river bend.;78;91 // clue to get boat
+?;clue;A clue bridge lies to the East;35;88
+?;clue;The Royal Diamond is to the South;35;40 // clue on the bridge
+?;clue;Too far South, and you hit the Death Swamps.;37;40
