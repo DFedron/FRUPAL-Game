@@ -5,4 +5,3 @@ S;ship;water;125;88;25
 S;ship;water;100;88;27
 S;ship;water;110;88;29
 S;ship;water;65;88;31
-S;ship;water;65;86;89
