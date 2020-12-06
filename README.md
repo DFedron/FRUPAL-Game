@@ -35,7 +35,10 @@
  ##Load item files:
    All item text file names are in 'item.txt'. Any new item text files must be included in 'item.txt'. The 'NUMITEM' will need to be changed in map.h. The input structure for each item is written in 'item_data_order.txt'. 
  
- 
+ ## What we managed to implement:
+  We were able to implement the majority of features that were required for the Frupal project. The features that weren't implemented were the added stretch goals such as the randomly generated levels, the map loader, and the level editor. Otherwise, we were able to implement all of the main requirements for the Frupal project.
+  
+## Presentation Video Link:
 
  
  
