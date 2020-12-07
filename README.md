@@ -12,6 +12,7 @@
  1. Make with `make`
  2. Run with `./frupal`
  3. Use arrow keys to explore, `q` to quit.
+    Use `c` to enter and quit the check around mode. In check around mode, press `w`,`s`,`a`,`d` can check information of up, down, left, right direction.
  4. How to win: Find the Royal Diamonds (white '$' symbol).
  5. How to lose: Run out of energy before finding the Royal Diamonds.
  6. How to play: Hero can walk over meadows (green background) and swamps (purple background) with energy cost of 1 for meadows, 2 for swamps. Water (blue background) and walls (white background) are impassable, but water can be traversed at no energy cost if a ship ('S' symbol) is purchased. Food ('F' symbol) can be purchased with currency (whiffles) for energy.  Obstacles ('!' symbol) require energy to remove. Tools ('T' symbol) can be purchased to minimize energy cost when landing on obstacles. Binoculars ('B' symbol) can be purchased to increase visual range 2X. Treasure chests (black '$' symbol) give currency (whiffles). Clues ('?' symbol) give completely true or completely false information about the location of the Royal Diamonds. Beware. 
