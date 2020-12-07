@@ -321,6 +321,15 @@ void Map::remove_item(int row, int col) {
 }
 bool Map::has_item(int i, int j) { return frupal[i][j].feature; }
 void Map::print_item(WINDOW *gm, int i, int j) {
+   string type;
+   frupal[i][j].feature->get_type(type);
+   if(type.compare("clue") == 0){
+       int height, width;
+       getmaxyx(gm,height,width);
+       WINDOW * clue_win = newwin(7,width-2,2,COLS-width+2);
+       frupal[i][j].feature->display_info(clue_win,0,2);
+       delwin(clue_win);
+   }else
   frupal[i][j].feature->display_info(gm, 3, 2);
 }
 
