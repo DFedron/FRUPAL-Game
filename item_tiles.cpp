@@ -30,10 +30,8 @@ void Item::get_type(string &type) { type = item_type; }
 // XXX THIS IS STUFF/FUNCTIONS ADDING/SUBTRACTING
 
 char Item::get_char() const { return icon; }
-  
-Item::~Item(){
-   
-}
+
+Item::~Item() {}
 
 // REMOVED  print_icon(WINDOW *,int), get_icon(&char)
 // END CHANGES BY CAMILO
@@ -57,39 +55,37 @@ Clue::Clue(char icon, string type, string msg)
     : Item(icon, type), message(msg) {}
 Clue::Clue(const Item &item, string msg) : Item(item), message(msg) {}
 void Clue::display_info(WINDOW *gm, int row, int col) {
-  
+
   // this part requires player to press 'c' to continue
-  keypad(gm,TRUE);  
-  char choice  = 'v'; //for view clue
+  keypad(gm, TRUE);
+  char choice = 'v'; // for view clue
   int input = 0;
 
-  while(choice == 'v'){
+  while (choice == 'v') {
 
-           mvwprintw(gm, row+1, col, " > Clue: ");
-           waddstr(gm, message.data());
-           mvwprintw(gm,row+3,col, "  Press C to continue: "); 
-           wrefresh(gm);
-           input = wgetch(gm);
-           if(input == 'c' || input == 'C')
-                choice = 'c';
+    mvwprintw(gm, row + 1, col, " > Clue: ");
+    waddstr(gm, message.data());
+    mvwprintw(gm, row + 3, col, "  Press C to continue: ");
+    wrefresh(gm);
+    input = wgetch(gm);
+    if (input == 'c' || input == 'C')
+      choice = 'c';
   }
-  wmove(gm,row+1,col);
+  wmove(gm, row + 1, col);
   wclrtoeol(gm);
-  wmove(gm,row+2,col);
+  wmove(gm, row + 2, col);
   wclrtoeol(gm);
-  wmove(gm,row+3,col);
+  wmove(gm, row + 3, col);
   wclrtoeol(gm);
-  mvwprintw(gm,row+1,col, "  Onward then! "); 
+  mvwprintw(gm, row + 1, col, "  Onward then! ");
   wrefresh(gm);
-   
 }
 
-void Clue::show_info(WINDOW *gm, int row, int col){
+void Clue::show_info(WINDOW *gm, int row, int col) {
 
-  mvwprintw(gm, row+1, col, " > Clue: ");
+  mvwprintw(gm, row + 1, col, " > Clue: ");
   waddstr(gm, message.data());
   wrefresh(gm);
-
 }
 void Clue::get_message(string &msg) { msg = message; }
 /*
@@ -144,7 +140,7 @@ void Tool::display_info(WINDOW *gm, int row, int col) {
   wrefresh(gm);
 }
 
-void Tool::show_info(WINDOW *gm, int row, int col){
+void Tool::show_info(WINDOW *gm, int row, int col) {
 
   mvwprintw(gm, row++, col, " > Tool: ");
   waddstr(gm, tool_name.data());
@@ -181,7 +177,7 @@ void Food::display_info(WINDOW *gm, int row, int col) {
   wrefresh(gm);
 }
 
-void Food::show_info(WINDOW *gm, int row, int col){
+void Food::show_info(WINDOW *gm, int row, int col) {
 
   mvwprintw(gm, row++, col, " > Food: ");
   waddstr(gm, food_name.data());
@@ -324,4 +320,3 @@ void Binoculars::show_info(WINDOW *gm, int row, int col) {
   mvwprintw(gm, row++, col, " > Cost: %d whiffles", cost);
   wrefresh(gm);
 }
-
