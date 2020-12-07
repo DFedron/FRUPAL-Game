@@ -263,11 +263,18 @@ void Hero::move_right() {
 }
 
 void Hero::yes_answer() {
-
-  whiffles -= curr_item->get_cost();
-  map->remove_item(ypos, xpos);
-  update_display();
-  mvwprintw(gamemenu, 5, 3, "Thanks for your purchase!");
+   int diff = whiffles;
+ 
+  if((diff-=curr_item->get_cost()) > 0){
+      whiffles -= curr_item->get_cost();
+      map->remove_item(ypos, xpos);
+      update_display();
+      mvwprintw(gamemenu, 5, 3, "Thanks for your purchase!");
+  }
+  else{
+      update_display();
+      mvwprintw(gamemenu, 5, 3, "You don't have enough whiffles for this purchase!");
+  }
   wrefresh(gamemenu);
   display_tool_window();
 
