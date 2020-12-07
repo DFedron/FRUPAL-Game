@@ -291,30 +291,30 @@ bool end_game_menu(Hero *hero) {
 
   mvwprintw(endgame, 7, 20, "Game Over!");
   mvwprintw(endgame, 8, 20, "Hero died!");
-  mvwprintw(endgame, 9, 11, "Add 100 Energy for 25 cents?");
-  mvwprintw(endgame, 10, 18, "(Y)es or (N)o?");
+//  mvwprintw(endgame, 9, 11, "Add 100 Energy for 25 cents?");
+//  mvwprintw(endgame, 10, 18, "(Y)es or (N)o?");
   wrefresh(endgame);
 
   int ch;
   ch = getch();
   // offers up a y/n question, doesn't take anything
   // but y or n for an answer.  endless loop
-  while (ch != 'y' && ch != 'n')
-    ch = getch();
+ // while (ch != 'y' && ch != 'n')
+ //   ch = getch();
 
   // delete the game over window after they've chosen
   delwin(endgame);
 
   // if yes, add's 100 energy to hero returns true
   // refreshes display to get fully rid of game over window
-  if (ch == 'y') {
+/* if (ch == 'y') {
 
-    /* Commented out to not affect testing
-    bool check;
-    check = hero->add_energy(100);
-    if (!check)
-        return false;
-    */
+//     Commented out to not affect testing
+//    bool check;
+//    check = hero->add_energy(100);
+//    if (!check)
+//        return false;
+    
 
     hero->add_energy(100);
     erase();
@@ -325,4 +325,6 @@ bool end_game_menu(Hero *hero) {
     return true;
   } else // else, returns false and game is over!
     return false;
+  */
+  return false;
 }
