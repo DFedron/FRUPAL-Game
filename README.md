@@ -40,7 +40,7 @@
   We were able to implement the majority of features that were required for the Frupal project. The features that weren't implemented were the added stretch goals such as the randomly generated levels, the map loader, and the level editor. Otherwise, we were able to implement all of the main requirements for the Frupal project.
   
 ## Presentation Video Link:
-
+https://media.pdx.edu/media/t/1_ibh57uuc
  
  
  
