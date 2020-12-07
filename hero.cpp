@@ -352,11 +352,22 @@ void Hero::engage_item(int ypos, int xpos) {
   } else if (ob_ptr) {
     display_tool_window();
     if (tool_belt) {
-      int r = tw_top_row - 3; // 35;
+
+        // clears gamemenu lines
+        wmove(gamemenu, tw_top_row - 1, 1);
+        wclrtoeol(gamemenu);
+        wmove(gamemenu, tw_top_row - 2, 1);
+        wclrtoeol(gamemenu);
+        wmove(gamemenu, tw_top_row - 3, 1);
+        wclrtoeol(gamemenu);
+        wmove(gamemenu, tw_top_row - 4, 1);
+        wclrtoeol(gamemenu);
+ 
+      int r = tw_top_row - 4; // 35;
       mvwprintw(gamemenu, r, 3, "< Toolbelt >");
-      mvwprintw(gamemenu, r++, 3, " Choose a tool with the arrow keys. ");
-      mvwprintw(gamemenu, r++, 3,
-                " Press 'Enter' to choose. Press 'e' to exit Toolbelt");
+      mvwprintw(gamemenu, r++, 3, "Choose tool with arrow keys. ");
+      mvwprintw(gamemenu, r++, 3, "Press 'Enter' to choose.");
+      mvwprintw(gamemenu, r++, 3, "Press 'e' to exit Toolbelt");
       wrefresh(gamemenu);
 
       string ob_type;
@@ -434,19 +445,21 @@ bool Hero::tool_match(Item *&curr_tool, string ob_type, int choice_num) {
   if (choice_num == 0) { // this is selected tool
     curr_tool->get_obstacle_type(tool_ob_type);
 
-    // clears gamemenu lines
-    wmove(gamemenu, tw_top_row - 2, 3);
-    wclrtoeol(gamemenu);
-    wmove(gamemenu, tw_top_row - 3, 3);
-    wclrtoeol(gamemenu);
-    wmove(gamemenu, tw_top_row - 4, 3);
-    wclrtoeol(gamemenu);
 
     if (ob_type.compare(tool_ob_type) == 0) {
       float quotient = curr_item->get_energy() / tool_belt->get_energy();
       energy -= static_cast<int>(quotient);
 
       update_gamemenu();
+    // clears gamemenu lines
+    wmove(gamemenu, tw_top_row - 1, 1);
+    wclrtoeol(gamemenu);
+    wmove(gamemenu, tw_top_row - 2, 1);
+    wclrtoeol(gamemenu);
+    wmove(gamemenu, tw_top_row - 3, 1);
+    wclrtoeol(gamemenu);
+    wmove(gamemenu, tw_top_row - 4, 1);
+    wclrtoeol(gamemenu);
 
       // Prints tool name used to remove obstacle
       string tool_name;
@@ -480,6 +493,16 @@ bool Hero::tool_match(Item *&curr_tool, string ob_type, int choice_num) {
       return true;
     } // ends compare
     else {
+       // clears gamemenu lines
+       wmove(gamemenu, tw_top_row - 1, 1);
+       wclrtoeol(gamemenu);
+       wmove(gamemenu, tw_top_row - 2, 1);
+       wclrtoeol(gamemenu);
+       wmove(gamemenu, tw_top_row - 3, 1);
+       wclrtoeol(gamemenu);
+       wmove(gamemenu, tw_top_row - 4, 1);
+       wclrtoeol(gamemenu);
+  
       string tool_name;
       curr_tool->get_name(tool_name);
       mvwprintw(gamemenu, tw_top_row - 4, 3, "Cannot remove ");
@@ -648,7 +671,7 @@ void Hero::check(int x, int y){
   mvwprintw(gamemenu,10,1," w: Check North ");
   mvwprintw(gamemenu,11,1," s: Chck South ");
   mvwprintw(gamemenu,12,1," a: Check West ");
-  mvwprintw(gamemenu,13,1," d: Check Eest ");
+  mvwprintw(gamemenu,13,1," d: Check East ");
   mvwprintw(gamemenu,14,1," c: Back to Movement ");
   if(map->has_item(y,x))
     map->show_item(gamemenu,y,x);
