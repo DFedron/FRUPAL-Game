@@ -525,8 +525,6 @@ void Map::save_item(string file) {
               outfile << item->get_whiffles();
             else
               outfile << item->get_cost();
-            // XXX this I copied over from diamond branch, not sure if this
-            // is correct though.
             if (type.compare("diamond") == 0)
               outfile << item->get_whiffles();
             else

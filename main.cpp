@@ -19,7 +19,7 @@ void gameplay();
 bool end_game_menu(Hero *hero);
 
 int main(int argc, char **argv) {
-  // TODO check for argc#, exit exception for > 2
+
   if (argc > 1) {
     cout << "please enter ./frupal\n";
     return 0;
@@ -27,7 +27,6 @@ int main(int argc, char **argv) {
 
   initscr();
   if (LINES < 24 || COLS < 80) {
-    // TODO  maybe make a seperate function that makes this look nice.
     char string[] =
         "Terminal is smaller than 80x24. Please resize your terminal!";
     int x = (COLS / 2) - (strlen(string) / 2);
@@ -215,7 +214,6 @@ void gameplay() {
 
   Hero *hero;                  // hero object
   WINDOW *viewport, *gamemenu; // our 2 windows
-                               //  WINDOW * tool_win; //tool belt window
 
   // figures out what the height and width of menu/viewport is
   int gmheight, gmwidth = MENUWIDTH, vpheight, vpwidth;

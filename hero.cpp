@@ -10,7 +10,7 @@
 #include "hero.h"
 #include "map.h"
 
-// our 'defaul constructor'
+// our 'default constructor'
 Hero::Hero(WINDOW *vp, WINDOW *gm, int gmwidth) {
 
   xpos = 88;
@@ -77,7 +77,7 @@ void Hero::update_display() {
   update_gamemenu(); // erases and reprints gamemenu
 
   // XXX testing for item placement
-    mvwprintw(viewport, 0, 0, "y = %d x = %d", ypos, xpos);
+//    mvwprintw(viewport, 0, 0, "y = %d x = %d", ypos, xpos);
   // XXX end of testing
   wrefresh(viewport); // refreshes viewport
   wrefresh(gamemenu); // refreshes game menu
@@ -105,11 +105,6 @@ void Hero::update_gamemenu() {
 
   map->print_options(gamemenu, ypos, xpos,
                      ship); // prints player movement options
-
-  // XXX remove these 3 lines, all testing stuff
-  //  mvwprintw(gamemenu, rows - 6, 2, "This is for testing:");
-  //  mvwprintw(gamemenu, rows - 5, 2, "x-position: %d", xpos);
-  //  mvwprintw(gamemenu, rows - 4, 2, "y-position: %d", ypos);
 
   mvwprintw(gamemenu, 1, 2, "Menu:");
   mvwprintw(gamemenu, rows - 3, 2, "Energy: %d", energy);
@@ -273,8 +268,8 @@ void Hero::yes_answer() {
     mvwprintw(gamemenu, 5, 3, "Thanks for your purchase!");
   } else {
     update_display();
-    mvwprintw(gamemenu, 5, 3,
-              "You don't have enough whiffles for this purchase!");
+    mvwprintw(gamemenu, 5, 3,"You don't have enough");
+    mvwprintw(gamemenu, 6, 3, "whiffles for this purchase!");
   }
   wrefresh(gamemenu);
   display_tool_window();
@@ -432,7 +427,6 @@ void Hero::engage_item(int ypos, int xpos) {
   }
   curr_item = NULL;
   display_tool_window();
-  //  map->remove_item(ypos, xpos);
 }
 
 bool Hero::tool_match(Item *&curr_tool, string ob_type, int choice_num) {
