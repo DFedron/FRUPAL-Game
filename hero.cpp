@@ -10,7 +10,7 @@
 #include "hero.h"
 #include "map.h"
 
-// our 'defaul constructor'
+// our 'default constructor'
 Hero::Hero(WINDOW *vp, WINDOW *gm, int gmwidth) {
 
   xpos = 88;
@@ -38,9 +38,10 @@ Hero::Hero(WINDOW *vp, WINDOW *gm, int gmwidth) {
   tw_top_row = LINES - 8;    // 'rectangle's' upper-left row  (top row)
   tw_bottom_row = LINES - 5; // 'rectangle's' lower-right row (bottom row)
   tw_left_col = (COLS - gmwidth + 2);
-  tool_win = newpad(
-      max_tools, gmwidth - 2); // pad that displays portions of itself to the
-                               // 'rectangle' formed from last 4 args in prefresh
+  tool_win =
+      newpad(max_tools,
+             gmwidth - 2); // pad that displays portions of itself to the
+                           // 'rectangle' formed from last 4 args in prefresh
   // prefresh is pad refresh
   // 2nd and 3rd args of prefresh are coordinates of tool_win pad that are
   // displayed in the 'rectangle's upper-left corner
@@ -76,7 +77,7 @@ void Hero::update_display() {
   update_gamemenu(); // erases and reprints gamemenu
 
   // XXX testing for item placement
-//  mvwprintw(viewport, 0, 0, "y = %d x = %d", ypos, xpos);
+//    mvwprintw(viewport, 0, 0, "y = %d x = %d", ypos, xpos);
   // XXX end of testing
   wrefresh(viewport); // refreshes viewport
   wrefresh(gamemenu); // refreshes game menu
@@ -104,11 +105,6 @@ void Hero::update_gamemenu() {
 
   map->print_options(gamemenu, ypos, xpos,
                      ship); // prints player movement options
-
-  // XXX remove these 3 lines, all testing stuff
-  //  mvwprintw(gamemenu, rows - 6, 2, "This is for testing:");
-  //  mvwprintw(gamemenu, rows - 5, 2, "x-position: %d", xpos);
-  //  mvwprintw(gamemenu, rows - 4, 2, "y-position: %d", ypos);
 
   mvwprintw(gamemenu, 1, 2, "Menu:");
   mvwprintw(gamemenu, rows - 3, 2, "Energy: %d", energy);
@@ -263,21 +259,20 @@ void Hero::move_right() {
 }
 
 void Hero::yes_answer() {
-   int diff = whiffles;
- 
-  if((diff-=curr_item->get_cost()) > 0){
-      whiffles -= curr_item->get_cost();
-      map->remove_item(ypos, xpos);
-      update_display();
-      mvwprintw(gamemenu, 5, 3, "Thanks for your purchase!");
-  }
-  else{
-      update_display();
-      mvwprintw(gamemenu, 5, 3, "You don't have enough whiffles for this purchase!");
+  int diff = whiffles;
+
+  if ((diff -= curr_item->get_cost()) > 0) {
+    whiffles -= curr_item->get_cost();
+    map->remove_item(ypos, xpos);
+    update_display();
+    mvwprintw(gamemenu, 5, 3, "Thanks for your purchase!");
+  } else {
+    update_display();
+    mvwprintw(gamemenu, 5, 3,"You don't have enough");
+    mvwprintw(gamemenu, 6, 3, "whiffles for this purchase!");
   }
   wrefresh(gamemenu);
   display_tool_window();
-
 }
 
 void Hero::no_answer() {
@@ -353,16 +348,16 @@ void Hero::engage_item(int ypos, int xpos) {
     display_tool_window();
     if (tool_belt) {
 
-        // clears gamemenu lines
-        wmove(gamemenu, tw_top_row - 1, 1);
-        wclrtoeol(gamemenu);
-        wmove(gamemenu, tw_top_row - 2, 1);
-        wclrtoeol(gamemenu);
-        wmove(gamemenu, tw_top_row - 3, 1);
-        wclrtoeol(gamemenu);
-        wmove(gamemenu, tw_top_row - 4, 1);
-        wclrtoeol(gamemenu);
- 
+      // clears gamemenu lines
+      wmove(gamemenu, tw_top_row - 1, 1);
+      wclrtoeol(gamemenu);
+      wmove(gamemenu, tw_top_row - 2, 1);
+      wclrtoeol(gamemenu);
+      wmove(gamemenu, tw_top_row - 3, 1);
+      wclrtoeol(gamemenu);
+      wmove(gamemenu, tw_top_row - 4, 1);
+      wclrtoeol(gamemenu);
+
       int r = tw_top_row - 4; // 35;
       mvwprintw(gamemenu, r, 3, "< Toolbelt >");
       mvwprintw(gamemenu, r++, 3, "Choose tool with arrow keys. ");
@@ -388,8 +383,7 @@ void Hero::engage_item(int ypos, int xpos) {
     if (ch == 'y') {
       ship = true;
       yes_answer();
-    }
-    else
+    } else
       no_answer();
   } else if (bino_ptr) {
     ch = getch();
@@ -399,8 +393,7 @@ void Hero::engage_item(int ypos, int xpos) {
     if (ch == 'y') {
       binoculars = true;
       yes_answer();
-    }
-    else
+    } else
       no_answer();
   } else if (treasure_ptr) {
     ch = getch();
@@ -434,7 +427,6 @@ void Hero::engage_item(int ypos, int xpos) {
   }
   curr_item = NULL;
   display_tool_window();
-  //  map->remove_item(ypos, xpos);
 }
 
 bool Hero::tool_match(Item *&curr_tool, string ob_type, int choice_num) {
@@ -445,21 +437,20 @@ bool Hero::tool_match(Item *&curr_tool, string ob_type, int choice_num) {
   if (choice_num == 0) { // this is selected tool
     curr_tool->get_obstacle_type(tool_ob_type);
 
-
     if (ob_type.compare(tool_ob_type) == 0) {
       float quotient = curr_item->get_energy() / tool_belt->get_energy();
       energy -= static_cast<int>(quotient);
 
       update_gamemenu();
-    // clears gamemenu lines
-    wmove(gamemenu, tw_top_row - 1, 1);
-    wclrtoeol(gamemenu);
-    wmove(gamemenu, tw_top_row - 2, 1);
-    wclrtoeol(gamemenu);
-    wmove(gamemenu, tw_top_row - 3, 1);
-    wclrtoeol(gamemenu);
-    wmove(gamemenu, tw_top_row - 4, 1);
-    wclrtoeol(gamemenu);
+      // clears gamemenu lines
+      wmove(gamemenu, tw_top_row - 1, 1);
+      wclrtoeol(gamemenu);
+      wmove(gamemenu, tw_top_row - 2, 1);
+      wclrtoeol(gamemenu);
+      wmove(gamemenu, tw_top_row - 3, 1);
+      wclrtoeol(gamemenu);
+      wmove(gamemenu, tw_top_row - 4, 1);
+      wclrtoeol(gamemenu);
 
       // Prints tool name used to remove obstacle
       string tool_name;
@@ -493,16 +484,16 @@ bool Hero::tool_match(Item *&curr_tool, string ob_type, int choice_num) {
       return true;
     } // ends compare
     else {
-       // clears gamemenu lines
-       wmove(gamemenu, tw_top_row - 1, 1);
-       wclrtoeol(gamemenu);
-       wmove(gamemenu, tw_top_row - 2, 1);
-       wclrtoeol(gamemenu);
-       wmove(gamemenu, tw_top_row - 3, 1);
-       wclrtoeol(gamemenu);
-       wmove(gamemenu, tw_top_row - 4, 1);
-       wclrtoeol(gamemenu);
-  
+      // clears gamemenu lines
+      wmove(gamemenu, tw_top_row - 1, 1);
+      wclrtoeol(gamemenu);
+      wmove(gamemenu, tw_top_row - 2, 1);
+      wclrtoeol(gamemenu);
+      wmove(gamemenu, tw_top_row - 3, 1);
+      wclrtoeol(gamemenu);
+      wmove(gamemenu, tw_top_row - 4, 1);
+      wclrtoeol(gamemenu);
+
       string tool_name;
       curr_tool->get_name(tool_name);
       mvwprintw(gamemenu, tw_top_row - 4, 3, "Cannot remove ");
@@ -623,37 +614,37 @@ bool Hero::choose_tool(string ob_type) {
   return false;
 }
 
-void Hero::check_around(){
+void Hero::check_around() {
   werase(gamemenu);
   wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#', 0);
-  mvwprintw(gamemenu,1,1," Check around: ");
-  mvwprintw(gamemenu,9,1," Options: ");
-  mvwprintw(gamemenu,10,1," w: Check North ");
-  mvwprintw(gamemenu,11,1," s: Check South ");
-  mvwprintw(gamemenu,12,1," a: Check West ");
-  mvwprintw(gamemenu,13,1," d: Check East ");
-  mvwprintw(gamemenu,14,1," c: Back to Movement ");
+  mvwprintw(gamemenu, 1, 1, " Check around: ");
+  mvwprintw(gamemenu, 9, 1, " Options: ");
+  mvwprintw(gamemenu, 10, 1, " w: Check North ");
+  mvwprintw(gamemenu, 11, 1, " s: Check South ");
+  mvwprintw(gamemenu, 12, 1, " a: Check West ");
+  mvwprintw(gamemenu, 13, 1, " d: Check East ");
+  mvwprintw(gamemenu, 14, 1, " c: Back to Movement ");
   wrefresh(gamemenu);
   char ch;
   ch = getch();
-  while(ch != 'c'){
+  while (ch != 'c') {
     int x = xpos;
     int y = ypos;
-    switch(ch){
-      case 'w':
-        check(x, y-1);
-	break;
-      case 's':
-	check(x, y+1);
-	break;
-      case 'a':
-	check(x-1, y);
-	break;
-      case 'd':
-	check(x+1, y);
-	break;
-      default:
-        break;
+    switch (ch) {
+    case 'w':
+      check(x, y - 1);
+      break;
+    case 's':
+      check(x, y + 1);
+      break;
+    case 'a':
+      check(x - 1, y);
+      break;
+    case 'd':
+      check(x + 1, y);
+      break;
+    default:
+      break;
     }
     ch = getch();
   }
@@ -662,21 +653,21 @@ void Hero::check_around(){
   wrefresh(gamemenu);
 }
 
-void Hero::check(int x, int y){
+void Hero::check(int x, int y) {
   werase(gamemenu);
   wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#', 0);
-  mvwprintw(gamemenu,1,1," Check around: ");
-  mvwprintw(gamemenu,9,1," Options: ");
+  mvwprintw(gamemenu, 1, 1, " Check around: ");
+  mvwprintw(gamemenu, 9, 1, " Options: ");
 
-  mvwprintw(gamemenu,10,1," w: Check North ");
-  mvwprintw(gamemenu,11,1," s: Chck South ");
-  mvwprintw(gamemenu,12,1," a: Check West ");
-  mvwprintw(gamemenu,13,1," d: Check East ");
-  mvwprintw(gamemenu,14,1," c: Back to Movement ");
-  if(map->has_item(y,x))
-    map->show_item(gamemenu,y,x);
+  mvwprintw(gamemenu, 10, 1, " w: Check North ");
+  mvwprintw(gamemenu, 11, 1, " s: Chck South ");
+  mvwprintw(gamemenu, 12, 1, " a: Check West ");
+  mvwprintw(gamemenu, 13, 1, " d: Check East ");
+  mvwprintw(gamemenu, 14, 1, " c: Back to Movement ");
+  if (map->has_item(y, x))
+    map->show_item(gamemenu, y, x);
   else
-    map->print_current_grovnick(gamemenu,y,x);
+    map->print_current_grovnick(gamemenu, y, x);
   wrefresh(gamemenu);
 }
 

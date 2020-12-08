@@ -5,11 +5,11 @@
 #include "hero.h"
 #include "map.h"
 #include <cstdlib>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <ncurses.h>
 #include <string>
-#include <cstring>
 #define MENUWIDTH 35 // sets the menu width
 
 using namespace std;
@@ -19,7 +19,7 @@ void gameplay();
 bool end_game_menu(Hero *hero);
 
 int main(int argc, char **argv) {
-  // TODO check for argc#, exit exception for > 2
+
   if (argc > 1) {
     cout << "please enter ./frupal\n";
     return 0;
@@ -27,10 +27,10 @@ int main(int argc, char **argv) {
 
   initscr();
   if (LINES < 24 || COLS < 80) {
-    // TODO  maybe make a seperate function that makes this look nice.
-    char string[] = "Terminal is smaller than 80x24. Please resize your terminal!";
-    int x = (COLS/2) - (strlen(string)/2);
-    int y = LINES/2;
+    char string[] =
+        "Terminal is smaller than 80x24. Please resize your terminal!";
+    int x = (COLS / 2) - (strlen(string) / 2);
+    int y = LINES / 2;
 
     mvprintw(y, x, string);
     wborder(stdscr, '#', '#', '#', '#', '#', '#', '#', '#');
@@ -55,9 +55,9 @@ int main(int argc, char **argv) {
   init_pair(6, COLOR_YELLOW, COLOR_RED);    // Hero
   init_pair(7, COLOR_WHITE, COLOR_CYAN);    // Royal Diamond
 
-//////////////////////////////////////////////////////////////////////////////
-// The primary control of game is move to the function below called gameplay
-//////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
+  // The primary control of game is move to the function below called gameplay
+  //////////////////////////////////////////////////////////////////////////////
 
   if (startmenu() == 0) {
     erase();
@@ -81,20 +81,20 @@ int startmenu() {
   int choice; // get the input
 
   ///////////////////////////////////
-  //for the title
+  // for the title
   int widthX = 100;
   int heightY = 20;
-  int posX = (COLS - widthX)/2;
-  int posY = (LINES - heightY)/2;
+  int posX = (COLS - widthX) / 2;
+  int posY = (LINES - heightY) / 2;
   char draw = 'X';
   //////////////////////////////////
 
   while (true) {
-    //window to draw the title FRUPAL
-    WINDOW * mainTitle = newwin(heightY, widthX, posY, posX);
+    // window to draw the title FRUPAL
+    WINDOW *mainTitle = newwin(heightY, widthX, posY, posX);
 
     ///////////////////////////////////////////////
-    //Draw 'F'
+    // Draw 'F'
     mvwvline(mainTitle, 2, 3, draw, 11);
     mvwhline(mainTitle, 2, 4, draw, 13);
     mvwvline(mainTitle, 3, 16, draw, 2);
@@ -106,7 +106,7 @@ int startmenu() {
     mvwvline(mainTitle, 9, 6, draw, 4);
     mvwhline(mainTitle, 12, 4, draw, 2);
 
-    //Draw 'R'
+    // Draw 'R'
     mvwvline(mainTitle, 2, 19, draw, 11);
     mvwhline(mainTitle, 2, 20, draw, 14);
     mvwvline(mainTitle, 3, 33, draw, 5);
@@ -124,7 +124,7 @@ int startmenu() {
     mvwhline(mainTitle, 6, 23, draw, 7);
     mvwvline(mainTitle, 5, 29, draw, 1);
 
-    //Draw 'U'
+    // Draw 'U'
     mvwvline(mainTitle, 2, 38, draw, 11);
     mvwhline(mainTitle, 2, 39, draw, 4);
     mvwvline(mainTitle, 3, 42, draw, 7);
@@ -134,7 +134,7 @@ int startmenu() {
     mvwvline(mainTitle, 3, 50, draw, 10);
     mvwhline(mainTitle, 12, 39, draw, 11);
 
-    //Draw 'P'
+    // Draw 'P'
     mvwvline(mainTitle, 2, 53, draw, 11);
     mvwhline(mainTitle, 2, 54, draw, 12);
     mvwvline(mainTitle, 3, 65, draw, 5);
@@ -146,7 +146,7 @@ int startmenu() {
     mvwhline(mainTitle, 6, 57, draw, 5);
     mvwhline(mainTitle, 5, 61, draw, 1);
 
-    //Draw 'A'
+    // Draw 'A'
     mvwvline(mainTitle, 2, 68, draw, 11);
     mvwhline(mainTitle, 2, 69, draw, 12);
     mvwvline(mainTitle, 3, 80, draw, 10);
@@ -160,7 +160,7 @@ int startmenu() {
     mvwhline(mainTitle, 6, 72, draw, 5);
     mvwhline(mainTitle, 5, 76, draw, 1);
 
-    //Draw 'L'
+    // Draw 'L'
     mvwvline(mainTitle, 2, 83, draw, 11);
     mvwhline(mainTitle, 2, 84, draw, 4);
     mvwvline(mainTitle, 3, 87, draw, 8);
@@ -186,7 +186,7 @@ int startmenu() {
     choice = wgetch(mainMenu);
     switch (choice) {
     case 10: // 10 is the value of the key Enter
-    // returns 1 quit game, 0 for start game
+             // returns 1 quit game, 0 for start game
       return hightlight;
       break;
     case KEY_UP:
@@ -214,7 +214,6 @@ void gameplay() {
 
   Hero *hero;                  // hero object
   WINDOW *viewport, *gamemenu; // our 2 windows
-//  WINDOW * tool_win; //tool belt window
 
   // figures out what the height and width of menu/viewport is
   int gmheight, gmwidth = MENUWIDTH, vpheight, vpwidth;
@@ -222,15 +221,11 @@ void gameplay() {
   gmheight = LINES;
   vpwidth = COLS - gmwidth;
 
-  // changes menu width is screen is really big.
+  // changes menu width if screen is really big.
   if (vpwidth > KSIZE) {
     vpwidth = KSIZE;
     gmwidth = COLS - vpwidth;
   }
-  //figures out what the height and width of toolbelt window
-//  int twheight,twwidth;
-//  twheight = 3; 
-//  twwidth = gmwidth;
 
   viewport =
       newwin(vpheight, vpwidth, 0, 0); // sets location/height/width of viewport
@@ -238,7 +233,7 @@ void gameplay() {
   wborder(gamemenu, '#', 0, ' ', ' ', '#', 0, '#',
           0); // should put just on left side
 
-  hero = new Hero(viewport, gamemenu,gmwidth);
+  hero = new Hero(viewport, gamemenu, gmwidth);
   int ch;
   refresh();              // starts the screen
   hero->update_display(); // prints the initial screen
@@ -273,10 +268,6 @@ void gameplay() {
     }
   }
 }
-   
-
-
-
 
 // end game menu.  adds 100 energy and returns true if player
 // wants to continue the game, returns false to quit game.
@@ -291,40 +282,16 @@ bool end_game_menu(Hero *hero) {
 
   mvwprintw(endgame, 7, 20, "Game Over!");
   mvwprintw(endgame, 8, 20, "Hero died!");
-//  mvwprintw(endgame, 9, 11, "Add 100 Energy for 25 cents?");
-//  mvwprintw(endgame, 10, 18, "(Y)es or (N)o?");
+  mvwprintw(endgame, 9, 14, "Press <ENTER> to exit.");
   wrefresh(endgame);
 
   int ch;
   ch = getch();
-  // offers up a y/n question, doesn't take anything
-  // but y or n for an answer.  endless loop
- // while (ch != 'y' && ch != 'n')
- //   ch = getch();
+  while (ch != 10)
+    ch = getch();
 
   // delete the game over window after they've chosen
   delwin(endgame);
 
-  // if yes, add's 100 energy to hero returns true
-  // refreshes display to get fully rid of game over window
-/* if (ch == 'y') {
-
-//     Commented out to not affect testing
-//    bool check;
-//    check = hero->add_energy(100);
-//    if (!check)
-//        return false;
-    
-
-    hero->add_energy(100);
-    erase();
-    refresh();
-    hero->update_display();
-    hero->display_tool_window();
-    nodelay(stdscr, true);
-    return true;
-  } else // else, returns false and game is over!
-    return false;
-  */
   return false;
 }

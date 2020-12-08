@@ -161,11 +161,11 @@ void Map::update_display(int starty, int startx) {
           wattron(viewport, COLOR_PAIR(7));
 
         mvwaddch(viewport, i - starty, j - startx,
-        frupal[i][j].feature->get_char());
+                 frupal[i][j].feature->get_char());
 
         if ((temp.compare("diamond") == 0) && color != UNSEEN)
           wattroff(viewport, COLOR_PAIR(7));
-     
+
       } else {
         mvwaddch(viewport, i - starty, j - startx, ' '); // prints grovnick tile
       }
@@ -321,19 +321,21 @@ void Map::remove_item(int row, int col) {
 }
 bool Map::has_item(int i, int j) { return frupal[i][j].feature; }
 void Map::print_item(WINDOW *gm, int i, int j) {
-   string type;
-   frupal[i][j].feature->get_type(type);
-   if(type.compare("clue") == 0){
-       int height, width;
-       getmaxyx(gm,height,width);
-       WINDOW * clue_win = newwin(7,width-2,2,COLS-width+2);
-       frupal[i][j].feature->display_info(clue_win,0,2);
-       delwin(clue_win);
-   }else
-  frupal[i][j].feature->display_info(gm, 3, 2);
+  string type;
+  frupal[i][j].feature->get_type(type);
+  if (type.compare("clue") == 0) {
+    int width, height;
+    getmaxyx(gm, height, width);
+    if (!height) // this just to eliminate an error code from not using height
+      wprintw(viewport, "height very small");
+    WINDOW *clue_win = newwin(7, width - 2, 2, COLS - width + 2);
+    frupal[i][j].feature->display_info(clue_win, 0, 2);
+    delwin(clue_win);
+  } else
+    frupal[i][j].feature->display_info(gm, 3, 2);
 }
 
-void Map::show_item(WINDOW *gm, int i, int j){
+void Map::show_item(WINDOW *gm, int i, int j) {
   frupal[i][j].feature->show_info(gm, 3, 2);
 }
 
@@ -481,7 +483,7 @@ void Map::save_item(string file) {
 
         if (file.compare("inputfiles/" + type + ".txt") == 0) {
 
-        //XXX THIS I CHANGED TO GET CHAR(), HOPEFULLY DOESN'T BREAK.
+          // XXX THIS I CHANGED TO GET CHAR(), HOPEFULLY DOESN'T BREAK.
           outfile << item->get_char();
           outfile << ";";
           outfile << type; // outputs 'food', 'tool', etc..
@@ -523,8 +525,6 @@ void Map::save_item(string file) {
               outfile << item->get_whiffles();
             else
               outfile << item->get_cost();
-        // XXX this I copied over from diamond branch, not sure if this
-        // is correct though.
             if (type.compare("diamond") == 0)
               outfile << item->get_whiffles();
             else
@@ -579,41 +579,52 @@ void Map::scroll_function(int &starty, int &startx, int ypos, int xpos) {
   // END OF SCROLLING MECHANISM
 }
 
-void Map::print_options( WINDOW * gm, int row, int col,bool has_ship){
-//shows which actions are currently available to the player and which keys to hit to take those actions
- 
-    int r = 9;
-    int c = 1; 
-    int num = 1;
-    mvwprintw(gm,r++,c," Options: ");
+void Map::print_options(WINDOW *gm, int row, int col, bool has_ship) {
+  // shows which actions are currently available to the player and which keys to
+  // hit to take those actions
 
-    if(row > 0 && (frupal[row - 1][col].square == MEADOW || frupal[row-1][col].square == SWAMP || (frupal[row-1][col].square == WATER && has_ship == true)))
-          mvwprintw(gm,r++,c," %d) North ",num++);
-     if(col< KSIZE-1 && (frupal[row][col+1].square == MEADOW || frupal[row][col+1].square == SWAMP || (frupal[row][col+1].square == WATER && has_ship == true)))
-          mvwprintw(gm,r++,c," %d) East ",num++);
-     if(row < KSIZE-1 && (frupal[row+1][col].square == MEADOW || frupal[row+1][col].square == SWAMP || (frupal[row+1][col].square == WATER && has_ship == true)))
-          mvwprintw(gm,r++,c," %d) South",num++);
-    if(col > 0 && (frupal[row][col-1].square == MEADOW || frupal[row][col-1].square == SWAMP || (frupal[row][col-1].square == WATER && has_ship == true)))
-          mvwprintw(gm,r++,c," %d) West",num++);
+  int r = 9;
+  int c = 1;
+  int num = 1;
+  mvwprintw(gm, r++, c, " Options: ");
 
-    mvwprintw(gm, r++, c, " c) Check About"); // added in for new check_around function
+  if (row > 0 && (frupal[row - 1][col].square == MEADOW ||
+                  frupal[row - 1][col].square == SWAMP ||
+                  (frupal[row - 1][col].square == WATER && has_ship == true)))
+    mvwprintw(gm, r++, c, " %d) North ", num++);
+  if (col < KSIZE - 1 &&
+      (frupal[row][col + 1].square == MEADOW ||
+       frupal[row][col + 1].square == SWAMP ||
+       (frupal[row][col + 1].square == WATER && has_ship == true)))
+    mvwprintw(gm, r++, c, " %d) East ", num++);
+  if (row < KSIZE - 1 &&
+      (frupal[row + 1][col].square == MEADOW ||
+       frupal[row + 1][col].square == SWAMP ||
+       (frupal[row + 1][col].square == WATER && has_ship == true)))
+    mvwprintw(gm, r++, c, " %d) South", num++);
+  if (col > 0 && (frupal[row][col - 1].square == MEADOW ||
+                  frupal[row][col - 1].square == SWAMP ||
+                  (frupal[row][col - 1].square == WATER && has_ship == true)))
+    mvwprintw(gm, r++, c, " %d) West", num++);
+
+  mvwprintw(gm, r++, c,
+            " c) Check About"); // added in for new check_around function
 }
 
-void Map::print_current_grovnick(WINDOW * gm, int row, int col){
-    int r = 3;
-    string type;
-    
-    if(frupal[row][col].square == MEADOW)
-       type = "MEADOW";
-    else if(frupal[row][col].square == SWAMP)
-       type = "SWAMP";
-    else if(frupal[row][col].square == WATER)
-       type = "WATER";
-    else
-       type = "restricted area"; 
- 
-    mvwprintw(gm,r++,1,"  Grovnick Terrain: ");
-    mvwprintw(gm,r++,1,"  ");
-    wprintw(gm,type.data());
-    
+void Map::print_current_grovnick(WINDOW *gm, int row, int col) {
+  int r = 3;
+  string type;
+
+  if (frupal[row][col].square == MEADOW)
+    type = "MEADOW";
+  else if (frupal[row][col].square == SWAMP)
+    type = "SWAMP";
+  else if (frupal[row][col].square == WATER)
+    type = "WATER";
+  else
+    type = "restricted area";
+
+  mvwprintw(gm, r++, 1, "  Grovnick Terrain: ");
+  mvwprintw(gm, r++, 1, "  ");
+  wprintw(gm, type.data());
 }
